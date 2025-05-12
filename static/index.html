@@ -54,11 +54,39 @@
         .red { color: var(--red); font-weight: bold; }
         .yellow { color: var(--yellow); font-weight: bold; }
     </style>
+
+<style>
+.autocomplete-list {
+  position: absolute;
+  background: var(--bg-color);
+  border: 1px solid var(--text-color);
+  border-radius: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.autocomplete-list li {
+  padding: 10px;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.autocomplete-list li:hover {
+  background-color: rgba(73, 213, 193, 0.1);
+}
+</style>
+
 </head>
 <body>
     <h1>Проверка цен CSGO</h1>
-    <input type="text" id="skinInput" list="skinList" placeholder="Введите название скина" size="50">
-    <datalist id="skinList"></datalist>
+    <input type="text" id="skinInput" autocomplete="off" placeholder="Введите название скина" size="50">
+    <ul id="autocomplete" class="autocomplete-list"></ul>
     <div>
         <button onclick="checkPrice()">Узнать цену</button>
         <button onclick="toggleTheme()">Сменить тему</button>
@@ -148,5 +176,40 @@
             applyTheme(localStorage.getItem("theme") || "dark");
         });
     </script>
+
+<script>
+const input = document.getElementById("skinInput");
+const list = document.getElementById("autocomplete");
+
+input.addEventListener("input", async () => {
+  const value = input.value.toLowerCase();
+  list.innerHTML = "";
+  if (value.length < 2) return;
+
+  try {
+    const response = await fetch("/api/skins");
+    const skins = await response.json();
+    const matches = skins.filter(s => s.toLowerCase().includes(value));
+    matches.slice(0, 10).forEach(name => {
+      const li = document.createElement("li");
+      li.textContent = name;
+      li.onclick = () => {
+        input.value = name;
+        list.innerHTML = "";
+      };
+      list.appendChild(li);
+    });
+  } catch (err) {
+    console.error("Ошибка автоподсказок:", err);
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (!list.contains(e.target) && e.target !== input) {
+    list.innerHTML = "";
+  }
+});
+</script>
+
 </body>
 </html>
