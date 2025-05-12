@@ -3,101 +3,208 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>CSGO Price Checker</title>
+    <title>Trad1k3 checker</title>
     <style>
+        :root {
+            --bg-color: #1e1e2f;
+            --text-color: #49D5C1;
+            --button-bg: #49D5C1;
+            --button-fg: #000000;
+            --green: #00cc00;
+            --red: #cc0000;
+            --yellow: #cccc00;
+        }
+        * {
+            transition: background-color 0.3s, color 0.3s;
+        }
         body {
-            margin: 0;
-            padding: 0;
+            background: url('center_gradient_586480_to_354057.png') center center / cover no-repeat fixed;
+            color: var(--text-color);
             font-family: Helvetica, sans-serif;
-            background: url('/static/center_gradient_586480_to_354057.png') center center / cover no-repeat fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            min-height: 100vh;
         }
-        .container {
-            text-align: center;
-            padding-top: 15vh;
-            color: #49D5C1;
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
         }
-        input {
+        input, button {
             padding: 10px;
-            font-size: 18px;
-            width: 400px;
-            border-radius: 8px;
+            font-size: 16px;
+            margin: 5px;
             border: none;
-            outline: none;
+            border-radius: 5px;
         }
         button {
-            margin-left: 10px;
-            padding: 10px 16px;
-            font-size: 18px;
-            background: #49D5C1;
-            color: #000;
-            border: none;
-            border-radius: 8px;
+            background-color: var(--button-bg);
+            color: var(--button-fg);
+            font-weight: bold;
             cursor: pointer;
         }
-        .autocomplete-list {
-            position: absolute;
-            background: #354057;
-            border: 1px solid #49D5C1;
-            border-radius: 12px;
-            max-height: 250px;
-            overflow-y: auto;
-            z-index: 1000;
-            margin: 0 auto;
-            padding: 0;
-            list-style: none;
-            width: 400px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
-            transition: all 0.2s ease-in-out;
-        }
-        .autocomplete-list li {
-            padding: 10px 16px;
-            cursor: pointer;
-            color: #49D5C1;
+        .result {
+            margin-top: 20px;
+            white-space: pre-line;
             font-size: 16px;
+            text-align: center;
         }
-        .autocomplete-list li:hover {
-            background-color: #49d5c120;
-        }
-    </style>
+        .green { color: var(--green); font-weight: bold; }
+        .red { color: var(--red); font-weight: bold; }
+        .yellow { color: var(--yellow); font-weight: bold; }
+    
+<style>
+.autocomplete-list {
+  position: absolute;
+  background: #1e1e2f;
+  border: 1px solid #49D5C1;
+  border-radius: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  margin-top: 5px;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.autocomplete-list li {
+  padding: 10px 16px;
+  cursor: pointer;
+  color: #49D5C1;
+  font-size: 16px;
+}
+
+.autocomplete-list li:hover {
+  background-color: #49d5c120;
+}
+</style>
+
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>CSGO Price Checker</h1>
-        <input type="text" id="skinInput" placeholder="Введите название скина" autocomplete="off">
-        <button onclick="checkPrice()">Проверить</button>
-        <ul id="autocomplete" class="autocomplete-list"></ul>
-        <pre id="result" style="margin-top: 20px; white-space: pre-line;"></pre>
+    <h1>Trad1k3 checker</h1>
+    <input type="text" id="skinInput" autocomplete="off" placeholder="Введите название скина" size="50">
+    <ul id="autocomplete" class="autocomplete-list"></ul>
+    <div>
+        <button onclick="checkPrice()">Узнать цену</button>
+        <button onclick="toggleTheme()">Сменить тему</button>
     </div>
+    <div class="result" id="resultText">Здесь появится результат...</div>
     <script>
-        const input = document.getElementById('skinInput');
-        const list = document.getElementById('autocomplete');
-
-        input.addEventListener('input', async () => {
-            const value = input.value.toLowerCase();
-            list.innerHTML = '';
-            if (value.length < 2) return;
-
-            const response = await fetch('/api/skins');
-            const skins = await response.json();
-            const matches = skins.filter(s => s.toLowerCase().includes(value));
-            matches.slice(0, 10).forEach(name => {
-                const li = document.createElement('li');
-                li.textContent = name;
-                li.onclick = () => {
-                    input.value = name;
-                    list.innerHTML = '';
-                };
-                list.appendChild(li);
-            });
-        });
-
-        async function checkPrice() {
-            const name = input.value.trim();
-            if (!name) return;
-            const res = await fetch('/api/price?name=' + encodeURIComponent(name));
-            const data = await res.json();
-            document.getElementById('result').textContent = data.text || 'Нет данных';
+        function toggleTheme() {
+            const current = localStorage.getItem("theme") || "dark";
+            const next = current === "dark" ? "light" : "dark";
+            localStorage.setItem("theme", next);
+            applyTheme(next);
         }
-    </script>
+        function applyTheme(theme) {
+            const root = document.documentElement;
+            if (theme === "light") {
+                root.style.setProperty('--bg-color', '#ffffff');
+                root.style.setProperty('--text-color', '#000000');
+                root.style.setProperty('--button-bg', '#000000');
+                root.style.setProperty('--button-fg', '#ffffff');
+                root.style.setProperty('--green', '#007700');
+                root.style.setProperty('--red', '#aa0000');
+                root.style.setProperty('--yellow', '#aaaa00');
+            } else {
+                root.style.setProperty('--bg-color', '#1e1e2f');
+                root.style.setProperty('--text-color', '#49D5C1');
+                root.style.setProperty('--button-bg', '#49D5C1');
+                root.style.setProperty('--button-fg', '#000000');
+                root.style.setProperty('--green', '#00cc00');
+                root.style.setProperty('--red', '#cc0000');
+                root.style.setProperty('--yellow', '#cccc00');
+            }
+        }
+        async function checkPrice() {
+            const name = document.getElementById("skinInput").value.trim();
+            const resultDiv = document.getElementById("resultText");
+            if (!name) {
+                resultDiv.textContent = "Введите название скина!";
+                return;
+            }
+            resultDiv.textContent = "Загрузка...";
+            try {
+                const response = await fetch(`/api/price?name=${encodeURIComponent(name)}`);
+                const data = await response.json();
+                if (data.error) {
+                    resultDiv.textContent = data.error;
+                    return;
+                }
+                let result = [];
+                if (data.youpin !== null)
+                    result.push(`Youpin898: ¥${data.youpin.toFixed(2)}`);
+                else
+                    result.push(`Youpin898: Нет данных`);
+                if (data.buff !== null)
+                    result.push(`BUFF163: ¥${data.buff}`);
+                else
+                    result.push(`BUFF163: Нет данных`);
+                if (data.leg1t !== null)
+                    result.push(`ТМ: ₽${(data.leg1t / 100).toFixed(2)}`);
+                else
+                    result.push(`ТМ: Нет данных`);
+                const formatProfit = (label, obj) => {
+                    if (!obj) return `${label}: Нет данных`;
+                    const cls = obj.rub > 0 ? 'green' : obj.rub < 0 ? 'red' : 'yellow';
+                    return `<span class="${cls}">${label}: ₽${obj.rub.toFixed(2)} (${obj.percent.toFixed(2)}%)</span>`;
+                };
+                result.push(formatProfit("Профит Youpin898", data.profit_youpin));
+                result.push(formatProfit("Профит BUFF163", data.profit_buff));
+                resultDiv.innerHTML = result.join("<br>");
+            } catch (e) {
+                resultDiv.textContent = "Ошибка при получении данных.";
+                console.error(e);
+            }
+        }
+        window.addEventListener("DOMContentLoaded", async () => {
+            const list = document.getElementById("skinList");
+            try {
+                const res = await fetch("/api/skins");
+                const names = await res.json();
+                for (const name of names) {
+                    const option = document.createElement("option");
+                    option.value = name;
+                    list.appendChild(option);
+                }
+            } catch (err) {
+                console.error("Ошибка загрузки списка скинов:", err);
+            }
+            applyTheme(localStorage.getItem("theme") || "dark");
+        });
+    
+<script>
+const input = document.getElementById('skinInput');
+const list = document.getElementById('autocomplete');
+
+input.addEventListener('input', async () => {
+  const value = input.value.toLowerCase();
+  list.innerHTML = '';
+  if (value.length < 2) return;
+
+  try {
+    const response = await fetch('/api/skins');
+    const skins = await response.json();
+    const matches = skins.filter(s => s.toLowerCase().includes(value));
+    matches.slice(0, 10).forEach(name => {
+      const li = document.createElement('li');
+      li.textContent = name;
+      li.onclick = () => {
+        input.value = name;
+        list.innerHTML = '';
+      };
+      list.appendChild(li);
+    });
+  } catch (e) {
+    console.error("Ошибка при получении подсказок:", e);
+  }
+});
+</script>
+
+</script>
 </body>
 </html>
