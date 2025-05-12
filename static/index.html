@@ -53,12 +53,41 @@
         .green { color: var(--green); font-weight: bold; }
         .red { color: var(--red); font-weight: bold; }
         .yellow { color: var(--yellow); font-weight: bold; }
-    </style>
+    
+<style>
+.autocomplete-list {
+  position: absolute;
+  background: #1e1e2f;
+  border: 1px solid #49D5C1;
+  border-radius: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  margin-top: 5px;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.autocomplete-list li {
+  padding: 10px 16px;
+  cursor: pointer;
+  color: #49D5C1;
+  font-size: 16px;
+}
+
+.autocomplete-list li:hover {
+  background-color: #49d5c120;
+}
+</style>
+
+</style>
 </head>
 <body>
     <h1>Trad1k3 checker</h1>
-    <input type="text" id="skinInput" list="skinList" placeholder="Введите название скина" size="50">
-    <datalist id="skinList"></datalist>
+    <input type="text" id="skinInput" autocomplete="off" placeholder="Введите название скина" size="50">
+    <ul id="autocomplete" class="autocomplete-list"></ul>
     <div>
         <button onclick="checkPrice()">Узнать цену</button>
         <button onclick="toggleTheme()">Сменить тему</button>
@@ -147,6 +176,35 @@
             }
             applyTheme(localStorage.getItem("theme") || "dark");
         });
-    </script>
+    
+<script>
+const input = document.getElementById('skinInput');
+const list = document.getElementById('autocomplete');
+
+input.addEventListener('input', async () => {
+  const value = input.value.toLowerCase();
+  list.innerHTML = '';
+  if (value.length < 2) return;
+
+  try {
+    const response = await fetch('/api/skins');
+    const skins = await response.json();
+    const matches = skins.filter(s => s.toLowerCase().includes(value));
+    matches.slice(0, 10).forEach(name => {
+      const li = document.createElement('li');
+      li.textContent = name;
+      li.onclick = () => {
+        input.value = name;
+        list.innerHTML = '';
+      };
+      list.appendChild(li);
+    });
+  } catch (e) {
+    console.error("Ошибка при получении подсказок:", e);
+  }
+});
+</script>
+
+</script>
 </body>
 </html>
