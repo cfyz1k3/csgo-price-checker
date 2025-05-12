@@ -5,7 +5,24 @@
     <meta charset="UTF-8">
     <title>CSGO Сравнение цен</title>
     
+
+
+
+
 <style>
+:root {
+  --bg-color: #354057;
+  --text-color: #49D5C1;
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  text-align: center;
+  padding-top: 10vh;
+}
+
 #autocomplete-container {
   position: relative;
   display: inline-block;
@@ -14,7 +31,25 @@
 
 #skinInput {
   width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
   box-sizing: border-box;
+  background-color: #2c354a;
+  color: var(--text-color);
+}
+
+button {
+  margin-left: 10px;
+  padding: 10px 16px;
+  font-size: 16px;
+  background-color: var(--text-color);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .autocomplete-list {
@@ -22,7 +57,7 @@
   top: 100%;
   left: 0;
   width: 100%;
-  background: var(--bg-color);
+  background: #2c354a;
   border: 1px solid var(--text-color);
   border-radius: 6px;
   max-height: 200px;
@@ -42,12 +77,13 @@
   background-color: rgba(73, 213, 193, 0.1);
 }
 </style>
-
-
 </head>
 <body>
     <h1>Проверка цен CSGO</h1>
-    <input type="text" id="skinInput" autocomplete="off" placeholder="Введите название скина" size="50">
+    <div id="autocomplete-container">
+<input type="text" id="skinInput" placeholder="Введите название скина" autocomplete="off">
+<ul id="autocomplete" class="autocomplete-list"></ul>
+</div>
     <ul id="autocomplete" class="autocomplete-list"></ul>
     <div>
         <button onclick="checkPrice()">Узнать цену</button>
@@ -173,5 +209,39 @@ document.addEventListener("click", (e) => {
 });
 </script>
 
+
+<script>
+const input = document.getElementById("skinInput");
+const list = document.getElementById("autocomplete");
+
+input.addEventListener("input", async () => {
+  const value = input.value.toLowerCase();
+  list.innerHTML = "";
+  if (value.length < 2) return;
+
+  try {
+    const response = await fetch("/api/skins");
+    const skins = await response.json();
+    const matches = skins.filter(s => s.toLowerCase().includes(value));
+    matches.slice(0, 10).forEach(name => {
+      const li = document.createElement("li");
+      li.textContent = name;
+      li.onclick = () => {
+        input.value = name;
+        list.innerHTML = "";
+      };
+      list.appendChild(li);
+    });
+  } catch (err) {
+    console.error("Ошибка автоподсказок:", err);
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (!list.contains(e.target) && e.target !== input) {
+    list.innerHTML = "";
+  }
+});
+</script>
 </body>
 </html>
