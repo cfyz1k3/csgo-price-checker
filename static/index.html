@@ -4,60 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <title>CSGO Сравнение цен</title>
-    <style>
-        :root {
-            --bg-color: #1e1e2f;
-            --text-color: #49D5C1;
-            --button-bg: #49D5C1;
-            --button-fg: #000000;
-            --green: #00cc00;
-            --red: #cc0000;
-            --yellow: #cccc00;
-        }
-        * {
-            transition: background-color 0.3s, color 0.3s;
-        }
-        body {
-            background: url('/static/center_gradient_586480_to_354057.png') center center / cover no-repeat fixed;
-            color: var(--text-color);
-            font-family: Helvetica, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px;
-            min-height: 100vh;
-        }
-        h1 {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        input, button {
-            padding: 10px;
-            font-size: 16px;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-        }
-        button {
-            background-color: var(--button-bg);
-            color: var(--button-fg);
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .result {
-            margin-top: 20px;
-            white-space: pre-line;
-            font-size: 16px;
-            text-align: center;
-        }
-        .green { color: var(--green); font-weight: bold; }
-        .red { color: var(--red); font-weight: bold; }
-        .yellow { color: var(--yellow); font-weight: bold; }
-    </style>
-
+    
 <style>
+#autocomplete-container {
+  position: relative;
+  display: inline-block;
+  width: 400px;
+}
+
+#skinInput {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .autocomplete-list {
   position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
   background: var(--bg-color);
   border: 1px solid var(--text-color);
   border-radius: 6px;
@@ -65,12 +29,9 @@
   overflow-y: auto;
   z-index: 1000;
   list-style: none;
-  margin: 0;
+  margin-top: 4px;
   padding: 0;
-  width: 400px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.25);
-  left: 50%;
-  transform: translateX(-50%);
 }
 .autocomplete-list li {
   padding: 10px;
@@ -81,6 +42,7 @@
   background-color: rgba(73, 213, 193, 0.1);
 }
 </style>
+
 
 </head>
 <body>
