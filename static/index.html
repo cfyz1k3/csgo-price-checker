@@ -82,10 +82,13 @@ button {
 </style>
 </head>
 <body>
-    <h1>Проверка цен CSGO</h1>
-    <div id="autocomplete-container">
-<input type="text" id="skinInput" placeholder="Введите название скина" autocomplete="off">
-<ul id="autocomplete" class="autocomplete-list"></ul>
+    <h1>Trad1k3 check</h1>
+    
+<div id="autocomplete-container" style="display: flex; align-items: center; gap: 10px; justify-content: center; flex-wrap: wrap;">
+  <input type="text" id="skinInput" placeholder="Введите название скина" autocomplete="off" style="flex: 1; max-width: 400px;">
+  <button onclick="fetchPrices()" style="padding: 10px 16px; font-size: 16px; background-color: var(--text-color); color: #000; border: none; border-radius: 6px; cursor: pointer;">Узнать цену</button>
+  <ul id="autocomplete"
+ class="autocomplete-list"></ul>
 </div>
     <ul id="autocomplete" class="autocomplete-list"></ul>
     <div>
