@@ -248,6 +248,14 @@ body.light-theme .inner.two {
 body.light-theme .inner.three {
   border-top: 5px solid #000;
 }
+
+
+.profit-positive {
+  color: #c0e1ff !important;
+}
+.profit-negative {
+  color: #b34076 !important;
+}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -311,7 +319,7 @@ body.light-theme .inner.three {
           result.push(`ТМ: Нет данных`);
         const formatProfit = (label, obj) => {
           if (!obj) return `${label}: Нет данных`;
-          const cls = obj.rub > 0 ? 'green' : obj.rub < 0 ? 'red' : 'yellow';
+          const cls = obj.rub > 0 ? 'profit-positive' : obj.rub < 0 ? 'profit-negative' : 'yellow';
           return `<span class="${cls}">${label}: ₽${obj.rub.toFixed(2)} (${obj.percent.toFixed(2)}%)</span>`;
         };
         result.push(formatProfit("Профит Youpin898", data.profit_youpin));
