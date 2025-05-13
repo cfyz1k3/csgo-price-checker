@@ -306,17 +306,27 @@ body.light-theme .inner.three {
   transition: color 0.4s ease;
 }
 
-.profit-positive {
   color: #c0e1ff !important;
   transition: color 0.4s ease;
 }
-.profit-negative {
   color: #b34076 !important;
   transition: color 0.4s ease;
 }
-body.light-theme .profit-positive {
   color: #0350dd !important;
-}</style>
+}
+
+.profit-positive {
+  color: #c0e1ff;
+  transition: color 0.4s ease;
+}
+.profit-negative {
+  color: #b34076;
+  transition: color 0.4s ease;
+}
+body.light-theme .profit-positive {
+  color: #0350dd;
+}
+</style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
       const toggle = document.getElementById("themeToggle");
