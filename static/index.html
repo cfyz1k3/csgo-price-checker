@@ -221,7 +221,7 @@ body.light-theme .autocomplete-list li {
   resultDiv.textContent = "Введите название скина!";
         return;
       }
-      resultDiv.textContent = "Загрузка...";
+      progressDiv.textContent = `Check1ng... ${progress}/3`;
       try {
         const response = await fetch(`/api/price?name=${encodeURIComponent(name)}`);
         const data = await response.json();
@@ -250,8 +250,7 @@ body.light-theme .autocomplete-list li {
         };
         result.push(formatProfit("Профит Youpin898", data.profit_youpin));
         result.push(formatProfit("Профит BUFF163", data.profit_buff));
-        progressDiv.textContent = "Check1ng... завершено!";
-    resultDiv.innerHTML = result.join("<br>");
+        resultDiv.innerHTML = result.join("<br>");
       } catch (e) {
         resultDiv.textContent = "Ошибка при получении данных.";
         console.error(e);
