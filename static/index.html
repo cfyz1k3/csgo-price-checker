@@ -159,6 +159,10 @@ body.light-theme::before {
 body:not(.light-theme)::before {
   --bg-image: url('static/center_gradient_586480_to_354057.png');
 }
+
+h1, .result, label, input, button, .autocomplete-list li {
+  transition: color 0.4s ease, background-color 0.4s ease;
+}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
