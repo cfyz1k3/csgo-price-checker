@@ -11,19 +11,19 @@
 
     body {
       font-family: Helvetica, sans-serif;
-      background: url('static/center_gradient_586480_to_354057.png') no-repeat center center fixed;
-      background-size: cover;
+      
+      
       color: var(--text-color);
       text-align: center;
       padding-top: 10vh;
-      transition: background-color 0.4s, color 0.4s;
+      transition: 
     }
 
     body.light-theme {
       --bg-color: #ffffff;
       --text-color: #000000;
-      background: url('static/light_theme_gradient.png') no-repeat center center fixed;
-      background-size: cover;
+      
+      
       color: #000000;
     }
 
@@ -136,10 +136,28 @@ input:checked + .slider:before {
 }
 
 body {
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition: 
 }
 input, button, #skinInput, .autocomplete-list, .slider, .slider:before {
   transition: background-color 0.4s ease, color 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+body.light-theme::before {
+  --bg-image: url('static/light_theme_gradient.png');
+}
+body:not(.light-theme)::before {
+  --bg-image: url('static/center_gradient_586480_to_354057.png');
 }
 </style>
 <script>
@@ -210,5 +228,37 @@ input, button, #skinInput, .autocomplete-list, .slider, .slider:before {
       }
     }
   </script>
-</body>
+<script>
+const input = document.getElementById("skinInput");
+const list = document.getElementById("autocomplete");
+
+input.addEventListener("input", async () => {
+  const value = input.value.toLowerCase();
+  list.innerHTML = "";
+  if (value.length < 2) return;
+
+  try {
+    const response = await fetch("/api/skins");
+    const skins = await response.json();
+    const matches = skins.filter(s => s.toLowerCase().includes(value));
+    matches.slice(0, 10).forEach(name => {
+      const li = document.createElement("li");
+      li.textContent = name;
+      li.onclick = () => {
+        input.value = name;
+        list.innerHTML = "";
+      };
+      list.appendChild(li);
+    });
+  } catch (err) {
+    console.error("Ошибка автоподсказок:", err);
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (!list.contains(e.target) && e.target !== input) {
+    list.innerHTML = "";
+  }
+});
+</script></body>
 </html>
