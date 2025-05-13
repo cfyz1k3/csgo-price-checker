@@ -4,8 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <title>Trad1ck checker</title>
-<style>
-    :root {
+<style>:root {
       --bg-color: #354057;
       --text-color: #49D5C1;
     }
@@ -136,7 +135,13 @@ input:checked + .slider:before {
   background-position: center;
 }
 
-  </style>
+body {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+input, button, #skinInput, .autocomplete-list, .slider, .slider:before {
+  transition: background-color 0.4s ease, color 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
+}
+</style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
       const toggle = document.getElementById("themeToggle");
@@ -205,37 +210,5 @@ input:checked + .slider:before {
       }
     }
   </script>
-<script>
-const input = document.getElementById("skinInput");
-const list = document.getElementById("autocomplete");
-
-input.addEventListener("input", async () => {
-  const value = input.value.toLowerCase();
-  list.innerHTML = "";
-  if (value.length < 2) return;
-
-  try {
-    const response = await fetch("/api/skins");
-    const skins = await response.json();
-    const matches = skins.filter(s => s.toLowerCase().includes(value));
-    matches.slice(0, 10).forEach(name => {
-      const li = document.createElement("li");
-      li.textContent = name;
-      li.onclick = () => {
-        input.value = name;
-        list.innerHTML = "";
-      };
-      list.appendChild(li);
-    });
-  } catch (err) {
-    console.error("Ошибка автоподсказок:", err);
-  }
-});
-
-document.addEventListener("click", (e) => {
-  if (!list.contains(e.target) && e.target !== input) {
-    list.innerHTML = "";
-  }
-});
-</script></body>
+</body>
 </html>
