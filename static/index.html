@@ -250,7 +250,6 @@ body.light-theme .inner.three {
 }
 
 
-.profit-positive {
   color: #c0e1ff !important;
 }
 .profit-negative {
@@ -258,10 +257,23 @@ body.light-theme .inner.three {
 }
 
 
-body.light-theme .profit-positive {
   color: #0350dd !important;
 }
 
+
+  0% { color: #c0e1ff; }
+  50% { color: #a0d0ff; }
+  100% { color: #c0e1ff; }
+}
+
+  0% { color: #0350dd; }
+  50% { color: #0030aa; }
+  100% { color: #0350dd; }
+}
+
+}
+
+}
 
 @keyframes profitPulseDark {
   0% { color: #c0e1ff; }
@@ -276,11 +288,13 @@ body.light-theme .profit-positive {
 }
 
 .profit-positive {
-  animation: profitPulseDark 2s infinite ease-in-out;
+  animation: profitPulseDark 3s ease-in-out infinite;
+  transition: color 1s ease-in-out;
 }
 
 body.light-theme .profit-positive {
-  animation: profitPulseLight 2s infinite ease-in-out;
+  animation: profitPulseLight 3s ease-in-out infinite;
+  transition: color 1s ease-in-out;
 }
 </style>
 <script>
