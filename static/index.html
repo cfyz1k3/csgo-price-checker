@@ -185,6 +185,27 @@ body.light-theme .autocomplete-list li {
 .result .profit-youpin {
   color: #c2e2fe !important;
 }
+
+.loading-wrapper {
+  display: inline-flex;
+  font-size: 18px;
+  font-weight: bold;
+  align-items: flex-end;
+  gap: 3px;
+}
+.dot {
+  font-size: 20px;
+  animation: jump 1.4s infinite;
+}
+.dot.one { animation-delay: 0s; }
+.dot.two { animation-delay: 0.2s; }
+.dot.three { animation-delay: 0.4s; }
+
+@keyframes jump {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+}
+
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -210,64 +231,48 @@ body.light-theme .autocomplete-list li {
 </div>
 <ul class="autocomplete-list" id="autocomplete"></ul>
 </div>
-<div id="progressText" style="margin-bottom: 10px; font-weight: bold;"></div><div class="result" id="resultText" style="margin-top: 40px; font-size: 18px;">Здесь появится результат...</div>
+<div class="result" id="resultText" style="margin-top: 40px; font-size: 18px;">Здесь появится результат...</div>
 <script>
     async function checkPrice() {
       const name = document.getElementById("skinInput").value.trim();
       const resultDiv = document.getElementById("resultText");
-      const progressDiv = document.getElementById("progressText");
-
       if (!name) {
-        progressDiv.textContent = "";
         resultDiv.textContent = "Введите название скина!";
         return;
       }
-
-      let progress = 0;
-      progressDiv.textContent = `Check1ng... ${progress}/3`;
-
+      resultDiv.innerHTML = `
+  <div class="loading-wrapper">
+    <span>Check1ng</span>
+    <span class="dot one">.</span>
+    <span class="dot two">.</span>
+    <span class="dot three">.</span>
+  </div>
+`;
       try {
         const response = await fetch(`/api/price?name=${encodeURIComponent(name)}`);
         const data = await response.json();
-        console.log("API response:", data);
         if (data.error) {
-          progressDiv.textContent = "";
           resultDiv.textContent = data.error;
           return;
         }
-
         let result = [];
-
-        if (data.youpin != null) {
-          progress++;
-          progressDiv.textContent = `Check1ng... ${progress}/3`;
+        if (data.youpin !== null)
           result.push(`Youpin898: ¥${data.youpin.toFixed(2)}`);
-        } else {
+        else
           result.push(`Youpin898: Нет данных`);
-        }
-
-        if (data.buff != null) {
-          progress++;
-          progressDiv.textContent = `Check1ng... ${progress}/3`;
+        if (data.buff !== null)
           result.push(`BUFF163: ¥${data.buff}`);
-        } else {
+        else
           result.push(`BUFF163: Нет данных`);
-        }
-
-        if (data.leg1t != null) {
-          progress++;
-          progressDiv.textContent = `Check1ng... ${progress}/3`;
+        if (data.leg1t !== null)
           result.push(`ТМ: ₽${(data.leg1t / 100).toFixed(2)}`);
-        } else {
+        else
           result.push(`ТМ: Нет данных`);
-        }
-
         const formatProfit = (label, obj) => {
           if (!obj) return `${label}: Нет данных`;
-          const color = obj.rub > 0 ? '#00cc66' : obj.rub < 0 ? '#ff4444' : '#ffaa00';
-          return `<span style="color: ${color}">${label}: ₽${obj.rub.toFixed(2)} (${obj.percent.toFixed(2)}%)</span>`;
+          const cls = obj.rub > 0 ? 'green' : obj.rub < 0 ? 'red' : 'yellow';
+          return `<span class="${cls}">${label}: ₽${obj.rub.toFixed(2)} (${obj.percent.toFixed(2)}%)</span>`;
         };
-
         result.push(formatProfit("Профит Youpin898", data.profit_youpin));
         result.push(formatProfit("Профит BUFF163", data.profit_buff));
         resultDiv.innerHTML = result.join("<br>");
@@ -276,7 +281,7 @@ body.light-theme .autocomplete-list li {
         console.error(e);
       }
     }
-    </script>
+  </script>
 <script>
 const input = document.getElementById("skinInput");
 const list = document.getElementById("autocomplete");
