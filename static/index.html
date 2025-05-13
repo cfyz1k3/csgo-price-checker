@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="ru">
 <head>
-  <meta charset="utf-8"/>
-  <title>Trad1ck checker</title>
-  <style>
+<meta charset="utf-8"/>
+<title>Trad1ck checker</title>
+<style>
     :root {
       --bg-color: #354057;
       --text-color: #49D5C1;
@@ -136,7 +137,7 @@ input:checked + .slider:before {
 }
 
   </style>
-  <script>
+<script>
     document.addEventListener("DOMContentLoaded", function() {
       const toggle = document.getElementById("themeToggle");
       toggle.addEventListener("change", () => {
@@ -146,22 +147,22 @@ input:checked + .slider:before {
   </script>
 </head>
 <body>
-  <div style="position: absolute; top: 20px; right: 20px;">
-    <label class="theme-switch">
-      <input id="themeToggle" type="checkbox"/>
-      <span class="slider"></span>
-    </label>
-  </div>
-  <h1>Trad1ck checker</h1>
-  <div id="autocomplete-container">
-    <div style="display: flex; gap: 10px; align-items: center;">
-      <input autocomplete="off" id="skinInput" placeholder="Введите название скина" style="flex: 1;" type="text"/>
-      <button onclick="checkPrice()">Узнать цену</button>
-    </div>
-    <ul class="autocomplete-list" id="autocomplete"></ul>
-  </div>
-  <div class="result" id="resultText">Здесь появится результат...</div>
-  <script>
+<div style="position: absolute; top: 20px; right: 20px;">
+<label class="theme-switch">
+<input id="themeToggle" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<h1>Trad1ck checker</h1>
+<div id="autocomplete-container">
+<div style="display: flex; gap: 10px; align-items: center;">
+<input autocomplete="off" id="skinInput" placeholder="Введите название скина" style="flex: 1;" type="text"/>
+<button onclick="checkPrice()">Узнать цену</button>
+</div>
+<ul class="autocomplete-list" id="autocomplete"></ul>
+</div>
+<div class="result" id="resultText" style="margin-top: 40px; font-size: 18px;">Здесь появится результат...</div>
+<script>
     async function checkPrice() {
       const name = document.getElementById("skinInput").value.trim();
       const resultDiv = document.getElementById("resultText");
@@ -204,5 +205,37 @@ input:checked + .slider:before {
       }
     }
   </script>
-</body>
+<script>
+const input = document.getElementById("skinInput");
+const list = document.getElementById("autocomplete");
+
+input.addEventListener("input", async () => {
+  const value = input.value.toLowerCase();
+  list.innerHTML = "";
+  if (value.length < 2) return;
+
+  try {
+    const response = await fetch("/api/skins");
+    const skins = await response.json();
+    const matches = skins.filter(s => s.toLowerCase().includes(value));
+    matches.slice(0, 10).forEach(name => {
+      const li = document.createElement("li");
+      li.textContent = name;
+      li.onclick = () => {
+        input.value = name;
+        list.innerHTML = "";
+      };
+      list.appendChild(li);
+    });
+  } catch (err) {
+    console.error("Ошибка автоподсказок:", err);
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (!list.contains(e.target) && e.target !== input) {
+    list.innerHTML = "";
+  }
+});
+</script></body>
 </html>
