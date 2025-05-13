@@ -213,14 +213,17 @@ body.light-theme .autocomplete-list li {
 <div class="result" id="resultText" style="margin-top: 40px; font-size: 18px;">Здесь появится результат...</div>
 <script>
     async function checkPrice() {
-      const name = document.getElementById("skinInput").value.trim();
-      const resultDiv = document.getElementById("resultText");
-      if (!name) {
-        resultDiv.textContent = "Введите название скина!";
-        return;
-      }
-      resultDiv.textContent = "Загрузка...";
-      try {
+  const name = document.getElementById("skinInput").value.trim();
+  const resultDiv = document.getElementById("resultText");
+  if (!name) {
+    resultDiv.textContent = "Введите название скина!";
+    return;
+  }
+
+  let progress = 0;
+  resultDiv.textContent = `Check1ng... ${progress}/3`;
+
+  try {
         const response = await fetch(`/api/price?name=${encodeURIComponent(name)}`);
         const data = await response.json();
         if (data.error) {
@@ -228,17 +231,17 @@ body.light-theme .autocomplete-list li {
           return;
         }
         let result = [];
-        if (data.youpin !== null)
+        if (data.youpin !== null) { progress++; resultDiv.textContent = `Check1ng... ${progress}/3`;
           result.push(`Youpin898: ¥${data.youpin.toFixed(2)}`);
-        else
+        } } } else
           result.push(`Youpin898: Нет данных`);
-        if (data.buff !== null)
+        if (data.buff !== null) { progress++; resultDiv.textContent = `Check1ng... ${progress}/3`;
           result.push(`BUFF163: ¥${data.buff}`);
-        else
+        } } } else
           result.push(`BUFF163: Нет данных`);
-        if (data.leg1t !== null)
+        if (data.leg1t !== null) { progress++; resultDiv.textContent = `Check1ng... ${progress}/3`;
           result.push(`ТМ: ₽${(data.leg1t / 100).toFixed(2)}`);
-        else
+        } } } else
           result.push(`ТМ: Нет данных`);
         const formatProfit = (label, obj) => {
           if (!obj) return `${label}: Нет данных`;
