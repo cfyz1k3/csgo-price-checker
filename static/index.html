@@ -229,15 +229,15 @@ body.light-theme .autocomplete-list li {
           return;
         }
         let result = [];
-        if (data.youpin !== null)
+        if (data.youpin != null)
           result.push(`Youpin898: ¥${data.youpin.toFixed(2)}`);
         else
           result.push(`Youpin898: Нет данных`);
-        if (data.buff !== null)
+        if (data.buff != null)
           result.push(`BUFF163: ¥${data.buff}`);
         else
           result.push(`BUFF163: Нет данных`);
-        if (data.leg1t !== null)
+        if (data.leg1t != null)
           result.push(`ТМ: ₽${(data.leg1t / 100).toFixed(2)}`);
         else
           result.push(`ТМ: Нет данных`);
