@@ -261,6 +261,27 @@ body.light-theme .inner.three {
 body.light-theme .profit-positive {
   color: #0350dd !important;
 }
+
+
+@keyframes profitPulseDark {
+  0% { color: #c0e1ff; }
+  50% { color: #a0d0ff; }
+  100% { color: #c0e1ff; }
+}
+
+@keyframes profitPulseLight {
+  0% { color: #0350dd; }
+  50% { color: #0030aa; }
+  100% { color: #0350dd; }
+}
+
+.profit-positive {
+  animation: profitPulseDark 2s infinite ease-in-out;
+}
+
+body.light-theme .profit-positive {
+  animation: profitPulseLight 2s infinite ease-in-out;
+}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
