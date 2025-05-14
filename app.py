@@ -54,7 +54,13 @@ def get_price_data():
             "game": "csgo", "goods_id": goods_id, "page_num": 1, "sort_by": "default"
         }, headers={"User-Agent": "Mozilla/5.0"}, timeout=5)
         data = r.json()
-        results["buff"] = float(data["data"]["items"][0]["price"]) if data["code"] == "OK" and data["data"]["items"] else None
+        if data["code"] == "OK" and data["data"]["items"]:
+            item = data["data"]["items"][0]
+            results["buff"] = float(item["price"])
+            results["icon"] = "https:" + item["asset_info"]["info"]["icon_url"]
+        else:
+            results["buff"] = None
+            results["icon"] = None
     except:
         results["buff"] = None
 
