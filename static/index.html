@@ -469,8 +469,12 @@ input.addEventListener("input", async () => {
     const matches = skins.filter(s => s.toLowerCase().includes(value));
     matches.slice(0, 10).forEach(name => {
       const li = document.createElement("li");
-      if (typeof skinIcons !== 'undefined' && skinIcons[name]) {
-        li.innerHTML = `<img src="${skinIcons[name]}" style="height:22px; vertical-align:middle; margin-right:6px;"> ${name}`;
+      const iconKey = typeof skinIcons !== 'undefined'
+  ? Object.keys(skinIcons).find(k => k.toLowerCase() === name.toLowerCase())
+  : null;
+
+      if (iconKey && skinIcons[iconKey]) {
+        li.innerHTML = `<img src="${skinIcons[iconKey]}" style="height:22px; vertical-align:middle; margin-right:6px;"> ${name}`;
       } else {
         li.textContent = name;
       }
