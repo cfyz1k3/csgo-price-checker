@@ -342,6 +342,27 @@ body.light-theme .profit-positive {
 body.light-theme .profit-positive {
   color: #91cbad !important;
 }
+
+@keyframes pixelFadeIn {
+  0% {
+    filter: blur(20px) brightness(0.5);
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  50% {
+    filter: blur(10px) brightness(1.1);
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+  100% {
+    filter: none;
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.skin-icon {
+  animation: pixelFadeIn 1.5s ease-out forwards;
+}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -419,6 +440,7 @@ if (data.icon) {
   const img = document.createElement("img");
   img.src = data.icon;
   img.alt = "icon";
+  img.className = "skin-icon";
   img.style.maxWidth = "300px";
   img.style.marginTop = "30px";
   img.style.display = "block";
