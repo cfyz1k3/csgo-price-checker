@@ -412,9 +412,20 @@ body.light-theme .profit-positive {
         result.push(formatProfit("Профит BUFF163", data.profit_buff));
         if (data.icon) {
   console.log("ICON:", data.icon);
-  result.push(`<img src="${data.icon}" alt="icon" style="max-height: 100px; float: right; margin-left: 20px;">`);
+  
 }
 resultDiv.innerHTML = result.join("<br>");
+if (data.icon) {
+  const img = document.createElement("img");
+  img.src = data.icon;
+  img.alt = "icon";
+  img.style.maxWidth = "300px";
+  img.style.marginTop = "30px";
+  img.style.display = "block";
+  img.style.marginLeft = "auto";
+  img.style.marginRight = "auto";
+  resultDiv.appendChild(img);
+}
       } catch (e) {
         resultDiv.textContent = "Ошибка при получении данных.";
         console.error(e);
