@@ -57,7 +57,7 @@ def get_price_data():
         if data["code"] == "OK" and data["data"]["items"]:
             item = data["data"]["items"][0]
             results["buff"] = float(item["price"])
-            results["icon"] = "https:" + item["asset_info"]["info"]["icon_url"]
+            results["icon"] = item["asset_info"]["info"]["icon_url"]
         else:
             results["buff"] = None
             results["icon"] = None
