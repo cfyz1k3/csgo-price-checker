@@ -372,7 +372,7 @@ body.light-theme .profit-positive {
       });
     });
   </script>
-</head>
+<script src="buff163_icons.js"></script></head>
 <body>
 <div style="position: absolute; top: 20px; right: 20px;">
 <label class="theme-switch">
@@ -469,7 +469,11 @@ input.addEventListener("input", async () => {
     const matches = skins.filter(s => s.toLowerCase().includes(value));
     matches.slice(0, 10).forEach(name => {
       const li = document.createElement("li");
-      li.textContent = name;
+      if (typeof skinIcons !== 'undefined' && skinIcons[name]) {
+        li.innerHTML = `<img src="${skinIcons[name]}" style="height:22px; vertical-align:middle; margin-right:6px;"> ${name}`;
+      } else {
+        li.textContent = name;
+      }
       li.onclick = () => {
         input.value = name;
         list.innerHTML = "";
