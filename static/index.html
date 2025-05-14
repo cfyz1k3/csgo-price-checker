@@ -411,6 +411,7 @@ body.light-theme .profit-positive {
         result.push(formatProfit("Профит Youpin898", data.profit_youpin));
         result.push(formatProfit("Профит BUFF163", data.profit_buff));
         if (data.icon) {
+  console.log("ICON:", data.icon);
   result.push(`<img src="${data.icon}" alt="icon" style="max-height: 100px; float: right; margin-left: 20px;">`);
 }
 resultDiv.innerHTML = result.join("<br>");
