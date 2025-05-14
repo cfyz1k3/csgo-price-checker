@@ -372,7 +372,7 @@ body.light-theme .profit-positive {
       });
     });
   </script>
-<script src="buff163_icons.js"></script></head>
+</head>
 <body>
 <div style="position: absolute; top: 20px; right: 20px;">
 <label class="theme-switch">
@@ -455,6 +455,13 @@ if (data.icon) {
     }
   </script>
 <script>
+let skinIcons = {};
+fetch("buff163_icons.json")
+  .then(res => res.json())
+  .then(data => { skinIcons = data; })
+  .catch(err => console.error("Не удалось загрузить buff163_icons.json", err));
+
+
 const input = document.getElementById("skinInput");
 const list = document.getElementById("autocomplete");
 
@@ -469,9 +476,7 @@ input.addEventListener("input", async () => {
     const matches = skins.filter(s => s.toLowerCase().includes(value));
     matches.slice(0, 10).forEach(name => {
       const li = document.createElement("li");
-      const iconKey = typeof skinIcons !== 'undefined'
-  ? Object.keys(skinIcons).find(k => k.toLowerCase() === name.toLowerCase())
-  : null;
+      const iconKey = Object.keys(skinIcons).find(k => k.toLowerCase() === name.toLowerCase());
 
       if (iconKey && skinIcons[iconKey]) {
         li.innerHTML = `<div style="display: flex; align-items: center; text-align: left;"><img src="${skinIcons[iconKey]}" style="height:32px; margin-right:8px;"> <span>${name}</span></div>`;
