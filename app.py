@@ -98,6 +98,13 @@ def get_skin_names():
 def index():
     return send_from_directory("static", "index.html")
 
+@app.route("/potok.html")
+def protected_potok():
+    token = request.args.get("token")
+    if token != "2007":  # Задай свой секретный токен
+        return "Access denied", 403
+    return send_from_directory("static", "potok.html")
+
 @app.route("/<path:filename>")
 def serve_static_file(filename):
     return send_from_directory("static", filename)
