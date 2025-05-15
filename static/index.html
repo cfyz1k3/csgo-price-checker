@@ -384,7 +384,7 @@ body.light-theme .potok-icon {
 </head>
 <body>
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
-<div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
+<div id="potok-button" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
 <button onclick="location.href='potok.html'" style="display: flex; align-items: center; gap: 8px;">
 <img alt="Potok Icon" class="potok-icon" src="potok_icon.png" style="height: 28px;"/>
     Potok
@@ -515,5 +515,18 @@ document.addEventListener("click", (e) => {
     list.innerHTML = "";
   }
 });
-</script></body>
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const potokButton = document.getElementById("potok-button");
+    const token = prompt("Введите токен доступа:");
+    if (token === "2007") {
+      potokButton.style.display = "flex";
+    } else {
+      potokButton.style.display = "none";
+    }
+  });
+</script>
+
+</body>
 </html>
