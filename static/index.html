@@ -373,14 +373,7 @@ body.light-theme .potok-icon {
   filter: brightness(0) saturate(100%) invert(87%) sepia(5%) saturate(168%) hue-rotate(175deg) brightness(95%) contrast(94%);
 }
 </style>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const toggle = document.getElementById("themeToggle");
-      toggle.addEventListener("change", () => {
-        document.body.classList.toggle("light-theme");
-      });
-    });
-  </script>
+
 </head>
 <body>
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
@@ -516,21 +509,39 @@ document.addEventListener("click", (e) => {
   }
 });
 </script>
+
+
+
+<!-- Модальное окно -->
+<div id="codeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:10000; justify-content:center; align-items:center;">
+  <div id="codeBox" style="background-color: var(--bg-color); padding: 30px; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.4); text-align: center;">
+    <h3 style="color: var(--text-color); margin-bottom: 20px;">Введите код доступа</h3>
+    <input type="password" id="accessCode" placeholder="Код" style="padding:10px; border:none; border-radius:6px; font-size:16px; width:80%; margin-bottom:20px; background-color:#2c354a; color:var(--text-color);"><br>
+    <button onclick="checkCode()" style="padding:10px 20px; border:none; border-radius:6px; background-color:var(--text-color); color:#000; cursor:pointer;">Войти</button>
+  </div>
+</div>
+
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const potokButton = document.getElementById("potok-button");
-  if (potokButton) {
-    potokButton.onclick = function (e) {
-      e.preventDefault();
-      const code = prompt("Введите код доступа:");
+  document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("codeModal");
+    const potokButton = document.getElementById("potok-button");
+
+    if (potokButton) {
+      potokButton.onclick = function (e) {
+        e.preventDefault();
+        modal.style.display = "flex";
+      };
+    }
+
+    window.checkCode = function () {
+      const code = document.getElementById("accessCode").value;
       if (code === "2007") {
         window.location.href = "potok.html?token=2007";
       } else {
         alert("Неверный код!");
       }
     };
-  }
-});
+  });
 </script>
 
 </body>
