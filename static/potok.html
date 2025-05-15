@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8"/>
-<title>Trad1ck checker</title>
+<title>Potok page</title>
 <style>:root {
       --bg-color: #354057;
       --text-color: #ccd3e0;
@@ -363,6 +363,15 @@ body.light-theme .profit-positive {
 .skin-icon {
   animation: pixelFadeIn 1.5s ease-out forwards;
 }
+
+
+.potok-icon {
+  filter: brightness(0) saturate(100%);
+}
+
+body.light-theme .potok-icon {
+  filter: brightness(0) saturate(100%) invert(87%) sepia(5%) saturate(168%) hue-rotate(175deg) brightness(95%) contrast(94%);
+}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -374,30 +383,27 @@ body.light-theme .profit-positive {
   </script>
 </head>
 <body>
-
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
 <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
-  <button onclick="location.href='/potok'" style="display: flex; align-items: center; gap: 8px;">
-    <img src="potok_icon.png" alt="Potok Icon" style="height: 20px;">
+<button onclick="location.href='/potok'" style="display: flex; align-items: center; gap: 8px;">
+<img alt="Potok Icon" class="potok-icon" src="back_icon.png" style="height: 28px;"/>
     Potok
   </button>
 </div>
 
+<div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
+<button onclick="location.href='../index.html'" style="display: flex; align-items: center; gap: 8px;">
+<img alt="Potok Icon" class="potok-icon" src="back_icon.png" style="height: 28px;"/>
+    Back
+  </button>
+</div>
 <div style="position: absolute; top: 20px; right: 20px;">
 <label class="theme-switch">
 <input id="themeToggle" type="checkbox"/>
 <span class="slider"></span>
 </label>
 </div>
-<h1>Trad1ck checker</h1>
-<div id="autocomplete-container">
-<div style="display: flex; gap: 10px; align-items: center;">
-<input autocomplete="off" id="skinInput" placeholder="Введите название скина" style="flex: 1;" type="text"/>
-<button onclick="checkPrice()">Check</button>
-</div>
-<ul class="autocomplete-list" id="autocomplete"></ul>
-</div>
-<div class="result" id="resultText" style="margin-top: 40px; font-size: 18px;">Здесь появится результат...</div>
+<h1>Раздел Potok</h1>
 <script>
     async function checkPrice() {
       const name = document.getElementById("skinInput").value.trim();
