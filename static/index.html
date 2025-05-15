@@ -373,9 +373,149 @@ body.light-theme .potok-icon {
   filter: brightness(0) saturate(100%) invert(87%) sepia(5%) saturate(168%) hue-rotate(175deg) brightness(95%) contrast(94%);
 }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const toggle = document.getElementById("themeToggle");
+      toggle.addEventListener("change", () => {
+        document.body.classList.toggle("light-theme");
+      });
+    });
+  </script>
+</head>
+<body>
+<!-- КНОПКА POTOK С ИКОНКОЙ -->
+<div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
+<button onclick="location.href='/potok'" style="display: flex; align-items: center; gap: 8px;">
+<img alt="Potok Icon" class="potok-icon" src="potok_icon.png" style="height: 28px;"/>
+    Potok
+  </button>
+</div>
+<div style="position: absolute; top: 20px; right: 20px;">
+<label class="theme-switch">
+<input id="themeToggle" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<h1>Trad1ck checker</h1>
+<div id="autocomplete-container">
+<div style="display: flex; gap: 10px; align-items: center;">
+<input autocomplete="off" id="skinInput" placeholder="Введите название скина" style="flex: 1;" type="text"/>
+<button onclick="checkPrice()">Check</button>
+</div>
+<ul class="autocomplete-list" id="autocomplete"></ul>
+</div>
+<div class="result" id="resultText" style="margin-top: 40px; font-size: 18px;">Здесь появится результат...</div>
+<script>
+    async function checkPrice() {
+      const name = document.getElementById("skinInput").value.trim();
+      const resultDiv = document.getElementById("resultText");
+      if (!name) {
+        resultDiv.textContent = "Введите название скина!";
+        return;
+      }
+      resultDiv.innerHTML = `
+  <div class="loader">
+    <div class="inner one"></div>
+    <div class="inner two"></div>
+    <div class="inner three"></div>
+  </div>
+`;
+      try {
+        const response = await fetch(`/api/price?name=${encodeURIComponent(name)}`);
+        const data = await response.json();
+        if (data.error) {
+          resultDiv.textContent = data.error;
+          return;
+        }
+        let result = [];
+        if (data.youpin !== null)
+          result.push(`Youpin898: ¥${data.youpin.toFixed(2)}`);
+        else
+          result.push(`Youpin898: Нет данных`);
+        if (data.buff !== null)
+          result.push(`BUFF163: ¥${data.buff}`);
+        else
+          result.push(`BUFF163: Нет данных`);
+        if (data.leg1t !== null)
+          result.push(`ТМ: ₽${(data.leg1t / 100).toFixed(2)}`);
+        else
+          result.push(`ТМ: Нет данных`);
+        const formatProfit = (label, obj) => {
+          if (!obj) return `${label}: Нет данных`;
+          const cls = obj.rub > 0 ? 'profit-positive' : obj.rub < 0 ? 'profit-negative' : 'yellow';
+          return `<span class="${cls}">${label}: ₽${obj.rub.toFixed(2)} (${obj.percent.toFixed(2)}%)</span>`;
+        };
+        result.push(formatProfit("Профит Youpin898", data.profit_youpin));
+        result.push(formatProfit("Профит BUFF163", data.profit_buff));
+        if (data.icon) {
+  console.log("ICON:", data.icon);
+  
+}
+resultDiv.innerHTML = result.join("<br>");
+if (data.icon) {
+  const img = document.createElement("img");
+  img.src = data.icon;
+  img.alt = "icon";
+  img.className = "skin-icon";
+  img.style.maxWidth = "300px";
+  img.style.marginTop = "30px";
+  img.style.display = "block";
+  img.style.marginLeft = "auto";
+  img.style.marginRight = "auto";
+  resultDiv.appendChild(img);
+}
+      } catch (e) {
+        resultDiv.textContent = "Ошибка при получении данных.";
+        console.error(e);
+      }
+    }
+  </script>
+<script>
+let skinIcons = {};
+fetch("buff163_icons.json")
+  .then(res => res.json())
+  .then(data => { skinIcons = data; })
+  .catch(err => console.error("Не удалось загрузить buff163_icons.json", err));
 
 
+const input = document.getElementById("skinInput");
+const list = document.getElementById("autocomplete");
 
+input.addEventListener("input", async () => {
+  const value = input.value.toLowerCase();
+  list.innerHTML = "";
+  if (value.length < 2) return;
+
+  try {
+    const response = await fetch("/api/skins");
+    const skins = await response.json();
+    const matches = skins.filter(s => s.toLowerCase().includes(value));
+    matches.slice(0, 10).forEach(name => {
+      const li = document.createElement("li");
+      const iconKey = Object.keys(skinIcons).find(k => k.toLowerCase() === name.toLowerCase());
+
+      if (iconKey && skinIcons[iconKey]) {
+        li.innerHTML = `<div style="display: flex; align-items: center; text-align: left;"><img src="${skinIcons[iconKey]}" style="height:32px; margin-right:8px;"> <span>${name}</span></div>`;
+      } else {
+        li.textContent = name;
+      }
+      li.onclick = () => {
+        input.value = name;
+        list.innerHTML = "";
+      };
+      list.appendChild(li);
+    });
+  } catch (err) {
+    console.error("Ошибка автоподсказок:", err);
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (!list.contains(e.target) && e.target !== input) {
+    list.innerHTML = "";
+  }
+});
+</script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const potokButton = document.getElementById("potok-button");
