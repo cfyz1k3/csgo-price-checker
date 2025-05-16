@@ -1,11 +1,11 @@
-
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, session, redirect
 import requests
 import json
 import time
 import os
 
 app = Flask(__name__)
+app.secret_key = "supersecretkey"  # Установи безопасный ключ
 
 with open("buff163.txt", encoding="utf-8") as f:
     skin_map = json.load(f)
@@ -100,10 +100,17 @@ def index():
 
 @app.route("/potok.html")
 def protected_potok():
-    token = request.args.get("token")
-    if token != "2007":  # Задай свой секретный токен
+    if not session.get("access_granted"):
         return "Access denied", 403
     return send_from_directory("static", "potok.html")
+
+@app.route("/authorize", methods=["POST"])
+def authorize():
+    data = request.get_json()
+    if data.get("code") == "2007":
+        session["access_granted"] = True
+        return {"status": "ok"}
+    return {"status": "forbidden"}, 403
 
 @app.route("/<path:filename>")
 def serve_static_file(filename):
