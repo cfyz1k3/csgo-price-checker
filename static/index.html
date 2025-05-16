@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <title>Trad1ck checker</title>
   <style>
     :root {
@@ -9,24 +9,39 @@
       --text-color: #ccd3e0;
     }
     body {
+      margin: 0;
       background-color: var(--bg-color);
       color: var(--text-color);
       font-family: sans-serif;
-      text-align: center;
-      padding-top: 10vh;
     }
     body.light-theme {
       --bg-color: #ccd3e0;
       --text-color: #000000;
-      background-color: var(--bg-color);
+    }
+    .container {
+      text-align: center;
+      margin-top: 100px;
+    }
+    input {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      width: 300px;
+      font-size: 16px;
+      background-color: #2c354a;
       color: var(--text-color);
     }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
     button {
+      margin-top: 20px;
       padding: 10px 20px;
-      font-size: 16px;
+      border: none;
       background-color: var(--text-color);
       color: #000;
-      border: none;
+      font-size: 16px;
       border-radius: 6px;
       cursor: pointer;
     }
@@ -34,18 +49,27 @@
 </head>
 <body>
 
-<h1>Trad1ck checker</h1>
-
-<div id="potok-button" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%);">
+<!-- КНОПКА POTOK -->
+<div id="potok-button" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100%;">
   <button>Potok</button>
 </div>
 
-<!-- Модальное окно -->
+<!-- ТЕЛО -->
+<div class="container">
+  <h1>Trad1ck checker</h1>
+  <input id="skinInput" placeholder="Введите название скина" />
+  <div>
+    <button onclick="checkPrice()">Узнать цену</button>
+  </div>
+  <div class="result" id="resultText"></div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО -->
 <div id="codeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:10000; justify-content:center; align-items:center;">
   <div id="codeBox" style="background-color: var(--bg-color); padding: 30px; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.4); text-align: center;">
     <h3 style="color: var(--text-color); margin-bottom: 20px;">Введите код доступа</h3>
     <input type="password" id="accessCode" placeholder="Код" style="padding:10px; border:none; border-radius:6px; font-size:16px; width:80%; margin-bottom:20px; background-color:#2c354a; color:var(--text-color);"><br>
-    <button onclick="checkCode()">Войти</button>
+    <button onclick="checkCode()" style="padding:10px 20px; border:none; border-radius:6px; background-color:var(--text-color); color:#000; cursor:pointer;">Войти</button>
   </div>
 </div>
 
@@ -78,6 +102,25 @@
       });
     };
   });
+
+  function checkPrice() {
+    const name = document.getElementById("skinInput").value;
+    const resultDiv = document.getElementById("resultText");
+    resultDiv.textContent = "Загрузка...";
+
+    fetch(`/api/price?name=${encodeURIComponent(name)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          resultDiv.textContent = data.error;
+          return;
+        }
+        resultDiv.textContent = "BUFF: " + data.buff + "¥, LEG1T: " + data.leg1t + "₽, YOUPIN: " + data.youpin + "¥";
+      })
+      .catch(() => {
+        resultDiv.textContent = "Ошибка загрузки данных";
+      });
+  }
 </script>
 
 </body>
