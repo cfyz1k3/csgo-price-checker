@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <title>Trad1ck checker</title>
 <style>:root {
+  --close-filter: var(--close-filter);
       --bg-color: #354057;
       --text-color: #ccd3e0;
     }
@@ -20,6 +21,8 @@
     }
 
     body.light-theme {
+  --close-filter: brightness(0) saturate(100%) invert(17%) sepia(9%) saturate(357%) hue-rotate(178deg) brightness(96%) contrast(88%);
+  --text-color: #ccd3e0;
       --bg-color: #ccd3e0;
       --text-color: #000000;
       
@@ -381,7 +384,7 @@ body.light-theme .profit-positive {
 </label>
 </div>
 <div id="potok-button" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;"><button>Potok</button></div>
-<h1 style="color: var(--text-color);">Trad1ck checker</h1>
+<h1>Trad1ck checker</h1>
 <div id="autocomplete-container">
 <div style="display: flex; gap: 10px; align-items: center;">
 <input autocomplete="off" id="skinInput" placeholder="Введите название скина" style="flex: 1;" type="text"/>
@@ -389,7 +392,7 @@ body.light-theme .profit-positive {
 </div>
 <ul class="autocomplete-list" id="autocomplete"></ul>
 </div>
-<div class="result" id="resultText" style="color: var(--text-color);" style="margin-top: 40px; font-size: 18px;">Здесь появится результат...</div>
+<div class="result" id="resultText" style="margin-top: 40px; font-size: 18px;">Здесь появится результат...</div>
 <script>
     async function checkPrice() {
       const name = document.getElementById("skinInput").value.trim();
@@ -505,8 +508,8 @@ document.addEventListener("click", (e) => {
 <!-- Модальное окно -->
 <div id="codeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:10000; justify-content:center; align-items:center;">
   <div id="codeBox" style="position: relative; background-color: var(--bg-color); padding: 30px; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.4); text-align: center;">
-    <img src="close_icon.png" alt="Закрыть" onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; cursor: pointer; filter: brightness(0) saturate(100%) invert(87%) sepia(5%) saturate(168%) hue-rotate(175deg) brightness(95%) contrast(94%);">
-    <h3 style="color: var(--text-color); margin-bottom: 20px;" style="color: var(--text-color);">Введите код доступа</h3>
+    <img src="close_icon.png" alt="Закрыть" onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; cursor: pointer; filter: var(--close-filter);">
+    <h3 style="color: var(--text-color); margin-bottom: 20px;">Введите код доступа</h3>
     <input type="password" id="accessCode" placeholder="Код" style="padding:10px; border:none; border-radius:6px; font-size:16px; width:80%; margin-bottom:20px; background-color:#2c354a; color:var(--text-color);"><br>
     <button onclick="checkCode()" style="padding:10px 20px; border:none; border-radius:6px; background-color:var(--text-color); color:#000; cursor:pointer;">Войти</button>
   </div>
