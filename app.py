@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify, send_from_directory, session, redirect
 import requests
 import json
@@ -5,7 +6,7 @@ import time
 import os
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # Установи безопасный ключ
+app.secret_key = "supersecretkey"
 
 with open("buff163.txt", encoding="utf-8") as f:
     skin_map = json.load(f)
@@ -94,6 +95,10 @@ def get_price_data():
 def get_skin_names():
     return jsonify(sorted(list(skin_map.keys()), key=str.lower))
 
+@app.route("/api/youpin_names")
+def youpin_skin_names():
+    return jsonify(list(find_id.keys()))
+
 @app.route("/")
 def index():
     return send_from_directory("static", "index.html")
@@ -118,9 +123,3 @@ def serve_static_file(filename):
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-
-@app.route("/api/youpin_names")
-def youpin_skin_names():
-    return jsonify(list(find_id.keys()))
-
-# updated for /api/youpin_names
