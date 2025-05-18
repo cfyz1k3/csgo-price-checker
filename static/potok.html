@@ -541,19 +541,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (interval) return;
       loader.style.display = "block";
 
-      fetch("/youpin898.txt")
-        .then(res => res.text())
-        .then(text => {
-          const cleanText = text.trim().replace(/,+\s*$/, ""); // удалим последнюю запятую
-          const jsonText = "{" + cleanText + "}"; // обернём в фигурные скобки
-          const parsed = JSON.parse(jsonText);
-          skinNames = Object.keys(parsed);
+      fetch("/api/youpin_names")
+        .then(res => res.json())
+        .then(data => {
+          skinNames = data;
           if (skinNames.length > 0) {
             checkNextSkin();
             interval = setInterval(checkNextSkin, 1000);
           }
         })
-        .catch(err => console.error("Ошибка чтения файла:", err));
+        .catch(err => console.error("Ошибка загрузки имён:", err));
     });
   }
 
