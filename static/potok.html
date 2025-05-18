@@ -390,7 +390,6 @@ body.light-theme .potok-icon {
     Potok
   </button>
 </div>
-
 <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
 <button onclick="location.href='index.html'" style="display: flex; align-items: center; gap: 8px;">
 <img alt="Potok Icon" class="potok-icon" src="back_icon.png" style="height: 28px;"/>
@@ -514,5 +513,80 @@ document.addEventListener("click", (e) => {
     list.innerHTML = "";
   }
 });
-</script></body>
+</script>
+<script>
+let skinNames = [];
+let currentIndex = 0;
+
+fetch("/youpin898.txt")
+  .then((res) => res.text())
+  .then((text) => {
+    const lines = text.split("\n");
+    for (const line of lines) {
+      const match = line.match(/"(.+?)":/);
+      if (match) skinNames.push(match[1]);
+    }
+    if (skinNames.length > 0) {
+      checkNextSkin();
+      setInterval(checkNextSkin, 1000);
+    }
+  });
+
+function checkNextSkin() {
+  const skinName = skinNames[currentIndex];
+  console.log("Проверяю:", skinName);
+
+  fetch(`/api/price?name=${encodeURIComponent(skinName)}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(`Результат [${skinName}]:`, data);
+    })
+    .catch((err) => console.error("Ошибка запроса:", err));
+
+  currentIndex = (currentIndex + 1) % skinNames.length;
+}
+</script>
+
+<div style="margin-top: 30px;">
+<button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
+    Start
+  </button>
+</div>
+<script>
+let skinNames = [];
+let currentIndex = 0;
+let interval = null;
+
+document.getElementById("startPotok").addEventListener("click", () => {
+  if (interval) return;
+  fetch("/youpin898.txt")
+    .then((res) => res.text())
+    .then((text) => {
+      const lines = text.split("\n");
+      for (const line of lines) {
+        const match = line.match(/"(.+?)":/);
+        if (match) skinNames.push(match[1]);
+      }
+      if (skinNames.length > 0) {
+        checkNextSkin();
+        interval = setInterval(checkNextSkin, 1000);
+      }
+    });
+});
+
+function checkNextSkin() {
+  const skinName = skinNames[currentIndex];
+  console.log("Проверяю:", skinName);
+
+  fetch(`/api/price?name=${encodeURIComponent(skinName)}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(`Результат [${skinName}]:`, data);
+    })
+    .catch((err) => console.error("Ошибка запроса:", err));
+
+  currentIndex = (currentIndex + 1) % skinNames.length;
+}
+</script>
+</body>
 </html>
