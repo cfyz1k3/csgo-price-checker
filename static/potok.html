@@ -544,7 +544,9 @@ document.addEventListener("DOMContentLoaded", () => {
       fetch("/youpin898.txt")
         .then(res => res.text())
         .then(text => {
-          const parsed = JSON.parse(text);
+          const cleanText = text.trim().replace(/,+\s*$/, ""); // удалим последнюю запятую
+          const jsonText = "{" + cleanText + "}"; // обернём в фигурные скобки
+          const parsed = JSON.parse(jsonText);
           skinNames = Object.keys(parsed);
           if (skinNames.length > 0) {
             checkNextSkin();
