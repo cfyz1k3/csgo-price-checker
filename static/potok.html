@@ -402,7 +402,7 @@ body.light-theme .potok-icon {
 <span class="slider"></span>
 </label>
 </div>
-<h1>Раздел Potok</h1>
+<h1>Раздел Potok</h1><div id="current-skin-name" style="margin-top: 20px; font-size: 20px; color: var(--text-color);"></div>
 <div class="loader" id="loader" style="display: none;">
 <div class="inner one"></div>
 <div class="inner two"></div>
@@ -526,7 +526,6 @@ document.addEventListener("click", (e) => {
 </div>
 
 
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
@@ -535,6 +534,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const startButton = document.getElementById("startPotok");
   const loader = document.getElementById("loader");
+  const skinNameDiv = document.getElementById("current-skin-name");
 
   if (startButton) {
     startButton.addEventListener("click", () => {
@@ -542,31 +542,31 @@ document.addEventListener("DOMContentLoaded", () => {
       loader.style.display = "block";
 
       fetch("/youpin898.txt")
-        .then((res) => res.text())
-        .then((text) => {
-          const lines = text.split("\n");
-          for (const line of lines) {
-            const match = line.match(/"(.+?)":/);
-            if (match) skinNames.push(match[1]);
-          }
+        .then(res => res.text())
+        .then(text => {
+          const parsed = JSON.parse(text);
+          skinNames = Object.keys(parsed);
           if (skinNames.length > 0) {
             checkNextSkin();
             interval = setInterval(checkNextSkin, 1000);
           }
-        });
+        })
+        .catch(err => console.error("Ошибка чтения файла:", err));
     });
   }
 
   function checkNextSkin() {
+    if (skinNames.length === 0) return;
     const skinName = skinNames[currentIndex];
+    skinNameDiv.textContent = `Проверка: ${skinName}`;
     console.log("Проверяю:", skinName);
 
     fetch(`/api/price?name=${encodeURIComponent(skinName)}`)
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         console.log(`Результат [${skinName}]:`, data);
       })
-      .catch((err) => console.error("Ошибка запроса:", err));
+      .catch(err => console.error("Ошибка запроса:", err));
 
     currentIndex = (currentIndex + 1) % skinNames.length;
   }
