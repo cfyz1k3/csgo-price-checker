@@ -403,6 +403,12 @@ body.light-theme .potok-icon {
 </label>
 </div>
 <h1>Раздел Potok</h1>
+<div class="loader" id="loader" style="display: none;">
+<div class="inner one"></div>
+<div class="inner two"></div>
+<div class="inner three"></div>
+</div>
+
 <script>
     async function checkPrice() {
       const name = document.getElementById("skinInput").value.trim();
@@ -514,23 +520,33 @@ document.addEventListener("click", (e) => {
   }
 });
 </script>
+
+<div style="margin-top: 30px;">
+<button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
+    Start
+  </button>
+</div>
 <script>
 let skinNames = [];
 let currentIndex = 0;
+let interval = null;
 
-fetch("/youpin898.txt")
-  .then((res) => res.text())
-  .then((text) => {
-    const lines = text.split("\n");
-    for (const line of lines) {
-      const match = line.match(/"(.+?)":/);
-      if (match) skinNames.push(match[1]);
-    }
-    if (skinNames.length > 0) {
-      checkNextSkin();
-      setInterval(checkNextSkin, 1000);
-    }
-  });
+document.getElementById("startPotok").addEventListener("click", () => {
+  if (interval) return;
+  fetch("/youpin898.txt")
+    .then((res) => res.text())
+    .then((text) => {
+      const lines = text.split("\n");
+      for (const line of lines) {
+        const match = line.match(/"(.+?)":/);
+        if (match) skinNames.push(match[1]);
+      }
+      if (skinNames.length > 0) {
+        checkNextSkin();
+        interval = setInterval(checkNextSkin, 1000);
+      }
+    });
+});
 
 function checkNextSkin() {
   const skinName = skinNames[currentIndex];
@@ -547,18 +563,16 @@ function checkNextSkin() {
 }
 </script>
 
-<div style="margin-top: 30px;">
-<button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
-    Start
-  </button>
-</div>
 <script>
 let skinNames = [];
 let currentIndex = 0;
 let interval = null;
 
 document.getElementById("startPotok").addEventListener("click", () => {
+  const loader = document.getElementById("loader");
+  loader.style.display = "block";
   if (interval) return;
+
   fetch("/youpin898.txt")
     .then((res) => res.text())
     .then((text) => {
