@@ -408,7 +408,6 @@ body.light-theme .potok-icon {
 <div class="inner two"></div>
 <div class="inner three"></div>
 </div>
-
 <script>
     async function checkPrice() {
       const name = document.getElementById("skinInput").value.trim();
@@ -520,87 +519,58 @@ document.addEventListener("click", (e) => {
   }
 });
 </script>
-
 <div style="margin-top: 30px;">
 <button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
     Start
   </button>
 </div>
-<script>
-let skinNames = [];
-let currentIndex = 0;
-let interval = null;
 
-document.getElementById("startPotok").addEventListener("click", () => {
-  if (interval) return;
-  fetch("/youpin898.txt")
-    .then((res) => res.text())
-    .then((text) => {
-      const lines = text.split("\n");
-      for (const line of lines) {
-        const match = line.match(/"(.+?)":/);
-        if (match) skinNames.push(match[1]);
-      }
-      if (skinNames.length > 0) {
-        checkNextSkin();
-        interval = setInterval(checkNextSkin, 1000);
-      }
-    });
-});
 
-function checkNextSkin() {
-  const skinName = skinNames[currentIndex];
-  console.log("Проверяю:", skinName);
-
-  fetch(`/api/price?name=${encodeURIComponent(skinName)}`)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(`Результат [${skinName}]:`, data);
-    })
-    .catch((err) => console.error("Ошибка запроса:", err));
-
-  currentIndex = (currentIndex + 1) % skinNames.length;
-}
-</script>
 
 <script>
-let skinNames = [];
-let currentIndex = 0;
-let interval = null;
+document.addEventListener("DOMContentLoaded", () => {
+  let skinNames = [];
+  let currentIndex = 0;
+  let interval = null;
 
-document.getElementById("startPotok").addEventListener("click", () => {
+  const startButton = document.getElementById("startPotok");
   const loader = document.getElementById("loader");
-  loader.style.display = "block";
-  if (interval) return;
 
-  fetch("/youpin898.txt")
-    .then((res) => res.text())
-    .then((text) => {
-      const lines = text.split("\n");
-      for (const line of lines) {
-        const match = line.match(/"(.+?)":/);
-        if (match) skinNames.push(match[1]);
-      }
-      if (skinNames.length > 0) {
-        checkNextSkin();
-        interval = setInterval(checkNextSkin, 1000);
-      }
+  if (startButton) {
+    startButton.addEventListener("click", () => {
+      if (interval) return;
+      loader.style.display = "block";
+
+      fetch("/youpin898.txt")
+        .then((res) => res.text())
+        .then((text) => {
+          const lines = text.split("\n");
+          for (const line of lines) {
+            const match = line.match(/"(.+?)":/);
+            if (match) skinNames.push(match[1]);
+          }
+          if (skinNames.length > 0) {
+            checkNextSkin();
+            interval = setInterval(checkNextSkin, 1000);
+          }
+        });
     });
+  }
+
+  function checkNextSkin() {
+    const skinName = skinNames[currentIndex];
+    console.log("Проверяю:", skinName);
+
+    fetch(`/api/price?name=${encodeURIComponent(skinName)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(`Результат [${skinName}]:`, data);
+      })
+      .catch((err) => console.error("Ошибка запроса:", err));
+
+    currentIndex = (currentIndex + 1) % skinNames.length;
+  }
 });
-
-function checkNextSkin() {
-  const skinName = skinNames[currentIndex];
-  console.log("Проверяю:", skinName);
-
-  fetch(`/api/price?name=${encodeURIComponent(skinName)}`)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(`Результат [${skinName}]:`, data);
-    })
-    .catch((err) => console.error("Ошибка запроса:", err));
-
-  currentIndex = (currentIndex + 1) % skinNames.length;
-}
 </script>
 </body>
 </html>
