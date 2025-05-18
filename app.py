@@ -122,3 +122,5 @@ if __name__ == "__main__":
 @app.route("/api/youpin_names")
 def youpin_skin_names():
     return jsonify(list(find_id.keys()))
+
+# updated for /api/youpin_names
