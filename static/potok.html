@@ -402,7 +402,7 @@ body.light-theme .potok-icon {
 <span class="slider"></span>
 </label>
 </div>
-<h1>Раздел Potok</h1><div id="current-skin-name" style="margin-top: 20px; font-size: 20px; color: var(--text-color);"></div>
+<h1>Раздел Potok</h1><div id="current-skin-name" style="margin-top: 20px; font-size: 20px; color: var(--text-color);"></div><div id="price-results" style="margin-top: 20px; color: var(--text-color); font-size: 16px;"></div>
 <div class="loader" id="loader" style="display: none;">
 <div class="inner one"></div>
 <div class="inner two"></div>
@@ -534,6 +534,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const startButton = document.getElementById("startPotok");
   const loader = document.getElementById("loader");
   const skinNameDiv = document.getElementById("current-skin-name");
+  const resultsDiv = document.getElementById("price-results");
 
   startButton?.addEventListener("click", () => {
     if (skinNames.length > 0) return;
@@ -555,19 +556,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const skinName = skinNames[currentIndex];
     skinNameDiv.textContent = `Проверка: ${skinName}`;
-    console.log("🔎 Проверяю:", skinName);
 
     fetch(`/api/price?name=${encodeURIComponent(skinName)}`)
       .then(res => res.json())
       .then(data => {
-        console.log(`✔️ ${skinName}:`, data);
+        const buff = data.buff !== null ? `¥${data.buff.toFixed(2)}` : "—";
+        const youpin = data.youpin !== null ? `¥${data.youpin.toFixed(2)}` : "—";
+        const tm = data.leg1t !== null ? `₽${(data.leg1t / 100).toFixed(2)}` : "—";
+
+        const py = data.profit_youpin;
+        const pb = data.profit_buff;
+
+        const profitY = py && py.rub !== null ? `₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)` : "—";
+        const profitB = pb && pb.rub !== null ? `₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)` : "—";
+
+        resultsDiv.innerHTML = `
+          <div>Youpin898: ${youpin}</div>
+          <div>BUFF163: ${buff}</div>
+          <div>ТМ: ${tm}</div>
+          <div>Профит Youpin898: ${profitY}</div>
+          <div>Профит BUFF163: ${profitB}</div>
+        `;
+
         setTimeout(() => {
           currentIndex = (currentIndex + 1) % skinNames.length;
           checkNextSkin();
         }, 1000);
       })
       .catch(err => {
-        console.error(`❌ Ошибка при ${skinName}:`, err);
+        resultsDiv.innerHTML = "<div style='color: red;'>Ошибка при получении цены</div>";
+        console.error(`Ошибка при ${skinName}:`, err);
         setTimeout(() => {
           currentIndex = (currentIndex + 1) % skinNames.length;
           checkNextSkin();
