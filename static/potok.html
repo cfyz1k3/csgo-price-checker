@@ -409,71 +409,6 @@ body.light-theme .potok-icon {
 <div class="inner three"></div>
 </div>
 <script>
-    async function checkPrice() {
-      const name = document.getElementById("skinInput").value.trim();
-      const resultDiv = document.getElementById("resultText");
-      if (!name) {
-        resultDiv.textContent = "Введите название скина!";
-        return;
-      }
-      resultDiv.innerHTML = `
-  <div class="loader">
-    <div class="inner one"></div>
-    <div class="inner two"></div>
-    <div class="inner three"></div>
-  </div>
-`;
-      try {
-        const response = await fetch(`/api/price?name=${encodeURIComponent(name)}`);
-        const data = await response.json();
-        if (data.error) {
-          resultDiv.textContent = data.error;
-          return;
-        }
-        let result = [];
-        if (data.youpin !== null)
-          result.push(`Youpin898: ¥${data.youpin.toFixed(2)}`);
-        else
-          result.push(`Youpin898: Нет данных`);
-        if (data.buff !== null)
-          result.push(`BUFF163: ¥${data.buff}`);
-        else
-          result.push(`BUFF163: Нет данных`);
-        if (data.leg1t !== null)
-          result.push(`ТМ: ₽${(data.leg1t / 100).toFixed(2)}`);
-        else
-          result.push(`ТМ: Нет данных`);
-        const formatProfit = (label, obj) => {
-          if (!obj) return `${label}: Нет данных`;
-          const cls = obj.rub > 0 ? 'profit-positive' : obj.rub < 0 ? 'profit-negative' : 'yellow';
-          return `<span class="${cls}">${label}: ₽${obj.rub.toFixed(2)} (${obj.percent.toFixed(2)}%)</span>`;
-        };
-        result.push(formatProfit("Профит Youpin898", data.profit_youpin));
-        result.push(formatProfit("Профит BUFF163", data.profit_buff));
-        if (data.icon) {
-  console.log("ICON:", data.icon);
-  
-}
-resultDiv.innerHTML = result.join("<br>");
-if (data.icon) {
-  const img = document.createElement("img");
-  img.src = data.icon;
-  img.alt = "icon";
-  img.className = "skin-icon";
-  img.style.maxWidth = "300px";
-  img.style.marginTop = "30px";
-  img.style.display = "block";
-  img.style.marginLeft = "auto";
-  img.style.marginRight = "auto";
-  resultDiv.appendChild(img);
-}
-      } catch (e) {
-        resultDiv.textContent = "Ошибка при получении данных.";
-        console.error(e);
-      }
-    }
-  </script>
-<script>
 let skinIcons = {};
 fetch("buff163_icons.json")
   .then(res => res.json())
@@ -551,6 +486,22 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(err => console.error("Ошибка загрузки имён:", err));
   });
 
+  function getColorFromPercent(percent) {
+    if (percent === null || isNaN(percent)) return "gray";
+    const clamped = Math.max(-20, Math.min(20, percent));
+    const ratio = (clamped + 20) / 40;
+    const red = Math.round(255 * (1 - ratio));
+    const green = Math.round(255 * ratio);
+    return `rgb(${red}, ${green}, 100)`;
+  }
+
+  function getIcon(profit) {
+    if (profit === null || profit.rub === null) return "❔";
+    if (profit.rub > 0) return "📈";
+    if (profit.rub < 0) return "📉";
+    return "➖";
+  }
+
   function checkNextSkin() {
     if (skinNames.length === 0) return;
 
@@ -567,15 +518,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const py = data.profit_youpin;
         const pb = data.profit_buff;
 
-        const profitY = py && py.rub !== null ? `₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)` : "—";
-        const profitB = pb && pb.rub !== null ? `₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)` : "—";
+        const profitY = py && py.rub !== null ? 
+          `<span style="color:${getColorFromPercent(py.percent)}">${getIcon(py)} ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)</span>` : "—";
+        const profitB = pb && pb.rub !== null ? 
+          `<span style="color:${getColorFromPercent(pb.percent)}">${getIcon(pb)} ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)</span>` : "—";
 
         resultsDiv.innerHTML = `
-          <div>Youpin898: ${youpin}</div>
-          <div>BUFF163: ${buff}</div>
-          <div>ТМ: ${tm}</div>
-          <div>Профит Youpin898: ${profitY}</div>
-          <div>Профит BUFF163: ${profitB}</div>
+          <div>💴 Youpin898: ${youpin}</div>
+          <div>💰 BUFF163: ${buff}</div>
+          <div>🛒 ТМ: ${tm}</div>
+          <div>📦 Профит Youpin898: ${profitY}</div>
+          <div>📦 Профит BUFF163: ${profitB}</div>
         `;
 
         setTimeout(() => {
@@ -585,7 +538,6 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         resultsDiv.innerHTML = "<div style='color: red;'>Ошибка при получении цены</div>";
-        console.error(`Ошибка при ${skinName}:`, err);
         setTimeout(() => {
           currentIndex = (currentIndex + 1) % skinNames.length;
           checkNextSkin();
