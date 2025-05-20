@@ -459,6 +459,7 @@ document.addEventListener("click", (e) => {
     Start
   </button>
 </div>
+<div id="profit-list" style="margin-top: 40px; display: flex; flex-direction: column; gap: 10px;"></div>
 
 
 <script>
@@ -470,6 +471,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loader = document.getElementById("loader");
   const skinNameDiv = document.getElementById("current-skin-name");
   const resultsDiv = document.getElementById("price-results");
+  const profitList = document.getElementById("profit-list");
 
   startButton?.addEventListener("click", () => {
     if (skinNames.length > 0) return;
@@ -496,10 +498,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getIcon(profit) {
-    if (profit === null || profit.rub === null) return "❔";
-    if (profit.rub > 0) return "📈";
-    if (profit.rub < 0) return "📉";
-    return "➖";
+    if (profit === null || profit.rub === null) return "";
+    if (profit.rub > 0) return "↑";
+    if (profit.rub < 0) return "↓";
+    return "-";
+  }
+
+  function createProfitCard(name, priceInfo) {
+    const card = document.createElement("div");
+    card.style.padding = "10px";
+    card.style.border = "1px solid var(--text-color)";
+    card.style.borderRadius = "8px";
+    card.style.background = "#1e1e1e";
+    card.innerHTML = `<strong>${name}</strong><br>${priceInfo}`;
+    profitList.appendChild(card);
   }
 
   function checkNextSkin() {
@@ -524,12 +536,30 @@ document.addEventListener("DOMContentLoaded", () => {
           `<span style="color:${getColorFromPercent(pb.percent)}">${getIcon(pb)} ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)</span>` : "—";
 
         resultsDiv.innerHTML = `
-          <div>💴 Youpin898: ${youpin}</div>
-          <div>💰 BUFF163: ${buff}</div>
-          <div>🛒 ТМ: ${tm}</div>
-          <div>📦 Профит Youpin898: ${profitY}</div>
-          <div>📦 Профит BUFF163: ${profitB}</div>
+          <div>Youpin898: ${youpin}</div>
+          <div>BUFF163: ${buff}</div>
+          <div>ТМ: ${tm}</div>
+          <div>Профит Youpin898: ${profitY}</div>
+          <div>Профит BUFF163: ${profitB}</div>
         `;
+
+        if (py && py.rub > 50 && py.percent > 10) {
+          const cardInfo = `
+            Youpin898: ${youpin}<br>
+            ТМ: ${tm}<br>
+            Профит: ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)
+          `;
+          createProfitCard(skinName, cardInfo);
+        }
+
+        if (pb && pb.rub > 50 && pb.percent > 10) {
+          const cardInfo = `
+            BUFF163: ${buff}<br>
+            ТМ: ${tm}<br>
+            Профит: ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)
+          `;
+          createProfitCard(skinName, cardInfo);
+        }
 
         setTimeout(() => {
           currentIndex = (currentIndex + 1) % skinNames.length;
