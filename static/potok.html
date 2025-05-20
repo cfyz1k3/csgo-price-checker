@@ -530,44 +530,49 @@ document.addEventListener("click", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
   let currentIndex = 0;
-  let interval = null;
 
   const startButton = document.getElementById("startPotok");
   const loader = document.getElementById("loader");
   const skinNameDiv = document.getElementById("current-skin-name");
 
-  if (startButton) {
-    startButton.addEventListener("click", () => {
-      if (interval) return;
-      loader.style.display = "block";
+  startButton?.addEventListener("click", () => {
+    if (skinNames.length > 0) return;
+    loader.style.display = "block";
 
-      fetch("/api/youpin_names")
-        .then(res => res.json())
-        .then(data => {
-          skinNames = data;
-          if (skinNames.length > 0) {
-            checkNextSkin();
-            interval = setInterval(checkNextSkin, 1000);
-          }
-        })
-        .catch(err => console.error("Ошибка загрузки имён:", err));
-    });
-  }
+    fetch("/api/youpin_names")
+      .then(res => res.json())
+      .then(data => {
+        skinNames = data;
+        if (skinNames.length > 0) {
+          checkNextSkin();
+        }
+      })
+      .catch(err => console.error("Ошибка загрузки имён:", err));
+  });
 
   function checkNextSkin() {
     if (skinNames.length === 0) return;
+
     const skinName = skinNames[currentIndex];
     skinNameDiv.textContent = `Проверка: ${skinName}`;
-    console.log("Проверяю:", skinName);
+    console.log("🔎 Проверяю:", skinName);
 
     fetch(`/api/price?name=${encodeURIComponent(skinName)}`)
       .then(res => res.json())
       .then(data => {
-        console.log(`Результат [${skinName}]:`, data);
+        console.log(`✔️ ${skinName}:`, data);
+        setTimeout(() => {
+          currentIndex = (currentIndex + 1) % skinNames.length;
+          checkNextSkin();
+        }, 1000);
       })
-      .catch(err => console.error("Ошибка запроса:", err));
-
-    currentIndex = (currentIndex + 1) % skinNames.length;
+      .catch(err => {
+        console.error(`❌ Ошибка при ${skinName}:`, err);
+        setTimeout(() => {
+          currentIndex = (currentIndex + 1) % skinNames.length;
+          checkNextSkin();
+        }, 1000);
+      });
   }
 });
 </script>
