@@ -513,6 +513,7 @@ document.addEventListener("DOMContentLoaded", () => {
     card.style.background = "#1e1e1e";
     card.innerHTML = `<strong>${name}</strong><br>${priceInfo}`;
     profitList.appendChild(card);
+    console.log("✅ Карточка добавлена:", name);
   }
 
   function checkNextSkin() {
@@ -549,20 +550,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (py && py.rub > 50 && py.percent > 10) {
-          const cardInfo = `
-            Youpin898: ${youpin}<br>
-            ТМ: ${tm}<br>
-            Профит: ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)
-          `;
+          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)`;
           createProfitCard(skinName, cardInfo);
         }
 
         if (pb && pb.rub > 50 && pb.percent > 10) {
-          const cardInfo = `
-            BUFF163: ${buff}<br>
-            ТМ: ${tm}<br>
-            Профит: ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)
-          `;
+          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)`;
           createProfitCard(skinName, cardInfo);
         }
 
