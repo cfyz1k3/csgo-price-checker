@@ -402,7 +402,7 @@ body.light-theme .potok-icon {
 <span class="slider"></span>
 </label>
 </div>
-<h1>Раздел Potok</h1><div id="current-skin-name" style="margin-top: 20px; font-size: 20px; color: var(--text-color);"></div><div id="price-results" style="margin-top: 20px; color: var(--text-color); font-size: 16px;"></div>
+<h1>Раздел Potok</h1><div id="current-skin-name" style="margin-top: 20px; font-size: 20px; color: var(--text-color);"></div><img id="skin-icon" style="margin-top: 15px; max-height: 100px; display: block;"/><div id="price-results" style="margin-top: 20px; color: var(--text-color); font-size: 16px;"></div>
 <div class="loader" id="loader" style="display: none;">
 <div class="inner one"></div>
 <div class="inner two"></div>
@@ -472,6 +472,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const skinNameDiv = document.getElementById("current-skin-name");
   const resultsDiv = document.getElementById("price-results");
   const profitList = document.getElementById("profit-list");
+  const skinIcon = document.getElementById("skin-icon");
 
   startButton?.addEventListener("click", () => {
     if (skinNames.length > 0) return;
@@ -542,6 +543,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <div>Профит Youpin898: ${profitY}</div>
           <div>Профит BUFF163: ${profitB}</div>
         `;
+
+        if (data.icon && skinIcon) {
+          skinIcon.src = "https://steamcommunity-a.akamaihd.net/economy/image/" + data.icon;
+        }
 
         if (py && py.rub > 50 && py.percent > 10) {
           const cardInfo = `
