@@ -766,12 +766,64 @@ document.addEventListener("DOMContentLoaded", () => {
     
     
 card.innerHTML = `
-  ${iconURL ? `<img src="${iconURL}" style="height: 80%; width: 80px; object-fit: contain; margin: 0 10px;">` : ""}
+  ${iconURL ? `<img src="${iconURL}" style="height: 80%; width: 80px; object-fit: contain; margin: 0 20px; border-right: 1px solid var(--text-color);">` : ""}
   <div style="padding: 10px; text-align: left; display: flex; flex-direction: column; justify-content: center;">
     <strong class="copyable" style="cursor: pointer;">${name}</strong>
     <div style="white-space: nowrap; margin-top: 4px;">Профит: ${html}</div>
   </div>
 `;
+
+    
+    card.querySelector(".copyable")?.addEventListener("click", () => {
+      navigator.clipboard.writeText(name).then(() => {
+        console.log("Скопировано:", name);
+        const label = card.querySelector(".copyable");
+        if (label) {
+          label.classList.add("copied");
+          setTimeout(() => label.classList.remove("copied"), 500);
+        }
+      });
+    });
+    profitList.appendChild(card);
+  }
+
+  function checkNextSkin() {
+    if (!isRunning || !skinNames.length) return;
+
+    const name = skinNames[currentIndex];
+    skinNameDiv.textContent = `Проверка: ${name}`;
+
+    fetch(`/api/price?name=${encodeURIComponent(name)}`)
+      .then(res => res.json())
+      .then(data => {
+        const buff = data.buff !== null ? `¥${data.buff.toFixed(2)}` : "—";
+        const youpin = data.youpin !== null ? `¥${data.youpin.toFixed(2)}` : "—";
+        const tm = data.leg1t !== null ? `₽${(data.leg1t / 100).toFixed(2)}` : "—";
+
+        const py = data.profit_youpin;
+        const pb = data.profit_buff;
+
+        const profitYHTML = formatProfitHTML(py);
+        const profitBHTML = formatProfitHTML(pb);
+
+        resultsDiv.innerHTML = `
+          <div>Youpin898: ${youpin}</div>
+          <div>BUFF163: ${buff}</div>
+          <div>ТМ: ${tm}</div>
+          <div>Профит Youpin898: ${profitYHTML}</div>
+          <div>Профит BUFF163: ${profitBHTML}</div>
+        `;
+
+        if (data.icon && data.icon.startsWith("/")) {
+          skinIcon.src = "https://steamcommunity-a.akamaihd.net/economy/image" + data.icon;
+          skinIcon.style.display = "block";
+        } else {
+          skinIcon.src = "";
+          skinIcon.style.display = "none";
+        }
+
+        if (filterYoupin.checked && py && py.rub > 50 && py.percent > 10) {
+          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: <div style="white-space: nowrap;">${formatProfitHTML(py)}</div>`;
           createProfitCard(name, cardInfo);
         }
 
