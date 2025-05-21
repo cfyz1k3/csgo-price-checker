@@ -389,13 +389,17 @@ body.light-theme .potok-icon {
   line-height: 1.4;
   word-wrap: break-word;
 }
-</style></head>
+</style><script>
+let iconMap = {};
+fetch("/static/buff163_icons.json")
+  .then(res => res.json())
+  .then(data => { iconMap = data; });
+</script></head>
 <body>
 <div style="position: fixed; right: 20px; top: 100px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
 <label><input checked="" id="filter-youpin" type="checkbox"/> Youpin898</label><br/>
 <label><input checked="" id="filter-buff" type="checkbox"/> BUFF163</label>
 </div>
-
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
 <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
 <button onclick="location.href='/potok'" style="display: flex; align-items: center; gap: 8px;">
@@ -544,7 +548,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function createProfitCard(name, html) {
     const card = document.createElement("div");
     card.className = "profit-card";
-    card.innerHTML = `<strong>${name}</strong><br>${html}`;
+    const iconURL = iconMap[name];
+    const imageHTML = iconURL ? `<img src="${iconURL}" style="width: 40px; float: right; margin-left: 10px;">` : "";
+    card.innerHTML = `${imageHTML}<strong>${name}</strong><br>${html}`;
     profitList.appendChild(card);
   }
 
