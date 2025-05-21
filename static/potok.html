@@ -490,6 +490,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isRunning) {
       isRunning = false;
       startButton.textContent = "Start";
+      loader.style.display = "none";
       clearTimeout(timeoutId);
       return;
     }
@@ -529,7 +530,6 @@ document.addEventListener("DOMContentLoaded", () => {
     card.className = "profit-card";
     card.innerHTML = `<strong>${name}</strong><br>${html}`;
     profitList.appendChild(card);
-    console.log("✅ Карточка добавлена:", name);
   }
 
   function checkNextSkin() {
