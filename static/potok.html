@@ -550,6 +550,24 @@ body.light-theme .potok-icon {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
+
+
+.copyable {
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+.copyable:hover {
+  color: var(--text-color);
+  transform: scale(1.05);
+}
+.copyable.copied {
+  animation: copiedFlash 0.5s ease;
+}
+
+@keyframes copiedFlash {
+  0%   { color: lime; transform: scale(1.2); }
+  100% { color: var(--text-color); transform: scale(1); }
+}
+
 </style><script>
 let iconMap = {};
 fetch("/static/buff163_icons.json")
@@ -732,6 +750,11 @@ card.innerHTML = `
     card.querySelector(".copyable")?.addEventListener("click", () => {
       navigator.clipboard.writeText(name).then(() => {
         console.log("Скопировано:", name);
+        const label = card.querySelector(".copyable");
+        if (label) {
+          label.classList.add("copied");
+          setTimeout(() => label.classList.remove("copied"), 500);
+        }
       });
     });
     profitList.appendChild(card);
