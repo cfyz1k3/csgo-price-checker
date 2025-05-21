@@ -432,6 +432,36 @@ body.light-theme .potok-icon {
   100% { transform: rotateZ(180deg); }
 }
 
+
+.checkbox {
+  margin: 8px 0;
+}
+.checkbox-spin {
+  display: none;
+}
+.checkbox-spin + label span {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 0 6px -4px 0;
+  position: relative;
+  border: 2px solid #FF4040;
+  box-sizing: border-box;
+}
+.checkbox-spin:checked + label span::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: #FF4040;
+  animation: spin 0.3s ease-in-out;
+}
+@keyframes spin {
+  0%   { transform: rotateZ(0deg); }
+  100% { transform: rotateZ(180deg); }
+}
+
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -443,14 +473,17 @@ body.light-theme .potok-icon {
   </script>
 <style>
 .profit-card {
-  width: 250px;
+  width: 340px;
+  height: 100px;
   background: #1e1e1e;
-  padding: 10px;
+  display: flex;
+  align-items: center;
   border-radius: 8px;
   border: 1px solid var(--text-color);
   font-size: 14px;
   line-height: 1.4;
   word-wrap: break-word;
+  overflow: hidden;
 }
 
 .checkbox-spin-wrapper {
@@ -489,6 +522,36 @@ body.light-theme .potok-icon {
   100% { transform: rotateZ(180deg); }
 }
 
+
+.checkbox {
+  margin: 8px 0;
+}
+.checkbox-spin {
+  display: none;
+}
+.checkbox-spin + label span {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 0 6px -4px 0;
+  position: relative;
+  border: 2px solid #FF4040;
+  box-sizing: border-box;
+}
+.checkbox-spin:checked + label span::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: #FF4040;
+  animation: spin 0.3s ease-in-out;
+}
+@keyframes spin {
+  0%   { transform: rotateZ(0deg); }
+  100% { transform: rotateZ(180deg); }
+}
+
 </style><script>
 let iconMap = {};
 fetch("/static/buff163_icons.json")
@@ -497,18 +560,22 @@ fetch("/static/buff163_icons.json")
 </script></head>
 <body>
 
+
 <div style="position: fixed; right: 20px; top: 100px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
 
-<label class="checkbox-spin-wrapper">
-  <input class="checkbox-spin" type="checkbox" id="filter-youpin" checked/>
-  <span></span> Youpin898
-</label><br/>
-<label class="checkbox-spin-wrapper">
-  <input class="checkbox-spin" type="checkbox" id="filter-buff" checked/>
-  <span></span> BUFF163
-</label>
+<ul style="list-style-type: none; padding: 0; margin: 0;">
+  <li class="checkbox">
+    <input class="checkbox-spin" type="checkbox" id="filter-youpin" checked/>
+    <label for="filter-youpin"><span></span>Youpin898</label>
+  </li>
+  <li class="checkbox">
+    <input class="checkbox-spin" type="checkbox" id="filter-buff" checked/>
+    <label for="filter-buff"><span></span>BUFF163</label>
+  </li>
+</ul>
 
 </div>
+
 
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
 <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
@@ -661,7 +728,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const iconURL = iconMap[name];
     const imageHTML = iconURL ? `<img src="${iconURL}" style="width: 40px; float: right; margin-left: 10px;">` : "";
     const nameHTML = `<strong class="copyable" style="cursor: pointer;">${name}</strong>`;
-    card.innerHTML = `${imageHTML}${nameHTML}<br>${html}`;
+    
+    card.innerHTML = `
+      ${iconURL ? `<img src="${iconURL}" style="height: 100%; width: 100px; object-fit: contain; border-right: 1px solid var(--text-color);">` : ""}
+      <div style="padding: 10px; text-align: left;">
+        <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
+        ${html}
+      </div>
+    `;
+    
     card.querySelector(".copyable")?.addEventListener("click", () => {
       navigator.clipboard.writeText(name).then(() => {
         console.log("Скопировано:", name);
