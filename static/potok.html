@@ -467,12 +467,15 @@ document.addEventListener("click", (e) => {
     Start
   </button>
 </div>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
   let currentIndex = 0;
   let timeoutId = null;
   let isRunning = false;
+  let started = false;
 
   const startButton = document.getElementById("startPotok");
   const loader = document.getElementById("loader");
@@ -482,26 +485,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const skinIcon = document.getElementById("skin-icon");
 
   startButton?.addEventListener("click", () => {
-    if (isRunning) {
+    const label = startButton.textContent.trim();
+
+    if (label === "Start") {
+      startButton.textContent = "Stop";
+      loader.style.display = "block";
+      isRunning = true;
+      started = true;
+      fetch("/api/youpin_names")
+        .then(res => res.json())
+        .then(data => {
+          skinNames = data;
+          currentIndex = 0;
+          if (skinNames.length > 0) checkNextSkin();
+        });
+    } else if (label === "Stop") {
       isRunning = false;
-      startButton.textContent = "Start";
       loader.style.display = "none";
+      startButton.textContent = "Continue";
       clearTimeout(timeoutId);
-      return;
+    } else if (label === "Continue") {
+      isRunning = true;
+      startButton.textContent = "Stop";
+      loader.style.display = "block";
+      checkNextSkin();
     }
-
-    isRunning = true;
-    startButton.textContent = "Stop";
-    loader.style.display = "block";
-
-    fetch("/api/youpin_names")
-      .then(res => res.json())
-      .then(data => {
-        skinNames = data;
-        currentIndex = 0;
-        if (skinNames.length > 0) checkNextSkin();
-      })
-      .catch(err => console.error("Ошибка загрузки имён:", err));
   });
 
   function getColorFromPercent(percent) {
