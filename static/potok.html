@@ -470,7 +470,6 @@ document.addEventListener("click", (e) => {
     Start
   </button>
 </div>
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
@@ -485,12 +484,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   startButton?.addEventListener("click", () => {
     if (skinNames.length > 0) return;
-    loader.style.display = "block";
+    
+            loader.style.display = "block";
+            startButton.textContent = "Stop";
+            
 
     fetch("/api/youpin_names")
       .then(res => res.json())
       .then(data => {
-        skinNames = data;
+        
+            skinNames = data;
+            startButton.textContent = "Stop";
+            
         if (skinNames.length > 0) {
           checkNextSkin();
         }
@@ -583,5 +588,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
-</body>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const startButton = document.getElementById("startPotok");
+  let isRunning = false;
+  let interval;
+
+  if (startButton) {
+    const originalClick = startButton.onclick;
+    startButton.addEventListener("click", (e) => {
+      if (startButton.textContent === "Stop") {
+        location.reload(); // сбрасываем состояние
+        return;
+      }
+    });
+  }
+});
+</script></body>
 </html>
