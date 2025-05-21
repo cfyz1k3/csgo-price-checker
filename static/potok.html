@@ -381,7 +381,18 @@ body.light-theme .potok-icon {
       });
     });
   </script>
-</head>
+<style>
+.profit-card {
+  width: 250px;
+  background: #1e1e1e;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--text-color);
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+</style></head>
 <body>
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
 <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
@@ -407,7 +418,7 @@ body.light-theme .potok-icon {
 <div class="inner one"></div>
 <div class="inner two"></div>
 <div class="inner three"></div>
-</div>
+</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
 <script>
 let skinIcons = {};
 fetch("buff163_icons.json")
@@ -459,8 +470,6 @@ document.addEventListener("click", (e) => {
     Start
   </button>
 </div>
-<div id="profit-list" style="margin-top: 40px; display: flex; flex-direction: column; gap: 10px;"></div>
-
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -507,10 +516,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function createProfitCard(name, priceInfo) {
     const card = document.createElement("div");
-    card.style.padding = "10px";
-    card.style.border = "1px solid var(--text-color)";
-    card.style.borderRadius = "8px";
-    card.style.background = "#1e1e1e";
+    card.className = "profit-card";
+    
+    
+    
     card.innerHTML = `<strong>${name}</strong><br>${priceInfo}`;
     profitList.appendChild(card);
     console.log("✅ Карточка добавлена:", name);
