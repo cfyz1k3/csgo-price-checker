@@ -467,6 +467,8 @@ document.addEventListener("click", (e) => {
     Start
   </button>
 </div>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
@@ -517,8 +519,16 @@ document.addEventListener("DOMContentLoaded", () => {
     return `rgb(${red}, ${green}, 100)`;
   }
 
+  function formatProfitHTML(profit) {
+    if (!profit || profit.rub == null) return "—";
+    const icon = getIcon(profit);
+    const color = getColorFromPercent(profit.percent);
+    const bold = profit.percent > 20 ? "font-weight: bold; text-shadow: 0 0 1px black;" : "";
+    return `<span style="color:${color};${bold}">${icon} ₽${profit.rub.toFixed(2)} (${profit.percent.toFixed(2)}%)</span>`;
+  }
+
   function getIcon(profit) {
-    if (profit === null || profit.rub === null) return "";
+    if (!profit || profit.rub == null) return "";
     if (profit.rub > 0) return "↑";
     if (profit.rub < 0) return "↓";
     return "-";
@@ -547,17 +557,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const py = data.profit_youpin;
         const pb = data.profit_buff;
 
-        const profitY = py?.rub != null
-          ? `<span style="color:${getColorFromPercent(py.percent)}">${getIcon(py)} ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)</span>` : "—";
-        const profitB = pb?.rub != null
-          ? `<span style="color:${getColorFromPercent(pb.percent)}">${getIcon(pb)} ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)</span>` : "—";
+        const profitYHTML = formatProfitHTML(py);
+        const profitBHTML = formatProfitHTML(pb);
 
         resultsDiv.innerHTML = `
           <div>Youpin898: ${youpin}</div>
           <div>BUFF163: ${buff}</div>
           <div>ТМ: ${tm}</div>
-          <div>Профит Youpin898: ${profitY}</div>
-          <div>Профит BUFF163: ${profitB}</div>
+          <div>Профит Youpin898: ${profitYHTML}</div>
+          <div>Профит BUFF163: ${profitBHTML}</div>
         `;
 
         if (data.icon && data.icon.startsWith("/")) {
@@ -569,12 +577,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (py && py.rub > 50 && py.percent > 10) {
-          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: <span style="color:${getColorFromPercent(py.percent)}">${getIcon(py)} ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)</span>`;
+          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
           createProfitCard(name, cardInfo);
         }
 
         if (pb && pb.rub > 50 && pb.percent > 10) {
-          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: <span style="color:${getColorFromPercent(pb.percent)}">${getIcon(pb)} ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)</span>`;
+          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
           createProfitCard(name, cardInfo);
         }
 
