@@ -766,8 +766,8 @@ document.addEventListener("DOMContentLoaded", () => {
     
     
 card.innerHTML = `
-  ${iconURL ? `<img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 20px; border-right: 1px solid var(--text-color);">` : ""}
-  <div style="padding: 10px; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+  ${iconURL ? `<img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 12px;"><div style="height: 80px; width: 1px; background-color: var(--text-color); margin-right: 8px;"></div>` : ""}
+  <div style="padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
     <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
     <div style="white-space: nowrap; margin-top: 4px;">Профит:<br>${html}</div>
   </div>
@@ -822,12 +822,12 @@ card.innerHTML = `
           skinIcon.style.display = "none";
         }
 
-        if (filterYoupin.checked && py && py.rub > 50 && py.percent > 1) {
+        if (filterYoupin.checked && py && py.rub > 1 && py.percent > 1) {
           const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: ${formatProfitHTML(py)}`;
           createProfitCard(name, cardInfo);
         }
 
-        if (filterBuff.checked && pb && pb.rub > 50 && pb.percent > 1) {
+        if (filterBuff.checked && pb && pb.rub > 1 && pb.percent > 1) {
           const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: ${formatProfitHTML(pb)}`;
           createProfitCard(name, cardInfo);
         }
