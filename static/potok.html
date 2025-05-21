@@ -540,6 +540,16 @@ body.light-theme .potok-icon {
   background: var(--text-color);
 }
 
+
+
+.profit-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.profit-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
 </style><script>
 let iconMap = {};
 fetch("/static/buff163_icons.json")
@@ -578,7 +588,7 @@ fetch("/static/buff163_icons.json")
 <span class="slider"></span>
 </label>
 </div>
-<h1>Раздел Potok</h1><div id="current-skin-name" style="margin-top: 20px; font-size: 20px; color: var(--text-color);"></div><img id="skin-icon" style="margin-top: 15px; max-height: 100px; display: block;"/><div id="price-results" style="margin-top: 20px; color: var(--text-color); font-size: 16px;"></div>
+<h1>Раздел Potok</h1><div id="current-skin-name" style="margin-top: 20px; font-size: 20px; color: var(--text-color);"></div><img id="skin-icon" style="margin-top: 15px; max-height: 100px; display: block; margin-left: auto; margin-right: auto;"/><div id="price-results" style="margin-top: 20px; color: var(--text-color); font-size: 16px;"></div>
 <div class="loader" id="loader" style="display: none;">
 <div class="inner one"></div>
 <div class="inner two"></div>
