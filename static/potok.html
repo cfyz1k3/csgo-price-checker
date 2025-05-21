@@ -187,9 +187,7 @@ body.light-theme .autocomplete-list li {
 }
 
 .loader {
-  position: absolute;
-  top: calc(50% - 48px);
-  left: calc(50% - 48px);
+  margin: 20px auto;
   width: 96px;
   height: 96px;
   border-radius: 50%;
@@ -371,8 +369,7 @@ body.light-theme .profit-positive {
 
 body.light-theme .potok-icon {
   filter: brightness(0) saturate(100%) invert(87%) sepia(5%) saturate(168%) hue-rotate(175deg) brightness(95%) contrast(94%);
-}
-</style>
+}</style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
       const toggle = document.getElementById("themeToggle");
@@ -470,8 +467,6 @@ document.addEventListener("click", (e) => {
     Start
   </button>
 </div>
-
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
@@ -574,11 +569,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (py && py.rub > 50 && py.percent > 10) {
-          createProfitCard(name, `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)`);
+          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: <span style="color:${getColorFromPercent(py.percent)}">${getIcon(py)} ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)</span>`;
+          createProfitCard(name, cardInfo);
         }
 
         if (pb && pb.rub > 50 && pb.percent > 10) {
-          createProfitCard(name, `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)`);
+          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: <span style="color:${getColorFromPercent(pb.percent)}">${getIcon(pb)} ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)</span>`;
+          createProfitCard(name, cardInfo);
         }
 
         currentIndex = (currentIndex + 1) % skinNames.length;
