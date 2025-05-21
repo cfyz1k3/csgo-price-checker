@@ -462,6 +462,33 @@ body.light-theme .potok-icon {
   100% { transform: rotateZ(180deg); }
 }
 
+
+.profit-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.profit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.copyable {
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+.copyable.copied::after {
+  content: '✔';
+  position: absolute;
+  right: -20px;
+  top: 0;
+  color: #49D5C1;
+  font-size: 14px;
+  animation: fadeOut 1s ease forwards;
+}
+@keyframes fadeOut {
+  0% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(10px); }
+}
+
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -550,6 +577,33 @@ body.light-theme .potok-icon {
 @keyframes spin {
   0%   { transform: rotateZ(0deg); }
   100% { transform: rotateZ(180deg); }
+}
+
+
+.profit-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.profit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.copyable {
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+.copyable.copied::after {
+  content: '✔';
+  position: absolute;
+  right: -20px;
+  top: 0;
+  color: #49D5C1;
+  font-size: 14px;
+  animation: fadeOut 1s ease forwards;
+}
+@keyframes fadeOut {
+  0% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(10px); }
 }
 
 </style><script>
@@ -729,13 +783,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const imageHTML = iconURL ? `<img src="${iconURL}" style="width: 40px; float: right; margin-left: 10px;">` : "";
     const nameHTML = `<strong class="copyable" style="cursor: pointer;">${name}</strong>`;
     
-    card.innerHTML = `
-      ${iconURL ? `<img src="${iconURL}" style="height: 100%; width: 100px; object-fit: contain; border-right: 1px solid var(--text-color);">` : ""}
-      <div style="padding: 10px; text-align: left;">
-        <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
-        ${html}
-      </div>
-    `;
+    
+card.innerHTML = `
+  ${iconURL ? `<img src="${iconURL}" style="height: 80%; width: 80px; object-fit: contain; margin-left: 10px; border-right: 1px solid var(--text-color);">` : ""}
+  <div style="padding: 10px; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+    <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
+    ${html}
+  </div>
+`;
+
     
     card.querySelector(".copyable")?.addEventListener("click", () => {
       navigator.clipboard.writeText(name).then(() => {
