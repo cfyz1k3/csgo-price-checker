@@ -414,7 +414,11 @@ body.light-theme .potok-icon {
 </label>
 </div>
 <h1>Раздел Potok</h1><div id="current-skin-name" style="margin-top: 20px; font-size: 20px; color: var(--text-color);"></div><img id="skin-icon" style="margin-top: 15px; max-height: 100px; display: block;"/><div id="price-results" style="margin-top: 20px; color: var(--text-color); font-size: 16px;"></div>
-<div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
+<div class="loader" id="loader" style="display: none;">
+<div class="inner one"></div>
+<div class="inner two"></div>
+<div class="inner three"></div>
+</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
 <script>
 let skinIcons = {};
 fetch("buff163_icons.json")
@@ -464,11 +468,7 @@ document.addEventListener("click", (e) => {
 <div style="margin-top: 30px;">
 <button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
     Start
-  </button><div class="loader" id="loader" style="display: none;;margin-top: 10px;display: none">
-<div class="inner one"></div>
-<div class="inner two"></div>
-<div class="inner three"></div>
-</div>
+  </button>
 </div>
 
 
@@ -487,29 +487,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const skinIcon = document.getElementById("skin-icon");
 
   startButton?.addEventListener("click", () => {
-    if (startButton.textContent === "Start") {
-      startButton.textContent = "Stop";
-      isRunning = true;
-      loader.style.display = "block";
-      fetch("/api/youpin_names")
-        .then(res => res.json())
-        .then(data => {
-          skinNames = data;
-          currentIndex = 0;
-          if (skinNames.length > 0) checkNextSkin();
-        })
-        .catch(err => console.error("Ошибка загрузки имён:", err));
-    } else if (startButton.textContent === "Stop") {
+    if (isRunning) {
       isRunning = false;
-      startButton.textContent = "Continue";
+      startButton.textContent = "Start";
       loader.style.display = "none";
       clearTimeout(timeoutId);
-    } else if (startButton.textContent === "Continue") {
-      isRunning = true;
-      startButton.textContent = "Stop";
-      loader.style.display = "block";
-      checkNextSkin();
+      return;
     }
+
+    isRunning = true;
+    startButton.textContent = "Stop";
+    loader.style.display = "block";
+
+    fetch("/api/youpin_names")
+      .then(res => res.json())
+      .then(data => {
+        skinNames = data;
+        currentIndex = 0;
+        if (skinNames.length > 0) checkNextSkin();
+      })
+      .catch(err => console.error("Ошибка загрузки имён:", err));
   });
 
   function getColorFromPercent(percent) {
