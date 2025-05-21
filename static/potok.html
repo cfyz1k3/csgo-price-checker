@@ -470,10 +470,14 @@ document.addEventListener("click", (e) => {
     Start
   </button>
 </div>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
   let currentIndex = 0;
+  let timeoutId = null;
+  let isRunning = false;
 
   const startButton = document.getElementById("startPotok");
   const loader = document.getElementById("loader");
@@ -483,22 +487,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const skinIcon = document.getElementById("skin-icon");
 
   startButton?.addEventListener("click", () => {
-    if (skinNames.length > 0) return;
-    
-            loader.style.display = "block";
-            startButton.textContent = "Stop";
-            
+    if (isRunning) {
+      isRunning = false;
+      startButton.textContent = "Start";
+      clearTimeout(timeoutId);
+      return;
+    }
+
+    isRunning = true;
+    startButton.textContent = "Stop";
+    loader.style.display = "block";
 
     fetch("/api/youpin_names")
       .then(res => res.json())
       .then(data => {
-        
-            skinNames = data;
-            startButton.textContent = "Stop";
-            
-        if (skinNames.length > 0) {
-          checkNextSkin();
-        }
+        skinNames = data;
+        currentIndex = 0;
+        if (skinNames.length > 0) checkNextSkin();
       })
       .catch(err => console.error("Ошибка загрузки имён:", err));
   });
@@ -519,24 +524,21 @@ document.addEventListener("DOMContentLoaded", () => {
     return "-";
   }
 
-  function createProfitCard(name, priceInfo) {
+  function createProfitCard(name, html) {
     const card = document.createElement("div");
     card.className = "profit-card";
-    
-    
-    
-    card.innerHTML = `<strong>${name}</strong><br>${priceInfo}`;
+    card.innerHTML = `<strong>${name}</strong><br>${html}`;
     profitList.appendChild(card);
     console.log("✅ Карточка добавлена:", name);
   }
 
   function checkNextSkin() {
-    if (skinNames.length === 0) return;
+    if (!isRunning || !skinNames.length) return;
 
-    const skinName = skinNames[currentIndex];
-    skinNameDiv.textContent = `Проверка: ${skinName}`;
+    const name = skinNames[currentIndex];
+    skinNameDiv.textContent = `Проверка: ${name}`;
 
-    fetch(`/api/price?name=${encodeURIComponent(skinName)}`)
+    fetch(`/api/price?name=${encodeURIComponent(name)}`)
       .then(res => res.json())
       .then(data => {
         const buff = data.buff !== null ? `¥${data.buff.toFixed(2)}` : "—";
@@ -546,10 +548,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const py = data.profit_youpin;
         const pb = data.profit_buff;
 
-        const profitY = py && py.rub !== null ? 
-          `<span style="color:${getColorFromPercent(py.percent)}">${getIcon(py)} ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)</span>` : "—";
-        const profitB = pb && pb.rub !== null ? 
-          `<span style="color:${getColorFromPercent(pb.percent)}">${getIcon(pb)} ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)</span>` : "—";
+        const profitY = py?.rub != null
+          ? `<span style="color:${getColorFromPercent(py.percent)}">${getIcon(py)} ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)</span>` : "—";
+        const profitB = pb?.rub != null
+          ? `<span style="color:${getColorFromPercent(pb.percent)}">${getIcon(pb)} ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)</span>` : "—";
 
         resultsDiv.innerHTML = `
           <div>Youpin898: ${youpin}</div>
@@ -564,45 +566,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (py && py.rub > 50 && py.percent > 10) {
-          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)`;
-          createProfitCard(skinName, cardInfo);
+          createProfitCard(name, `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ₽${py.rub.toFixed(2)} (${py.percent.toFixed(2)}%)`);
         }
 
         if (pb && pb.rub > 50 && pb.percent > 10) {
-          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)`;
-          createProfitCard(skinName, cardInfo);
+          createProfitCard(name, `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ₽${pb.rub.toFixed(2)} (${pb.percent.toFixed(2)}%)`);
         }
 
-        setTimeout(() => {
-          currentIndex = (currentIndex + 1) % skinNames.length;
-          checkNextSkin();
-        }, 1000);
+        currentIndex = (currentIndex + 1) % skinNames.length;
+        timeoutId = setTimeout(checkNextSkin, 1000);
       })
       .catch(err => {
-        resultsDiv.innerHTML = "<div style='color: red;'>Ошибка при получении цены</div>";
-        setTimeout(() => {
-          currentIndex = (currentIndex + 1) % skinNames.length;
-          checkNextSkin();
-        }, 1000);
+        console.error("❌ Ошибка запроса:", err);
+        currentIndex = (currentIndex + 1) % skinNames.length;
+        timeoutId = setTimeout(checkNextSkin, 1000);
       });
   }
 });
 </script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const startButton = document.getElementById("startPotok");
-  let isRunning = false;
-  let interval;
-
-  if (startButton) {
-    const originalClick = startButton.onclick;
-    startButton.addEventListener("click", (e) => {
-      if (startButton.textContent === "Stop") {
-        location.reload(); // сбрасываем состояние
-        return;
-      }
-    });
-  }
-});
-</script></body>
+</body>
 </html>
