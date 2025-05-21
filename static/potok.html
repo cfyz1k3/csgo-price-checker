@@ -410,17 +410,16 @@ body.light-theme .potok-icon {
   </script>
 <style>
 .profit-card {
-  width: 340px;
-  height: 100px;
-  background: #1e1e1e;
+  width: 360px;
+  height: 120px;
+  background: #141414;
   display: flex;
   align-items: center;
   border-radius: 8px;
   border: 1px solid var(--text-color);
   font-size: 14px;
-  line-height: 1.4;
-  word-wrap: break-word;
   overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .checkbox-spin-wrapper {
@@ -543,6 +542,15 @@ body.light-theme .potok-icon {
 
 
 .profit-card {
+  width: 360px;
+  height: 120px;
+  background: #141414;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--text-color);
+  font-size: 14px;
+  overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .profit-card:hover {
@@ -571,7 +579,15 @@ body.light-theme .potok-icon {
 
 
 .profit-card {
+  width: 360px;
+  height: 120px;
   background: #141414;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--text-color);
+  font-size: 14px;
+  overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .profit-card:hover {
@@ -807,12 +823,12 @@ card.innerHTML = `
         }
 
         if (filterYoupin.checked && py && py.rub > 50 && py.percent > 10) {
-          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: <span style="white-space: nowrap;">${formatProfitHTML(py)}</span>`;
+          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: <div style="white-space: nowrap;">${formatProfitHTML(py)}</div>`;
           createProfitCard(name, cardInfo);
         }
 
         if (filterBuff.checked && pb && pb.rub > 50 && pb.percent > 10) {
-          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: <span style="white-space: nowrap;">${formatProfitHTML(pb)}</span>`;
+          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: <div style="white-space: nowrap;">${formatProfitHTML(pb)}</div>`;
           createProfitCard(name, cardInfo);
         }
 
