@@ -807,12 +807,12 @@ card.innerHTML = `
         }
 
         if (filterYoupin.checked && py && py.rub > 50 && py.percent > 10) {
-          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: ${formatProfitHTML(py)}`;
+          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: <span style="white-space: nowrap;">${formatProfitHTML(py)}</span>`;
           createProfitCard(name, cardInfo);
         }
 
         if (filterBuff.checked && pb && pb.rub > 50 && pb.percent > 10) {
-          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: ${formatProfitHTML(pb)}`;
+          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: <span style="white-space: nowrap;">${formatProfitHTML(pb)}</span>`;
           createProfitCard(name, cardInfo);
         }
 
