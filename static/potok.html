@@ -187,7 +187,9 @@ body.light-theme .autocomplete-list li {
 }
 
 .loader {
-  margin: 20px auto;
+  position: absolute;
+  top: calc(50% - 48px);
+  left: calc(50% - 48px);
   width: 96px;
   height: 96px;
   border-radius: 50%;
@@ -369,7 +371,8 @@ body.light-theme .profit-positive {
 
 body.light-theme .potok-icon {
   filter: brightness(0) saturate(100%) invert(87%) sepia(5%) saturate(168%) hue-rotate(175deg) brightness(95%) contrast(94%);
-}</style>
+}
+</style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
       const toggle = document.getElementById("themeToggle");
@@ -475,7 +478,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
   let timeoutId = null;
   let isRunning = false;
-  let started = false;
 
   const startButton = document.getElementById("startPotok");
   const loader = document.getElementById("loader");
@@ -491,7 +493,6 @@ document.addEventListener("DOMContentLoaded", () => {
       startButton.textContent = "Stop";
       loader.style.display = "block";
       isRunning = true;
-      started = true;
       fetch("/api/youpin_names")
         .then(res => res.json())
         .then(data => {
@@ -501,8 +502,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     } else if (label === "Stop") {
       isRunning = false;
-      loader.style.display = "none";
       startButton.textContent = "Continue";
+      loader.style.display = "none";
       clearTimeout(timeoutId);
     } else if (label === "Continue") {
       isRunning = true;
@@ -564,8 +565,12 @@ document.addEventListener("DOMContentLoaded", () => {
           <div>Профит BUFF163: ${profitB}</div>
         `;
 
-        if (data.icon && skinIcon) {
-          skinIcon.src = "https://steamcommunity-a.akamaihd.net/economy/image/" + data.icon;
+        if (data.icon && data.icon.startsWith("/")) {
+          skinIcon.src = "https://steamcommunity-a.akamaihd.net/economy/image" + data.icon;
+          skinIcon.style.display = "block";
+        } else {
+          skinIcon.src = "";
+          skinIcon.style.display = "none";
         }
 
         if (py && py.rub > 50 && py.percent > 10) {
