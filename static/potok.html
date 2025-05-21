@@ -391,6 +391,11 @@ body.light-theme .potok-icon {
 }
 </style></head>
 <body>
+<div style="position: fixed; right: 20px; top: 100px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
+<label><input checked="" id="filter-youpin" type="checkbox"/> Youpin898</label><br/>
+<label><input checked="" id="filter-buff" type="checkbox"/> BUFF163</label>
+</div>
+
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
 <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
 <button onclick="location.href='/potok'" style="display: flex; align-items: center; gap: 8px;">
@@ -483,9 +488,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const profitList = document.getElementById("profit-list");
   const skinIcon = document.getElementById("skin-icon");
 
+  const filterYoupin = document.getElementById("filter-youpin");
+  const filterBuff = document.getElementById("filter-buff");
+
   startButton?.addEventListener("click", () => {
     const label = startButton.textContent.trim();
-
     if (label === "Start") {
       startButton.textContent = "Stop";
       loader.style.display = "block";
@@ -519,19 +526,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return `rgb(${red}, ${green}, 100)`;
   }
 
+  function getIcon(profit) {
+    if (!profit || profit.rub == null) return "";
+    if (profit.rub > 0) return "↑";
+    if (profit.rub < 0) return "↓";
+    return "-";
+  }
+
   function formatProfitHTML(profit) {
     if (!profit || profit.rub == null) return "—";
     const icon = getIcon(profit);
     const color = getColorFromPercent(profit.percent);
     const bold = profit.percent > 20 ? "font-weight: bold; text-shadow: 0 0 1px black;" : "";
     return `<span style="color:${color};${bold}">${icon} ₽${profit.rub.toFixed(2)} (${profit.percent.toFixed(2)}%)</span>`;
-  }
-
-  function getIcon(profit) {
-    if (!profit || profit.rub == null) return "";
-    if (profit.rub > 0) return "↑";
-    if (profit.rub < 0) return "↓";
-    return "-";
   }
 
   function createProfitCard(name, html) {
@@ -576,12 +583,12 @@ document.addEventListener("DOMContentLoaded", () => {
           skinIcon.style.display = "none";
         }
 
-        if (py && py.rub > 50 && py.percent > 10) {
+        if (filterYoupin.checked && py && py.rub > 50 && py.percent > 10) {
           const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
           createProfitCard(name, cardInfo);
         }
 
-        if (pb && pb.rub > 50 && pb.percent > 10) {
+        if (filterBuff.checked && pb && pb.rub > 50 && pb.percent > 10) {
           const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
           createProfitCard(name, cardInfo);
         }
