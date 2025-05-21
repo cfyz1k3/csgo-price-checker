@@ -613,7 +613,7 @@ fetch("/static/buff163_icons.json")
 <label for="filter-buff" style="display: flex; align-items: center; text-align: left;"><span></span>BUFF163</label>
 </li>
 </ul>
-</div>
+</span>
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
 <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
 <button onclick="location.href='/potok'" style="display: flex; align-items: center; gap: 8px;">
@@ -823,12 +823,12 @@ card.innerHTML = `
         }
 
         if (filterYoupin.checked && py && py.rub > 50 && py.percent > 10) {
-          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: <div style="white-space: nowrap;">${formatProfitHTML(py)}</div>`;
+          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: <span style="white-space: nowrap;">${formatProfitHTML(py)}</div>`;
           createProfitCard(name, cardInfo);
         }
 
         if (filterBuff.checked && pb && pb.rub > 50 && pb.percent > 10) {
-          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: <div style="white-space: nowrap;">${formatProfitHTML(pb)}</div>`;
+          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: <span style="white-space: nowrap;">${formatProfitHTML(pb)}</div>`;
           createProfitCard(name, cardInfo);
         }
 
