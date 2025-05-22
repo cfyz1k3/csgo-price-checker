@@ -782,10 +782,17 @@ document.addEventListener("DOMContentLoaded", () => {
     
     
 card.innerHTML = `
-  ${iconURL ? `<img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"><div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>` : ""}
-  <div style="padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-    <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
-    <div style="white-space: nowrap; margin-top: 4px;">Профит:<br>${html}</div>
+  <div style="display: flex; align-items: center; height: 100%; width: 100%;">
+    ${iconURL ? `
+      <div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+        <img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
+        <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+      </div>
+    ` : ""}
+    <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+      <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
+      <div style="white-space: nowrap; margin-top: 4px;">Профит:<br>${html}</div>
+    </div>
   </div>
 `;
 
@@ -838,10 +845,10 @@ card.innerHTML = `
           skinIcon.style.display = "none";
         }
 
-        const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: ${formatProfitHTML(py)}`;
+        const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
         createProfitCard(name, cardInfoYP);
 
-        const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: ${formatProfitHTML(pb)}`;
+        const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
         createProfitCard(name, cardInfoBF);
 
         currentIndex = (currentIndex + 1) % skinNames.length;
