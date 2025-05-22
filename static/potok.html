@@ -809,6 +809,15 @@ input[type="range"]::-moz-range-thumb {
   transform: scale(0.95);
   pointer-events: none;
 }
+
+.profit-card.hide-start {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+.profit-card.hidden {
+  display: none !important;
+}
 </style></head>
 <body>
 <div style="position: fixed; right: 20px; top: 100px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
@@ -1111,21 +1120,57 @@ function updateDisplay() {
 percentSlider.addEventListener("input", updateDisplay);
 rubSlider.addEventListener("input", updateDisplay);
 updateDisplay();
+
 function filterVisibleCards() {
+  const showYoupin = document.getElementById("filter-youpin")?.checked ?? true;
+  const showBuff = document.getElementById("filter-buff")?.checked ?? true;
+
   const cards = document.querySelectorAll('.profit-card');
-  cards.forEach(card => {
+  
+cards.forEach(card => {
+  const isYoupin = card.innerText.includes("Youpin898:");
+  const isBuff = card.innerText.includes("BUFF163:");
+
+  if ((isYoupin && !showYoupin) || (isBuff && !showBuff)) {
+    
+card.classList.add('hide-start');
+setTimeout(() => {
+  card.classList.add('hidden');
+}, 300);
+
+    return;
+  }
+
     const text = card.innerText;
     const match = text.match(/Профит:\s*[↑↓-]?\s*₽([\d\.]+)\s*\(([-\d\.]+)%\)/);
     if (match) {
       const rub = parseFloat(match[1]);
       const percent = parseFloat(match[2]);
       if (rub >= (window.currentMinRub || 0) && percent >= (window.currentMinPercent || 0)) {
-        card.classList.remove('hidden');
+        
+card.classList.remove('hidden');
+card.classList.remove('hide-start');
+card.style.display = 'flex';
+requestAnimationFrame(() => {
+  card.style.opacity = '1';
+  card.style.transform = 'scale(1)';
+});
+
       } else {
-        card.classList.add('hidden');
+        
+card.classList.add('hide-start');
+setTimeout(() => {
+  card.classList.add('hidden');
+}, 300);
+
       }
     } else {
-      card.classList.add('hidden');
+      
+card.classList.add('hide-start');
+setTimeout(() => {
+  card.classList.add('hidden');
+}, 300);
+
     }
   });
 }
