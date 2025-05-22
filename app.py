@@ -66,7 +66,7 @@ def get_price_data():
         results["buff"] = None
 
     try:
-        r = requests.get(f"https://market.csgo.com/api/v2/search-item-by-hash-name?key=k4188s3VOAqUkv9ZGsWTi5760pO9s45&hash_name={name}", timeout=10)
+        r = requests.get(f"https://market.csgo.com/api/v2/search-item-by-hash-name?key=MuvCYEV99pjqEkV0505dC1h9q33OdaG&hash_name={name}", timeout=10)
         data = r.json()
         results["leg1t"] = float(data["data"][0]["price"]) if "data" in data else None
     except:
