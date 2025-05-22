@@ -766,15 +766,18 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
+
 .profit-card.fade-out {
   opacity: 0;
-  transform: scale(0.8);
+  transform: scale(0.7);
+  pointer-events: none;
   height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden;
-  pointer-events: none;
 }
+
+
 
 
 
@@ -783,7 +786,12 @@ body:not(.light-theme) .checkbox input:checked + label {
   opacity: 1;
   transform: scale(1);
   pointer-events: auto;
+  height: 120px !important;
+  margin: 5px !important;
+  padding: 10px !important;
+  overflow: visible;
 }
+
 
 
 #profit-list {
@@ -845,15 +853,18 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
+
 .profit-card.fade-out {
   opacity: 0;
-  transform: scale(0.8);
+  transform: scale(0.7);
+  pointer-events: none;
   height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden;
-  pointer-events: none;
 }
+
+
 
 
 
@@ -862,10 +873,12 @@ body:not(.light-theme) .checkbox input:checked + label {
   opacity: 1;
   transform: scale(1);
   pointer-events: auto;
-  height: 120px;
-  margin: 5px;
-  padding: 10px;
+  height: 120px !important;
+  margin: 5px !important;
+  padding: 10px !important;
+  overflow: visible;
 }
+
 
 
 
@@ -1012,7 +1025,7 @@ input[type="range"]::-moz-range-thumb {
 
 </style></head>
 <body>
-<<<div style="position: fixed; top: 100px; left: 20px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
+<<div style="position: fixed; top: 100px; left: 20px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
 <ul style="list-style-type: none; padding: 0; margin: 0;">
 <li class="checkbox">
 <input checked="" class="checkbox-spin" id="filter-youpin" type="checkbox"/>
@@ -1041,19 +1054,19 @@ input[type="range"]::-moz-range-thumb {
 </div>
 </div>
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
-<div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
+<div style="position: absolute; top: 20px; right: 20px;">
 <button onclick="location.href='/potok'" style="display: flex; align-items: center; gap: 8px;">
 <img alt="Potok Icon" class="potok-icon" src="back_icon.png" style="height: 28px;"/>
     Potok
   </button>
 </div>
-<div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
+<div style="position: absolute; top: 20px; right: 20px;">
 <button onclick="location.href='index.html'" style="display: flex; align-items: center; gap: 8px;">
 <img alt="Potok Icon" class="potok-icon" src="back_icon.png" style="height: 28px;"/>
     Back
   </button>
 </div>
-<div style="position: absolute; top: 20px; left: 20px;">
+<div style="position: absolute; top: 20px; right: 20px;">
 <label class="theme-switch" style="display: flex; align-items: center; text-align: left;">
 <input id="themeToggle" type="checkbox"/>
 <span class="slider"></span>
