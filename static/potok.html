@@ -474,7 +474,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 500px;
+  width: 420px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -616,7 +616,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 500px;
+  width: 420px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -663,7 +663,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 500px;
+  width: 420px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -745,7 +745,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 500px;
+  width: 420px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -757,15 +757,23 @@ body:not(.light-theme) .checkbox input:checked + label {
 }
 
 
+
 .profit-card.hidden {
   display: none !important;
 }
 
+
+
 .profit-card.fade-out {
   opacity: 0;
-  transform: scale(0.95);
+  transform: scale(0.8);
   pointer-events: none;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
 }
+
 
 .profit-card.fade-in {
   opacity: 1;
@@ -795,7 +803,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 500px;
+  width: 420px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -818,7 +826,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 500px;
+  width: 420px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -830,14 +838,17 @@ body:not(.light-theme) .checkbox input:checked + label {
 }
 
 
+
 .profit-card.fade-out {
   opacity: 0;
   transform: scale(0.8);
   pointer-events: none;
-  height: 0;
-  margin: 0;
-  padding: 0;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
 }
+
 
 .profit-card.fade-in {
   opacity: 1;
@@ -848,11 +859,15 @@ body:not(.light-theme) .checkbox input:checked + label {
   padding: 10px;
 }
 
+
 .profit-card.hidden {
   display: none !important;
-}.profit-card.hidden {
-  display: block; /* оставляем в DOM, но визуально "ушёл" */
 }
+
+.profit-card.hidden {
+  display: none !important;
+}
+
 </style><script>
 let iconMap = {};
 fetch("/static/buff163_icons.json")
@@ -960,7 +975,7 @@ input[type="range"]::-moz-range-thumb {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 500px;
+  width: 420px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -971,20 +986,22 @@ input[type="range"]::-moz-range-thumb {
   transform: scale(1);
 }
 
+
 .profit-card.hidden {
-  opacity: 0;
-  transform: scale(0.95);
-  pointer-events: none;
+  display: none !important;
 }
+
 
 .profit-card.hide-start {
   opacity: 0;
   transform: scale(0.95);
   pointer-events: none;
 }
+
 .profit-card.hidden {
   display: none !important;
 }
+
 </style></head>
 <body>
 <div style="position: fixed; right: 20px; top: 100px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
