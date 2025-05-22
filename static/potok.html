@@ -729,9 +729,11 @@ document.addEventListener("DOMContentLoaded", () => {
       startButton.textContent = "Stop";
       loader.style.display = "block";
       isRunning = true;
-      fetch("/api/youpin_names")
-        .then(res => res.json())
-        .then(data => {
+      Promise.resolve([
+      "AK-47 | Redline (Field-Tested)",
+      "AWP | Asiimov (Battle-Scarred)",
+      "M4A1-S | Printstream (Factory New)"
+    ]).then(data => {
           skinNames = data;
           currentIndex = 0;
           if (skinNames.length > 0) checkNextSkin();
