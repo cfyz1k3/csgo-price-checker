@@ -759,14 +759,8 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
-.profit-card.hidden {
-  opacity: 0;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  pointer-events: none;
-  overflow: hidden;
-}
+
+
 
 
 
@@ -781,6 +775,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   overflow: hidden;
   pointer-events: none;
 }
+
 
 
 
@@ -849,6 +844,7 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
+
 .profit-card.fade-out {
   opacity: 0;
   transform: scale(0.8);
@@ -858,6 +854,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   overflow: hidden;
   pointer-events: none;
 }
+
 
 
 
@@ -872,25 +869,11 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
-.profit-card.hidden {
-  opacity: 0;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  pointer-events: none;
-  overflow: hidden;
-}
 
 
 
-.profit-card.hidden {
-  opacity: 0;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  pointer-events: none;
-  overflow: hidden;
-}
+
+
 
 
 </style><script>
@@ -1013,14 +996,7 @@ input[type="range"]::-moz-range-thumb {
 
 
 
-.profit-card.hidden {
-  opacity: 0;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  pointer-events: none;
-  overflow: hidden;
-}
+
 
 
 
@@ -1031,19 +1007,12 @@ input[type="range"]::-moz-range-thumb {
 }
 
 
-.profit-card.hidden {
-  opacity: 0;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  pointer-events: none;
-  overflow: hidden;
-}
+
 
 
 </style></head>
 <body>
-<div style="position: fixed; right: 20px; top: 100px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
+<<div style="position: fixed; top: 100px; right: 20px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
 <ul style="list-style-type: none; padding: 0; margin: 0;">
 <li class="checkbox">
 <input checked="" class="checkbox-spin" id="filter-youpin" type="checkbox"/>
@@ -1341,6 +1310,7 @@ function updateDisplay() {
 }
 
 
+
 function filterVisibleCards() {
   const showYoupin = document.getElementById("filter-youpin")?.checked ?? true;
   const showBuff = document.getElementById("filter-buff")?.checked ?? true;
@@ -1362,28 +1332,12 @@ function filterVisibleCards() {
       percent >= (window.currentMinPercent || 0)
     );
 
-    clearTimeout(card._hideTimer);
-    clearTimeout(card._showTimer);
-
     if (visible) {
-      if (card.classList.contains('hidden')) {
-        card.classList.remove('hidden');
-        card._showTimer = setTimeout(() => {
-          card.classList.add('fade-in');
-          card.classList.remove('fade-out');
-        }, 10);
-      } else {
-        card.classList.add('fade-in');
-        card.classList.remove('fade-out');
-      }
+      card.classList.remove('fade-out');
+      card.classList.add('fade-in');
     } else {
-      if (!card.classList.contains('fade-out')) {
-        card.classList.remove('fade-in');
-        card.classList.add('fade-out');
-        card._hideTimer = setTimeout(() => {
-          card.classList.add('hidden');
-        }, 400);
-      }
+      card.classList.remove('fade-in');
+      card.classList.add('fade-out');
     }
   });
 }
