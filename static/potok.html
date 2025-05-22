@@ -613,7 +613,7 @@ fetch("/static/buff163_icons.json")
 <label for="filter-buff" style="display: flex; align-items: center; text-align: left;"><span></span>BUFF163</label>
 </li>
 </ul>
-</span>
+</div>
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
 <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
 <button onclick="location.href='/potok'" style="display: flex; align-items: center; gap: 8px;">
@@ -766,10 +766,10 @@ document.addEventListener("DOMContentLoaded", () => {
     
     
 card.innerHTML = `
-  ${iconURL ? `<img src="${iconURL}" style="height: 80%; width: 80px; object-fit: contain; margin-left: 10px; border-right: 1px solid var(--text-color);">` : ""}
-  <div style="padding: 10px; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+  ${iconURL ? `<img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"><div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>` : ""}
+  <div style="padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
     <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
-    ${html}
+    <div style="white-space: nowrap; margin-top: 4px;">Профит:<br>${html}</div>
   </div>
 `;
 
@@ -822,13 +822,13 @@ card.innerHTML = `
           skinIcon.style.display = "none";
         }
 
-        if (filterYoupin.checked && py && py.rub > 50 && py.percent > 10) {
-          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: <span style="white-space: nowrap;">${formatProfitHTML(py)}</div>`;
+        if (filterYoupin.checked && py && py.rub > 1 && py.percent > 1) {
+          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: ${formatProfitHTML(py)}`;
           createProfitCard(name, cardInfo);
         }
 
-        if (filterBuff.checked && pb && pb.rub > 50 && pb.percent > 10) {
-          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: <span style="white-space: nowrap;">${formatProfitHTML(pb)}</div>`;
+        if (filterBuff.checked && pb && pb.rub > 1 && pb.percent > 1) {
+          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: ${formatProfitHTML(pb)}`;
           createProfitCard(name, cardInfo);
         }
 
