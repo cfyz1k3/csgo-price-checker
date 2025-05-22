@@ -778,6 +778,37 @@ body:not(.light-theme) .checkbox input:checked + label {
   border-color: var(--text-color);
 }
 
+</style><style>
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text-color);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--text-color);
+  transition: background 0.3s ease;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text-color);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--text-color);
+}
+</style><style>
+.profit-card {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 1;
+  transform: scale(1);
+}
+.profit-card.hidden {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
 </style></head>
 <body>
 <div style="position: fixed; right: 20px; top: 100px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
@@ -791,6 +822,22 @@ body:not(.light-theme) .checkbox input:checked + label {
 <label for="filter-buff" style="display: flex; align-items: center; text-align: left;"><span></span>BUFF163</label>
 </li>
 </ul>
+<div style="margin-top: 12px;">
+<div class="slider-block">
+<div class="slider-label" style="display: flex; justify-content: space-between;">
+<label for="percentSlider">Мин. профит (%)</label>
+<span class="slider-value" id="percentDisplay" style="font-weight: bold;">0%</span>
+</div>
+<input id="percentSlider" max="100" min="0" step="1" style="width: 180px; height: 8px; -webkit-appearance: none; background: linear-gradient(to right, var(--text-color), #80b5e8); border-radius: 6px; outline: none; box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); transition: background 0.4s ease; margin-top: 12px;" type="range" value="0"/>
+</div>
+<div class="slider-block" style="margin-top: 10px;">
+<div class="slider-label" style="display: flex; justify-content: space-between;">
+<label for="rubSlider">Мин. профит (₽)</label>
+<span class="slider-value" id="rubDisplay" style="font-weight: bold;">0₽</span>
+</div>
+<input id="rubSlider" max="400" min="0" step="1" style="width: 180px; height: 8px; -webkit-appearance: none; background: linear-gradient(to right, var(--text-color), #80b5e8); border-radius: 6px; outline: none; box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); transition: background 0.4s ease; margin-top: 12px;" type="range" value="0"/>
+</div>
+</div>
 </div>
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
 <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
@@ -1008,10 +1055,14 @@ card.innerHTML = `
         }
 
         const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
-        createProfitCard(name, cardInfoYP);
+        if (py && py.percent >= (window.currentMinPercent || 0) && py.rub >= (window.currentMinRub || 0)) {
+  createProfitCard(name, cardInfoYP);
+}
 
         const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
-        createProfitCard(name, cardInfoBF);
+        if (pb && pb.percent >= (window.currentMinPercent || 0) && pb.rub >= (window.currentMinRub || 0)) {
+  createProfitCard(name, cardInfoBF);
+}
 
         currentIndex = (currentIndex + 1) % skinNames.length;
         timeoutId = setTimeout(checkNextSkin, 1000);
@@ -1035,5 +1086,52 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+</script><script>
+const percentSlider = document.getElementById("percentSlider");
+const rubSlider = document.getElementById("rubSlider");
+const percentDisplay = document.getElementById("percentDisplay");
+const rubDisplay = document.getElementById("rubDisplay");
+
+function mapRubSlider(val) {
+  if (val <= 50) return val * 0.2;
+  if (val <= 150) return (val - 50) * 0.9 + 10;
+  if (val <= 300) return (val - 150) * 6 + 100;
+  return (val - 300) * 90 + 1000;
+}
+
+function updateDisplay() {
+  const percent = +percentSlider.value;
+  const rub = Math.round(mapRubSlider(+rubSlider.value));
+  percentDisplay.textContent = `${percent}%`;
+  rubDisplay.textContent = `${rub}₽`;
+  window.currentMinPercent = percent;
+  window.currentMinRub = rub;
+}
+
+percentSlider.addEventListener("input", updateDisplay);
+rubSlider.addEventListener("input", updateDisplay);
+updateDisplay();
+function filterVisibleCards() {
+  const cards = document.querySelectorAll('.profit-card');
+  cards.forEach(card => {
+    const text = card.innerText;
+    const match = text.match(/Профит:\s*[↑↓-]?\s*₽([\d\.]+)\s*\(([-\d\.]+)%\)/);
+    if (match) {
+      const rub = parseFloat(match[1]);
+      const percent = parseFloat(match[2]);
+      if (rub >= (window.currentMinRub || 0) && percent >= (window.currentMinPercent || 0)) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+percentSlider.addEventListener('input', () => { updateDisplay(); filterVisibleCards(); });
+rubSlider.addEventListener('input', () => { updateDisplay(); filterVisibleCards(); });
+updateDisplay();
+filterVisibleCards();
 </script></body>
 </html>
