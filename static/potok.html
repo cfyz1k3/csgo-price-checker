@@ -412,7 +412,7 @@ body.light-theme .potok-icon {
 .profit-card {
   width: 360px;
   height: 120px;
-  background: #141414;
+  background: #1e1e1e;
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -544,7 +544,7 @@ body.light-theme .potok-icon {
 .profit-card {
   width: 360px;
   height: 120px;
-  background: #141414;
+  background: #1e1e1e;
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -581,7 +581,7 @@ body.light-theme .potok-icon {
 .profit-card {
   width: 360px;
   height: 120px;
-  background: #141414;
+  background: #1e1e1e;
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -838,15 +838,11 @@ card.innerHTML = `
           skinIcon.style.display = "none";
         }
 
-        if (filterYoupin.checked && py) {
-          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: ${formatProfitHTML(py)}`;
-          createProfitCard(name, cardInfo);
-        }
+        const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: ${formatProfitHTML(py)}`;
+        createProfitCard(name, cardInfoYP);
 
-        if (filterBuff.checked && pb) {
-          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: ${formatProfitHTML(pb)}`;
-          createProfitCard(name, cardInfo);
-        }
+        const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: ${formatProfitHTML(pb)}`;
+        createProfitCard(name, cardInfoBF);
 
         currentIndex = (currentIndex + 1) % skinNames.length;
         timeoutId = setTimeout(checkNextSkin, 1000);
