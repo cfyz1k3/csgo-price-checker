@@ -463,18 +463,28 @@ body:not(.light-theme) .checkbox input:checked + label {
     });
   </script>
 <style>
+
 .profit-card {
-  width: 360px;
-  height: 120px;
   background: #1e1e1e;
+  border: 1px solid var(--text-color);
+  border-radius: 8px;
+  font-size: 14px;
   display: flex;
   align-items: center;
-  border-radius: 8px;
-  border: 1px solid var(--text-color);
-  font-size: 14px;
+  justify-content: center;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  width: 500px;
+  max-width: 95%;
+  height: 120px;
+  margin: 0 auto;
+  padding: 10px;
+  transition: opacity 0.4s ease, transform 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
+  will-change: opacity, transform, height, margin, padding;
+  opacity: 1;
+  transform: scale(1);
 }
+
 
 .checkbox-spin-wrapper {
   display: inline-block;
@@ -595,18 +605,28 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
+
 .profit-card {
-  width: 360px;
-  height: 120px;
   background: #1e1e1e;
+  border: 1px solid var(--text-color);
+  border-radius: 8px;
+  font-size: 14px;
   display: flex;
   align-items: center;
-  border-radius: 8px;
-  border: 1px solid var(--text-color);
-  font-size: 14px;
+  justify-content: center;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  width: 500px;
+  max-width: 95%;
+  height: 120px;
+  margin: 0 auto;
+  padding: 10px;
+  transition: opacity 0.4s ease, transform 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
+  will-change: opacity, transform, height, margin, padding;
+  opacity: 1;
+  transform: scale(1);
 }
+
 .profit-card:hover {
   transform: scale(1.03);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
@@ -632,18 +652,28 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
+
 .profit-card {
-  width: 360px;
-  height: 120px;
   background: #1e1e1e;
+  border: 1px solid var(--text-color);
+  border-radius: 8px;
+  font-size: 14px;
   display: flex;
   align-items: center;
-  border-radius: 8px;
-  border: 1px solid var(--text-color);
-  font-size: 14px;
+  justify-content: center;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  width: 500px;
+  max-width: 95%;
+  height: 120px;
+  margin: 0 auto;
+  padding: 10px;
+  transition: opacity 0.4s ease, transform 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
+  will-change: opacity, transform, height, margin, padding;
+  opacity: 1;
+  transform: scale(1);
 }
+
 .profit-card:hover {
   transform: scale(1.03);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
@@ -704,10 +734,28 @@ body:not(.light-theme) .checkbox input:checked + label {
 }
 
 
+
 .profit-card {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  will-change: opacity, transform;
+  background: #1e1e1e;
+  border: 1px solid var(--text-color);
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 500px;
+  max-width: 95%;
+  height: 120px;
+  margin: 0 auto;
+  padding: 10px;
+  transition: opacity 0.4s ease, transform 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
+  will-change: opacity, transform, height, margin, padding;
+  opacity: 1;
+  transform: scale(1);
 }
+
 
 .profit-card.hidden {
   display: none !important;
@@ -725,48 +773,84 @@ body:not(.light-theme) .checkbox input:checked + label {
   pointer-events: auto;
 }
 
+
 #profit-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 10px;
-  transition: all 0.3s ease;
+  gap: 16px;
+  padding: 20px 0;
 }
 
-.profit-card {
-  transition: opacity 0.3s ease, transform 0.3s ease, margin 0.3s ease;
-}
+
 
 .profit-card {
-  transition: opacity 0.3s ease, transform 0.3s ease, height 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+  background: #1e1e1e;
+  border: 1px solid var(--text-color);
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 500px;
+  max-width: 95%;
+  height: 120px;
+  margin: 0 auto;
+  padding: 10px;
+  transition: opacity 0.4s ease, transform 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
   will-change: opacity, transform, height, margin, padding;
   opacity: 1;
   transform: scale(1);
-  height: 120px;
-  margin: 5px;
-  padding: 10px;
 }
+
+
+
+.profit-card {
+  background: #1e1e1e;
+  border: 1px solid var(--text-color);
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 500px;
+  max-width: 95%;
+  height: 120px;
+  margin: 0 auto;
+  padding: 10px;
+  transition: opacity 0.4s ease, transform 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
+  will-change: opacity, transform, height, margin, padding;
+  opacity: 1;
+  transform: scale(1);
+}
+
 
 .profit-card.fade-out {
   opacity: 0;
-  transform: scale(0.95);
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden;
+  transform: scale(0.8);
   pointer-events: none;
+  height: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .profit-card.fade-in {
   opacity: 1;
   transform: scale(1);
+  pointer-events: auto;
   height: 120px;
   margin: 5px;
   padding: 10px;
-  pointer-events: auto;
 }
 
 .profit-card.hidden {
+  display: none !important;
+}.profit-card.hidden {
   display: block; /* оставляем в DOM, но визуально "ушёл" */
 }
 </style><script>
@@ -865,11 +949,28 @@ input[type="range"]::-moz-range-thumb {
   box-shadow: 0 0 8px var(--text-color);
 }
 </style><style>
+
 .profit-card {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  background: #1e1e1e;
+  border: 1px solid var(--text-color);
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 500px;
+  max-width: 95%;
+  height: 120px;
+  margin: 0 auto;
+  padding: 10px;
+  transition: opacity 0.4s ease, transform 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
+  will-change: opacity, transform, height, margin, padding;
   opacity: 1;
   transform: scale(1);
 }
+
 .profit-card.hidden {
   opacity: 0;
   transform: scale(0.95);
@@ -938,7 +1039,7 @@ input[type="range"]::-moz-range-thumb {
 <div class="inner one"></div>
 <div class="inner two"></div>
 <div class="inner three"></div>
-</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
+</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div></div>
 <script>
 let skinIcons = {};
 fetch("buff163_icons.json")
@@ -1183,6 +1284,7 @@ function updateDisplay() {
   window.currentMinRub = rub;
 }
 
+
 function filterVisibleCards() {
   const showYoupin = document.getElementById("filter-youpin")?.checked ?? true;
   const showBuff = document.getElementById("filter-buff")?.checked ?? true;
@@ -1204,19 +1306,32 @@ function filterVisibleCards() {
       percent >= (window.currentMinPercent || 0)
     );
 
+    clearTimeout(card._hideTimer);
+    clearTimeout(card._showTimer);
+
     if (visible) {
-      card.classList.remove('fade-out'); card.classList.add('fade-in');
-      card.classList.remove('fade-out');
-      card.classList.add('fade-in');
+      if (card.classList.contains('hidden')) {
+        card.classList.remove('hidden');
+        card._showTimer = setTimeout(() => {
+          card.classList.add('fade-in');
+          card.classList.remove('fade-out');
+        }, 10);
+      } else {
+        card.classList.add('fade-in');
+        card.classList.remove('fade-out');
+      }
     } else {
-      card.classList.remove('fade-in');
-      card.classList.add('fade-out');
-      card.addEventListener('transitionend', () => {
-        card.classList.remove('fade-in'); card.classList.add('fade-out');
-      }, { once: true });
+      if (!card.classList.contains('fade-out')) {
+        card.classList.remove('fade-in');
+        card.classList.add('fade-out');
+        card._hideTimer = setTimeout(() => {
+          card.classList.add('hidden');
+        }, 400);
+      }
     }
   });
 }
+
 
 percentSlider.addEventListener("input", () => {
   updateDisplay();
@@ -1226,6 +1341,8 @@ rubSlider.addEventListener("input", () => {
   updateDisplay();
   filterVisibleCards();
 });
+document.getElementById("filter-youpin").addEventListener("change", filterVisibleCards);
+document.getElementById("filter-buff").addEventListener("change", filterVisibleCards);
 
 updateDisplay();
 filterVisibleCards();
