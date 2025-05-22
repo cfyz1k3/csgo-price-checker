@@ -412,7 +412,7 @@ body.light-theme .potok-icon {
 .profit-card {
   width: 360px;
   height: 120px;
-  background: #1e1e1e;
+  background: #141414;
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -544,7 +544,7 @@ body.light-theme .potok-icon {
 .profit-card {
   width: 360px;
   height: 120px;
-  background: #1e1e1e;
+  background: #141414;
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -581,7 +581,7 @@ body.light-theme .potok-icon {
 .profit-card {
   width: 360px;
   height: 120px;
-  background: #1e1e1e;
+  background: #141414;
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -729,11 +729,9 @@ document.addEventListener("DOMContentLoaded", () => {
       startButton.textContent = "Stop";
       loader.style.display = "block";
       isRunning = true;
-      Promise.resolve([
-      "AK-47 | Redline (Field-Tested)",
-      "AWP | Asiimov (Battle-Scarred)",
-      "M4A1-S | Printstream (Factory New)"
-    ]).then(data => {
+      fetch("/api/youpin_names")
+        .then(res => res.json())
+        .then(data => {
           skinNames = data;
           currentIndex = 0;
           if (skinNames.length > 0) checkNextSkin();
@@ -783,18 +781,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nameHTML = `<strong class="copyable" style="cursor: pointer;">${name}</strong>`;
     
     
-    card.innerHTML = `
-  <div style="display: flex; align-items: center;">
-    ${iconURL ? `
-      <img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
-      <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
-    ` : ""}
-    <div style="padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-      <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
-      <div style="white-space: nowrap; margin-top: 4px;">${html}</div>
-    </div>
-  </div>
-`;
+card.innerHTML = `
   ${iconURL ? `<img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"><div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>` : ""}
   <div style="padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
     <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
@@ -851,11 +838,15 @@ document.addEventListener("DOMContentLoaded", () => {
           skinIcon.style.display = "none";
         }
 
-        const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: ${formatProfitHTML(py)}`;
-        createProfitCard(name, cardInfoYP);
+        if (filterYoupin.checked && py) {
+          const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: ${formatProfitHTML(py)}`;
+          createProfitCard(name, cardInfo);
+        }
 
-        const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: ${formatProfitHTML(pb)}`;
-        createProfitCard(name, cardInfoBF);
+        if (filterBuff.checked && pb) {
+          const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: ${formatProfitHTML(pb)}`;
+          createProfitCard(name, cardInfo);
+        }
 
         currentIndex = (currentIndex + 1) % skinNames.length;
         timeoutId = setTimeout(checkNextSkin, 1000);
@@ -866,7 +857,8 @@ document.addEventListener("DOMContentLoaded", () => {
         timeoutId = setTimeout(checkNextSkin, 1000);
       });
   }
-});</script>
+});
+</script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".copyable").forEach(el => {
