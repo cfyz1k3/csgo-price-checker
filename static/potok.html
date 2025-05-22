@@ -600,7 +600,23 @@ let iconMap = {};
 fetch("/static/buff163_icons.json")
   .then(res => res.json())
   .then(data => { iconMap = data; });
-</script></head>
+</script><style>
+.copyable {
+  transition: color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+.copyable:hover {
+  color: var(--text-color);
+  transform: scale(1.05);
+}
+.copyable.copied {
+  animation: copiedFlash 0.5s ease;
+}
+@keyframes copiedFlash {
+  0%   { color: lime; transform: scale(1.2); }
+  100% { color: var(--text-color); transform: scale(1); }
+}
+</style></head>
 <body>
 <div style="position: fixed; right: 20px; top: 100px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
 <ul style="list-style-type: none; padding: 0; margin: 0;">
@@ -843,5 +859,16 @@ card.innerHTML = `
   }
 });
 </script>
-</body>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".copyable").forEach(el => {
+    el.addEventListener("click", () => {
+      navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+        el.classList.add("copied");
+        setTimeout(() => el.classList.remove("copied"), 500);
+      });
+    });
+  });
+});
+</script></body>
 </html>
