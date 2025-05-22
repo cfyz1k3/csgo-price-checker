@@ -1025,7 +1025,7 @@ input[type="range"]::-moz-range-thumb {
 
 </style></head>
 <body>
-<<div style="position: fixed; top: 100px; left: 20px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
+<div style="position: fixed; top: 100px; left: 20px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
 <ul style="list-style-type: none; padding: 0; margin: 0;">
 <li class="checkbox">
 <input checked="" class="checkbox-spin" id="filter-youpin" type="checkbox"/>
@@ -1060,7 +1060,7 @@ input[type="range"]::-moz-range-thumb {
     Potok
   </button>
 </div>
-<div style="position: absolute; top: 20px; right: 20px;">
+<div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
 <button onclick="location.href='index.html'" style="display: flex; align-items: center; gap: 8px;">
 <img alt="Potok Icon" class="potok-icon" src="back_icon.png" style="height: 28px;"/>
     Back
@@ -1324,6 +1324,7 @@ function updateDisplay() {
 
 
 
+
 function filterVisibleCards() {
   const showYoupin = document.getElementById("filter-youpin")?.checked ?? true;
   const showBuff = document.getElementById("filter-buff")?.checked ?? true;
@@ -1345,12 +1346,20 @@ function filterVisibleCards() {
       percent >= (window.currentMinPercent || 0)
     );
 
+    clearTimeout(card._hideTimer);
+
     if (visible) {
-      card.classList.remove('fade-out');
-      card.classList.add('fade-in');
+      card.style.display = "flex";
+      requestAnimationFrame(() => {
+        card.classList.remove("fade-out");
+        card.classList.add("fade-in");
+      });
     } else {
-      card.classList.remove('fade-in');
-      card.classList.add('fade-out');
+      card.classList.remove("fade-in");
+      card.classList.add("fade-out");
+      card._hideTimer = setTimeout(() => {
+        card.style.display = "none";
+      }, 400);
     }
   });
 }
