@@ -703,6 +703,39 @@ body:not(.light-theme) .checkbox input:checked + label {
   border-color: var(--text-color);
 }
 
+
+.profit-card {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  will-change: opacity, transform;
+}
+
+.profit-card.hidden {
+  display: none !important;
+}
+
+.profit-card.fade-out {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+.profit-card.fade-in {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+#profit-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.profit-card {
+  transition: opacity 0.3s ease, transform 0.3s ease, margin 0.3s ease;
+}
 </style><script>
 let iconMap = {};
 fetch("/static/buff163_icons.json")
@@ -1135,7 +1168,13 @@ cards.forEach(card => {
     
 card.classList.add('hide-start');
 setTimeout(() => {
+  
+card.classList.remove('fade-in');
+card.classList.add('fade-out');
+card.addEventListener('transitionend', () => {
   card.classList.add('hidden');
+}, { once: true });
+
 }, 300);
 
     return;
@@ -1148,7 +1187,11 @@ setTimeout(() => {
       const percent = parseFloat(match[2]);
       if (rub >= (window.currentMinRub || 0) && percent >= (window.currentMinPercent || 0)) {
         
+
 card.classList.remove('hidden');
+card.classList.remove('fade-out');
+card.classList.add('fade-in');
+
 card.classList.remove('hide-start');
 card.style.display = 'flex';
 requestAnimationFrame(() => {
@@ -1160,7 +1203,13 @@ requestAnimationFrame(() => {
         
 card.classList.add('hide-start');
 setTimeout(() => {
+  
+card.classList.remove('fade-in');
+card.classList.add('fade-out');
+card.addEventListener('transitionend', () => {
   card.classList.add('hidden');
+}, { once: true });
+
 }, 300);
 
       }
@@ -1168,7 +1217,13 @@ setTimeout(() => {
       
 card.classList.add('hide-start');
 setTimeout(() => {
+  
+card.classList.remove('fade-in');
+card.classList.add('fade-out');
+card.addEventListener('transitionend', () => {
   card.classList.add('hidden');
+}, { once: true });
+
 }, 300);
 
     }
