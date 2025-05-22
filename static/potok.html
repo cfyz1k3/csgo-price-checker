@@ -399,6 +399,60 @@ body.light-theme .potok-icon {
 
 
 
+
+.checkbox input:checked + label {
+  filter: brightness(1.15) saturate(1.2);
+  transition: filter 0.3s ease;
+}
+
+
+
+
+
+body.light-theme .checkbox input + label {
+  color: rgba(0, 0, 0, 0.4);
+  transition: color 0.3s ease;
+}
+body.light-theme .checkbox input:checked + label {
+  color: #000000;
+}
+
+
+body:not(.light-theme) .checkbox input + label {
+  color: rgba(204, 211, 224, 0.4);
+  transition: color 0.3s ease;
+}
+body:not(.light-theme) .checkbox input:checked + label {
+  color: var(--text-color);
+}
+
+
+.checkbox input + label {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+
+
+
+
+
+
+.checkbox input + label span {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border-radius: 4px;
+}
+
+
+
+.checkbox input + label span {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border-radius: 4px;
+}
+.checkbox input + label:hover span {
+  box-shadow: 0 0 6px 2px var(--text-color);
+  border-color: var(--text-color);
+}
+
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -595,6 +649,60 @@ body.light-theme .potok-icon {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
+
+.checkbox input:checked + label {
+  filter: brightness(1.15) saturate(1.2);
+  transition: filter 0.3s ease;
+}
+
+
+
+
+
+body.light-theme .checkbox input + label {
+  color: rgba(0, 0, 0, 0.4);
+  transition: color 0.3s ease;
+}
+body.light-theme .checkbox input:checked + label {
+  color: #000000;
+}
+
+
+body:not(.light-theme) .checkbox input + label {
+  color: rgba(204, 211, 224, 0.4);
+  transition: color 0.3s ease;
+}
+body:not(.light-theme) .checkbox input:checked + label {
+  color: var(--text-color);
+}
+
+
+.checkbox input + label {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+
+
+
+
+
+
+.checkbox input + label span {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border-radius: 4px;
+}
+
+
+
+.checkbox input + label span {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border-radius: 4px;
+}
+.checkbox input + label:hover span {
+  box-shadow: 0 0 6px 2px var(--text-color);
+  border-color: var(--text-color);
+}
+
 </style><script>
 let iconMap = {};
 fetch("/static/buff163_icons.json")
@@ -616,6 +724,60 @@ fetch("/static/buff163_icons.json")
   0%   { color: lime; transform: scale(1.2); }
   100% { color: var(--text-color); transform: scale(1); }
 }
+
+.checkbox input:checked + label {
+  filter: brightness(1.15) saturate(1.2);
+  transition: filter 0.3s ease;
+}
+
+
+
+
+
+body.light-theme .checkbox input + label {
+  color: rgba(0, 0, 0, 0.4);
+  transition: color 0.3s ease;
+}
+body.light-theme .checkbox input:checked + label {
+  color: #000000;
+}
+
+
+body:not(.light-theme) .checkbox input + label {
+  color: rgba(204, 211, 224, 0.4);
+  transition: color 0.3s ease;
+}
+body:not(.light-theme) .checkbox input:checked + label {
+  color: var(--text-color);
+}
+
+
+.checkbox input + label {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+
+
+
+
+
+
+.checkbox input + label span {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border-radius: 4px;
+}
+
+
+
+.checkbox input + label span {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border-radius: 4px;
+}
+.checkbox input + label:hover span {
+  box-shadow: 0 0 6px 2px var(--text-color);
+  border-color: var(--text-color);
+}
+
 </style></head>
 <body>
 <div style="position: fixed; right: 20px; top: 100px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
