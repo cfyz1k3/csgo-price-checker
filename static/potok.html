@@ -781,7 +781,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const nameHTML = `<strong class="copyable" style="cursor: pointer;">${name}</strong>`;
     
     
-card.innerHTML = `
+    card.innerHTML = `
+  <div style="display: flex; align-items: center;">
+    ${iconURL ? `
+      <img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
+      <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+    ` : ""}
+    <div style="padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+      <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
+      <div style="white-space: nowrap; margin-top: 4px;">${html}</div>
+    </div>
+  </div>
+`;
   ${iconURL ? `<img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"><div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>` : ""}
   <div style="padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
     <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
@@ -853,8 +864,7 @@ card.innerHTML = `
         timeoutId = setTimeout(checkNextSkin, 1000);
       });
   }
-});
-</script>
+});</script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".copyable").forEach(el => {
