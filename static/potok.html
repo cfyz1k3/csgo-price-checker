@@ -838,12 +838,12 @@ card.innerHTML = `
           skinIcon.style.display = "none";
         }
 
-        if (filterYoupin.checked && py && py.rub > 1 && py.percent > 1) {
+        if (filterYoupin.checked && py) {
           const cardInfo = `Youpin898: ${youpin}<br>ТМ: ${tm} Профит: ${formatProfitHTML(py)}`;
           createProfitCard(name, cardInfo);
         }
 
-        if (filterBuff.checked && pb && pb.rub > 1 && pb.percent > 1) {
+        if (filterBuff.checked && pb) {
           const cardInfo = `BUFF163: ${buff}<br>ТМ: ${tm} Профит: ${formatProfitHTML(pb)}`;
           createProfitCard(name, cardInfo);
         }
