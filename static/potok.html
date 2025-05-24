@@ -1816,28 +1816,31 @@ function createProfitCard(name, html) {
   inner.className = "card-inner";
 
   const iconUrl = iconMap[name];
-  const finalIcon = iconUrl && iconUrl.startsWith("/")
+  const finalIconPrefix = iconUrl && iconUrl.startsWith("/")
     ? "https://steamcommunity-a.akamaihd.net/economy/image" + iconUrl
     : iconUrl || "https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw...";
 
   inner.innerHTML = `
-    <div style="display: flex; align-items: center; height: 100%; width: 100%;">
-      <div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-        <img src="${finalIcon}" class="skin-icon" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
-        <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
-      </div>
-      <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-        <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
-        <div style="white-space: nowrap; margin-top: 4px;">${html}</div>
-      </div>
-    </div>
-  `;
+<div style="display: flex; align-items: center; height: 100%; width: 100%;">
+<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
+<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+</div>
+<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+<strong class="copyable" style="cursor: pointer;">Test Skin 1</strong><br/>
+<div style="white-space: nowrap; margin-top: 4px;">
+            Youpin898: ¥101.00<br/>
+            ТМ: ₽1010.00<br/>
+            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽10.00 (5%)</span>
+</div>
+</div>
+</div>
+`;
 
   card.appendChild(inner);
   wrapper.appendChild(card);
   document.getElementById("profit-list").appendChild(wrapper);
 
-  // 3D эффект как у тестовых
   card.style.transformStyle = "preserve-3d";
   card.style.transition = "transform 0.15s ease";
   card.style.perspective = "1000px";
@@ -1857,7 +1860,6 @@ function createProfitCard(name, html) {
     card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
   });
 
-  // Копирование
   inner.querySelector(".copyable")?.addEventListener("click", () => {
     navigator.clipboard.writeText(name).then(() => {
       const label = inner.querySelector(".copyable");
@@ -1923,26 +1925,6 @@ function checkNextSkin() {
         timeoutId = setTimeout(checkNextSkin, 1000);
       });
   }
-});
-</script><script>
-document.addEventListener("DOMContentLoaded", () => {
-  createProfitCard("★ Karambit | Doppler (Factory New)", `
-    <div>Youpin898: ¥246.69</div>
-    <div>BUFF163: ¥9999.99</div>
-    <div>Профит: ↑ ₽464.47 (15.69%)</div>
-  `);
-
-  createProfitCard("AK-47 | Fire Serpent (Field-Tested)", `
-    <div>Youpin898: ¥189.50</div>
-    <div>BUFF163: ¥850.00</div>
-    <div>Профит: ↑ ₽280.12 (12.03%)</div>
-  `);
-
-  createProfitCard("AWP | Dragon Lore (Minimal Wear)", `
-    <div>Youpin898: ¥560.00</div>
-    <div>BUFF163: ¥1380.00</div>
-    <div>Профит: ↑ ₽700.77 (21.75%)</div>
-  `);
 });
 </script></body>
 </html>
