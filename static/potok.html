@@ -1162,20 +1162,16 @@ input[type="range"]::-moz-range-thumb {
 <span class="slider"></span>
 </label>
 </div>
-<h1>Раздел Potok</h1><div id="current-skin-name" style="margin-top: 20px; font-size: 20px; color: var(--text-color);"></div><img id="skin-icon" style="margin-top: 15px; max-height: 100px; display: block; margin-left: auto; margin-right: auto;"/><div id="price-results" style="margin-top: 20px; color: var(--text-color); font-size: 16px;"></div>
+<h1>Раздел Potok</h1><div style="margin-top: 30px;"></div><div id="current-skin-name" style="margin-top: 20px; font-size: 20px; color: var(--text-color);"></div><img id="skin-icon" style="margin-top: 15px; max-height: 100px; display: block; margin-left: auto; margin-right: auto;"/><div id="price-results" style="margin-top: 20px; color: var(--text-color); font-size: 16px;"></div>
 <div class="loader" id="loader" style="display: none;">
 <div class="inner one"></div>
 <div class="inner two"></div>
 <div class="inner three"></div>
 </div><div style="margin-top: 30px;">
-<button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
+</div><div style="margin-bottom: 20px; text-align: center;"><button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
     Start
-  </button>
-</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-
-
-
-</div>
+  </button></div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+</div><div style="margin-top: 30px; text-align: center;"></div>
 <script>
 let skinIcons = {};
 fetch("buff163_icons.json")
@@ -1730,6 +1726,209 @@ document.querySelectorAll('.card-inner').forEach(inner => {
   inner.addEventListener('mouseleave', () => {
     flash.style.opacity = '0';
   });
+});
+</script><script>
+document.addEventListener("DOMContentLoaded", () => {
+  let skinNames = [];
+  let currentIndex = 0;
+  let timeoutId = null;
+  let isRunning = false;
+
+  const startButton = document.getElementById("startPotok");
+  const loader = document.getElementById("loader");
+  const skinNameDiv = document.getElementById("current-skin-name");
+  const resultsDiv = document.getElementById("price-results");
+  const profitList = document.getElementById("profit-list");
+  const skinIcon = document.getElementById("skin-icon");
+
+  const filterYoupin = document.getElementById("filter-youpin");
+  const filterBuff = document.getElementById("filter-buff");
+
+  startButton?.addEventListener("click", () => {
+    const label = startButton.textContent.trim();
+    if (label === "Start") {
+      startButton.textContent = "Stop";
+      loader.style.display = "block";
+      isRunning = true;
+      fetch("/api/youpin_names")
+        .then(res => res.json())
+        .then(data => {
+          skinNames = data;
+          currentIndex = 0;
+          if (skinNames.length > 0) checkNextSkin();
+        });
+    } else if (label === "Stop") {
+      isRunning = false;
+      startButton.textContent = "Continue";
+      loader.style.display = "none";
+      clearTimeout(timeoutId);
+    } else if (label === "Continue") {
+      isRunning = true;
+      startButton.textContent = "Stop";
+      loader.style.display = "block";
+      checkNextSkin();
+    }
+  });
+
+  function getColorFromPercent(percent) {
+    if (percent === null || isNaN(percent)) return "gray";
+    const clamped = Math.max(-20, Math.min(20, percent));
+    const ratio = (clamped + 20) / 40;
+    const red = Math.round(255 * (1 - ratio));
+    const green = Math.round(255 * ratio);
+    return `rgb(${red}, ${green}, 100)`;
+  }
+
+  function getIcon(profit) {
+    if (!profit || profit.rub == null) return "";
+    if (profit.rub > 0) return "↑";
+    if (profit.rub < 0) return "↓";
+    return "-";
+  }
+
+  function formatProfitHTML(profit) {
+    if (!profit || profit.rub == null) return "—";
+    const icon = getIcon(profit);
+    const color = getColorFromPercent(profit.percent);
+    const bold = profit.percent > 20 ? "font-weight: bold; text-shadow: 0 0 1px black;" : "";
+    return `<span style="color:${color};${bold}">${icon} ₽${profit.rub.toFixed(2)} (${profit.percent.toFixed(2)}%)</span>`;
+  }
+
+  
+function apply3DEffect(card) {
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+  let isHovered = false;
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    mouseX = (x - centerX) / 4;
+    mouseY = -(y - centerY) / 4;
+    isHovered = true;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    isHovered = false;
+  });
+
+  function animateTilt() {
+    if (isHovered) {
+      rotX += (mouseY - rotX) * 0.1;
+      rotY += (mouseX - rotY) * 0.1;
+      card.style.transform = `scale(1.07) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    } else {
+      rotX *= 0.9;
+      rotY *= 0.9;
+      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+        card.style.removeProperty("transform");
+        rotX = 0;
+        rotY = 0;
+      } else {
+        card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      }
+    }
+    requestAnimationFrame(animateTilt);
+  }
+
+  requestAnimationFrame(animateTilt);
+}
+
+
+function createProfitCard(name, html) {
+    const card = document.createElement("div");
+    card.className = "profit-card";
+    const iconURL = iconMap[name];
+    const imageHTML = iconURL ? `<img src="${iconURL}" style="width: 40px; float: right; margin-left: 10px;">` : "";
+    const nameHTML = `<strong class="copyable" style="cursor: pointer;">${name}</strong>`;
+    
+    
+card.innerHTML = `
+  <div style="display: flex; align-items: center; height: 100%; width: 100%;">
+    ${iconURL ? `
+      <div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+        <img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
+        <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+      </div>
+    ` : ""}
+    <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+      <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
+      <div style="white-space: nowrap; margin-top: 4px;">Профит: ${html}</div>
+    </div>
+  </div>
+`;
+
+    
+    card.querySelector(".copyable")?.addEventListener("click", () => {
+      navigator.clipboard.writeText(name).then(() => {
+        console.log("Скопировано:", name);
+        const label = card.querySelector(".copyable");
+        if (label) {
+          label.classList.add("copied");
+          setTimeout(() => label.classList.remove("copied"), 500);
+        }
+      });
+    });
+    profitList.appendChild(card);
+    apply3DEffect(card);
+  }
+
+  function checkNextSkin() {
+    if (!isRunning || !skinNames.length) return;
+
+    const name = skinNames[currentIndex];
+    skinNameDiv.textContent = `Проверка: ${name}`;
+
+    fetch(`/api/price?name=${encodeURIComponent(name)}`)
+      .then(res => res.json())
+      .then(data => {
+        const buff = data.buff !== null ? `¥${data.buff.toFixed(2)}` : "—";
+        const youpin = data.youpin !== null ? `¥${data.youpin.toFixed(2)}` : "—";
+        const tm = data.leg1t !== null ? `₽${(data.leg1t / 100).toFixed(2)}` : "—";
+
+        const py = data.profit_youpin;
+        const pb = data.profit_buff;
+
+        const profitYHTML = formatProfitHTML(py);
+        const profitBHTML = formatProfitHTML(pb);
+
+        resultsDiv.innerHTML = `
+          <div>Youpin898: ${youpin}</div>
+          <div>BUFF163: ${buff}</div>
+          <div>ТМ: ${tm}</div>
+          <div>Профит Youpin898: ${profitYHTML}</div>
+          <div>Профит BUFF163: ${profitBHTML}</div>
+        `;
+
+        if (data.icon && data.icon.startsWith("/")) {
+          skinIcon.src = "https://steamcommunity-a.akamaihd.net/economy/image" + data.icon;
+          skinIcon.style.display = "block";
+        } else {
+          skinIcon.src = "";
+          skinIcon.style.display = "none";
+        }
+
+        const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
+        if (py && py.percent >= (window.currentMinPercent || 0) && py.rub >= (window.currentMinRub || 0)) {
+  createProfitCard(name, cardInfoYP);
+}
+
+        const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
+        if (pb && pb.percent >= (window.currentMinPercent || 0) && pb.rub >= (window.currentMinRub || 0)) {
+  createProfitCard(name, cardInfoBF);
+}
+
+        currentIndex = (currentIndex + 1) % skinNames.length;
+        timeoutId = setTimeout(checkNextSkin, 1000);
+      })
+      .catch(err => {
+        console.error("❌ Ошибка запроса:", err);
+        currentIndex = (currentIndex + 1) % skinNames.length;
+        timeoutId = setTimeout(checkNextSkin, 1000);
+      });
+  }
 });
 </script></body>
 </html>
