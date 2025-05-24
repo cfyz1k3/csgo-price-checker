@@ -1807,6 +1807,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
 function createProfitCard(name, html) {
   const wrapper = document.createElement("div");
   wrapper.className = "card-scale-wrapper";
@@ -1879,7 +1880,7 @@ function createProfitCard(name, html) {
   wrapper.appendChild(card);
   document.getElementById("profit-list").appendChild(wrapper);
 
-  // Neighbor shift effect
+  // Neighbor shift effect on card
   const allCards = Array.from(document.querySelectorAll('.profit-card'));
   const idx = allCards.indexOf(card);
   card.addEventListener('mousemove', () => {
@@ -1894,39 +1895,33 @@ function createProfitCard(name, html) {
     allCards.forEach(c2 => c2.style.transform = '');
   });
 
-  // Tilt effect
+  // Tilt effect on inner
   let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
-  let isHovered = false;
+  let isHoveredTilt = false;
 
   card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    mouseX = (x - centerX) / 12;
-    mouseY = -(y - centerY) / 12;
-    isHovered = true;
+    mouseX = (e.clientX - rect.left - rect.width/2) / 12;
+    mouseY = -(e.clientY - rect.top - rect.height/2) / 12;
+    isHoveredTilt = true;
   });
-
   card.addEventListener('mouseleave', () => {
-    isHovered = false;
+    isHoveredTilt = false;
   });
 
   function animateTilt() {
-    if (isHovered) {
+    if (isHoveredTilt) {
       rotX += (mouseY - rotX) * 0.1;
       rotY += (mouseX - rotY) * 0.1;
-      card.style.transform = `scale(1.07) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      inner.style.transform = `scale(1.06) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
     } else {
       rotX *= 0.9;
       rotY *= 0.9;
       if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
-        card.style.removeProperty("transform");
-        rotX = 0;
-        rotY = 0;
+        inner.style.removeProperty('transform');
+        rotX = rotY = 0;
       } else {
-        card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        inner.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
       }
     }
     requestAnimationFrame(animateTilt);
