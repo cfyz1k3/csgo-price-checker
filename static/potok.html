@@ -1784,7 +1784,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   
 
-function createProfitCard(name, html) {
+
+function createProfitCard(name, html, iconUrl = "") {
   const wrapper = document.createElement("div");
   wrapper.className = "card-scale-wrapper";
 
@@ -1794,10 +1795,14 @@ function createProfitCard(name, html) {
   const inner = document.createElement("div");
   inner.className = "card-inner";
 
+  const safeIcon = iconUrl && iconUrl.startsWith("/")
+    ? "https://steamcommunity-a.akamaihd.net/economy/image" + iconUrl
+    : iconUrl || "https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw...";
+
   inner.innerHTML = `
     <div style="display: flex; align-items: center; height: 100%; width: 100%;">
       <div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-        <img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
+        <img src="${safeIcon}" class="skin-icon" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
         <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
       </div>
       <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
@@ -1859,12 +1864,12 @@ function checkNextSkin() {
 
         const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
         if (py && py.percent >= (window.currentMinPercent || 0) && py.rub >= (window.currentMinRub || 0)) {
-  createProfitCard(name, cardInfoYP);
+  createProfitCard(name, cardInfoYP, data.icon);
 }
 
         const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
         if (pb && pb.percent >= (window.currentMinPercent || 0) && pb.rub >= (window.currentMinRub || 0)) {
-  createProfitCard(name, cardInfoBF);
+  createProfitCard(name, cardInfoBF, data.icon);
 }
 
         currentIndex = (currentIndex + 1) % skinNames.length;
