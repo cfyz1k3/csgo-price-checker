@@ -369,17 +369,17 @@ body.light-theme .profit-positive {
   0% {
     filter: blur(20px) brightness(0.5);
     opacity: 0;
-    transform: scale(0.6);
+    
   }
   50% {
     filter: blur(10px) brightness(1.1);
     opacity: 0.5;
-    transform: scale(1.05);
+    
   }
   100% {
     filter: none;
     opacity: 1;
-    transform: scale(1);
+    
   }
 }
 .skin-icon {
@@ -456,6 +456,203 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
+
+.profit-card {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  perspective: 1000px;
+  perspective-origin: center center;
+}
+
+
+
+
+
+
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+  to { opacity: 1; }
+}
+  to { opacity: 1;  }
+}
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+.profit-card {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  transition: opacity 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease;
+  will-change: opacity, height, margin, padding;
+}
+
+.card-inner {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.3s ease;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+.card-inner * {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.card-inner {
+  background: var(--card-bg, #1e1e1e);
+  border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
+.profit-card:hover .card-inner {
+  transform: scale(1.06) rotateX(var(--rotX, 0deg)) rotateY(var(--rotY, 0deg));
+}
+
+.profit-card {
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+
+.profit-card:hover {
+  transform: scale(1.12);
+}
+
+.card-scale-wrapper {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.card-scale-wrapper:hover {
+  transform: scale(1.12);
+}
+
+.card-inner::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.25) 0%, transparent 80%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 2;
+}
+.card-scale-wrapper:hover .card-inner::after {
+  opacity: 1;
+}
+.card-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.card-inner::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 60%);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+.card-scale-wrapper:hover .card-inner::after {
+  opacity: 1;
+}
+
+.hover-flash {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.hover-flash {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, left 0s, top 0s;
+  z-index: 2;
+  mix-blend-mode: screen;
+}
+
+.hover-flash {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.card-inner {
+  position: relative;
+}
+
+.card-inner {
+  position: relative;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.card-scale-wrapper:hover .card-inner,
+.card-scale-wrapper:focus-within .card-inner {
+  box-shadow: 0 0 12px 4px var(--theme-glow, rgba(0, 123, 255, 0.5));
+}
+
+/* Flash positioning and dimmed effect */
+.hover-flash {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.card-scale-wrapper:hover .card-inner,
+.card-scale-wrapper:focus-within .card-inner {
+  box-shadow: 0 0 16px 5px var(--theme-color, rgba(255, 255, 255, 0.4));
+}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -1087,13 +1284,86 @@ input[type="range"]::-moz-range-thumb {
     Start
   </button>
 </div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-
+<div class="card-scale-wrapper"><div class="profit-card fade-in"><div class="card-inner">
+<div style="display: flex; align-items: center; height: 100%; width: 100%;">
+<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
+<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
 </div>
-
+<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+<strong class="copyable" style="cursor: pointer;">Test Skin 1</strong><br/>
+<div style="white-space: nowrap; margin-top: 4px;">
+            Youpin898: ¥101.00<br/>
+            ТМ: ₽1010.00<br/>
+            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽10.00 (5%)</span>
 </div>
-
 </div>
-</div><script>
+</div>
+<div class="hover-flash"></div></div></div></div>
+<div class="card-scale-wrapper"><div class="profit-card fade-in"><div class="card-inner">
+<div style="display: flex; align-items: center; height: 100%; width: 100%;">
+<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
+<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+</div>
+<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+<strong class="copyable" style="cursor: pointer;">Test Skin 2</strong><br/>
+<div style="white-space: nowrap; margin-top: 4px;">
+            Youpin898: ¥102.00<br/>
+            ТМ: ₽1020.00<br/>
+            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽20.00 (10%)</span>
+</div>
+</div>
+</div>
+<div class="hover-flash"></div></div></div></div>
+<div class="card-scale-wrapper"><div class="profit-card fade-in"><div class="card-inner">
+<div style="display: flex; align-items: center; height: 100%; width: 100%;">
+<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
+<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+</div>
+<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+<strong class="copyable" style="cursor: pointer;">Test Skin 3</strong><br/>
+<div style="white-space: nowrap; margin-top: 4px;">
+            Youpin898: ¥103.00<br/>
+            ТМ: ₽1030.00<br/>
+            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽30.00 (15%)</span>
+</div>
+</div>
+</div>
+<div class="hover-flash"></div></div></div></div>
+<div class="card-scale-wrapper"><div class="profit-card fade-in"><div class="card-inner">
+<div style="display: flex; align-items: center; height: 100%; width: 100%;">
+<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
+<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+</div>
+<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+<strong class="copyable" style="cursor: pointer;">Test Skin 4</strong><br/>
+<div style="white-space: nowrap; margin-top: 4px;">
+              Youpin898: ¥104.00<br/>
+              ТМ: ₽1040.00<br/>
+              Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽40.00 (20%)</span>
+</div>
+</div>
+</div>
+<div class="hover-flash"></div></div></div></div><div class="card-scale-wrapper"><div class="profit-card fade-in"><div class="card-inner">
+<div style="display: flex; align-items: center; height: 100%; width: 100%;">
+<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
+<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+</div>
+<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+<strong class="copyable" style="cursor: pointer;">Test Skin 5</strong><br/>
+<div style="white-space: nowrap; margin-top: 4px;">
+              Youpin898: ¥105.00<br/>
+              ТМ: ₽1050.00<br/>
+              Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽50.00 (25%)</span>
+</div>
+</div>
+</div>
+<div class="hover-flash"></div></div></div></div></div>
+<script>
 let skinIcons = {};
 fetch("buff163_icons.json")
   .then(res => res.json())
@@ -1140,207 +1410,77 @@ document.addEventListener("click", (e) => {
 });
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  let skinNames = [];
-  let currentIndex = 0;
-  let timeoutId = null;
-  let isRunning = false;
+document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
+  const wrapper = card.querySelector('.card-inner');
+  if (!wrapper) return;
 
-  const startButton = document.getElementById("startPotok");
-  const loader = document.getElementById("loader");
-  const skinNameDiv = document.getElementById("current-skin-name");
-  const resultsDiv = document.getElementById("price-results");
-  const profitList = document.getElementById("profit-list");
-  const skinIcon = document.getElementById("skin-icon");
-
-  const filterYoupin = document.getElementById("filter-youpin");
-  const filterBuff = document.getElementById("filter-buff");
-
-  startButton?.addEventListener("click", () => {
-    const label = startButton.textContent.trim();
-    if (label === "Start") {
-      startButton.textContent = "Stop";
-      loader.style.display = "block";
-      isRunning = true;
-      fetch("/api/youpin_names")
-        .then(res => res.json())
-        .then(data => {
-          skinNames = data;
-          currentIndex = 0;
-          if (skinNames.length > 0) checkNextSkin();
-        });
-    } else if (label === "Stop") {
-      isRunning = false;
-      startButton.textContent = "Continue";
-      loader.style.display = "none";
-      clearTimeout(timeoutId);
-    } else if (label === "Continue") {
-      isRunning = true;
-      startButton.textContent = "Stop";
-      loader.style.display = "block";
-      checkNextSkin();
-    }
-  });
-
-  function getColorFromPercent(percent) {
-    if (percent === null || isNaN(percent)) return "gray";
-    const clamped = Math.max(-20, Math.min(20, percent));
-    const ratio = (clamped + 20) / 40;
-    const red = Math.round(255 * (1 - ratio));
-    const green = Math.round(255 * ratio);
-    return `rgb(${red}, ${green}, 100)`;
-  }
-
-  function getIcon(profit) {
-    if (!profit || profit.rub == null) return "";
-    if (profit.rub > 0) return "↑";
-    if (profit.rub < 0) return "↓";
-    return "-";
-  }
-
-  function formatProfitHTML(profit) {
-    if (!profit || profit.rub == null) return "—";
-    const icon = getIcon(profit);
-    const color = getColorFromPercent(profit.percent);
-    const bold = profit.percent > 20 ? "font-weight: bold; text-shadow: 0 0 1px black;" : "";
-    return `<span style="color:${color};${bold}">${icon} ₽${profit.rub.toFixed(2)} (${profit.percent.toFixed(2)}%)</span>`;
-  }
-
-  
-function apply3DEffect(card) {
-  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
   let isHovered = false;
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
 
-  card.addEventListener('mousemove', (e) => {
+  wrapper.style.transition = "transform 0.3s ease";
+
+  function updateNeighborTransforms(activeIndex) {
+    allCards.forEach((other, i) => {
+      if (other === card) return;
+
+      const dy = i - activeIndex;
+      const offsetY = dy === -1 ? -20 : dy === 1 ? 20 : 0;
+
+      other.dataset.baseTransform = `translateY(${offsetY}px)`;
+      if (!isHovered) {
+        other.style.transform = other.dataset.baseTransform;
+      }
+    });
+  }
+
+  card.addEventListener("mousemove", (e) => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    mouseX = (x - centerX) / 4;
-    mouseY = -(y - centerY) / 4;
+    mouseX = (x - centerX) / 5;
+    mouseY = -(y - centerY) / 2;
     isHovered = true;
+    updateNeighborTransforms(index);
   });
 
-  card.addEventListener('mouseleave', () => {
+  card.addEventListener("mouseleave", () => {
     isHovered = false;
+    allCards.forEach((c) => {
+      if (c !== card) c.style.transform = "";
+    });
   });
 
-  function animateTilt() {
+  function animate() {
     if (isHovered) {
       rotX += (mouseY - rotX) * 0.1;
       rotY += (mouseX - rotY) * 0.1;
-      card.style.transform = `scale(1.07) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      wrapper.style.setProperty('--rotX', `${rotX}deg`);
+      wrapper.style.setProperty('--rotY', `${rotY}deg`);
+      allCards.forEach((other) => {
+        if (other !== card) {
+          const base = other.dataset.baseTransform || "";
+          other.style.transform = base;
+        }
+      });
     } else {
       rotX *= 0.9;
       rotY *= 0.9;
       if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
-        card.style.removeProperty("transform");
+        wrapper.style.removeProperty('--rotX');
+      wrapper.style.removeProperty('--rotY');;
         rotX = 0;
         rotY = 0;
       } else {
-        card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        wrapper.style.setProperty('--rotX', `${rotX}deg`);
+      wrapper.style.setProperty('--rotY', `${rotY}deg`);
       }
     }
-    requestAnimationFrame(animateTilt);
+    requestAnimationFrame(animate);
   }
 
-  requestAnimationFrame(animateTilt);
-}
-
-
-function createProfitCard(name, html) {
-    const card = document.createElement("div");
-    card.className = "profit-card";
-    const iconURL = iconMap[name];
-    const imageHTML = iconURL ? `<img src="${iconURL}" style="width: 40px; float: right; margin-left: 10px;">` : "";
-    const nameHTML = `<strong class="copyable" style="cursor: pointer;">${name}</strong>`;
-    
-    
-card.innerHTML = `
-  <div style="display: flex; align-items: center; height: 100%; width: 100%;">
-    ${iconURL ? `
-      <div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-        <img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
-        <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
-      </div>
-    ` : ""}
-    <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-      <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
-      <div style="white-space: nowrap; margin-top: 4px;">Профит: ${html}</div>
-    </div>
-  </div>
-`;
-
-    
-    card.querySelector(".copyable")?.addEventListener("click", () => {
-      navigator.clipboard.writeText(name).then(() => {
-        console.log("Скопировано:", name);
-        const label = card.querySelector(".copyable");
-        if (label) {
-          label.classList.add("copied");
-          setTimeout(() => label.classList.remove("copied"), 500);
-        }
-      });
-    });
-    profitList.appendChild(card);
-    apply3DEffect(card);
-  }
-
-  function checkNextSkin() {
-    if (!isRunning || !skinNames.length) return;
-
-    const name = skinNames[currentIndex];
-    skinNameDiv.textContent = `Проверка: ${name}`;
-
-    fetch(`/api/price?name=${encodeURIComponent(name)}`)
-      .then(res => res.json())
-      .then(data => {
-        const buff = data.buff !== null ? `¥${data.buff.toFixed(2)}` : "—";
-        const youpin = data.youpin !== null ? `¥${data.youpin.toFixed(2)}` : "—";
-        const tm = data.leg1t !== null ? `₽${(data.leg1t / 100).toFixed(2)}` : "—";
-
-        const py = data.profit_youpin;
-        const pb = data.profit_buff;
-
-        const profitYHTML = formatProfitHTML(py);
-        const profitBHTML = formatProfitHTML(pb);
-
-        resultsDiv.innerHTML = `
-          <div>Youpin898: ${youpin}</div>
-          <div>BUFF163: ${buff}</div>
-          <div>ТМ: ${tm}</div>
-          <div>Профит Youpin898: ${profitYHTML}</div>
-          <div>Профит BUFF163: ${profitBHTML}</div>
-        `;
-
-        if (data.icon && data.icon.startsWith("/")) {
-          skinIcon.src = "https://steamcommunity-a.akamaihd.net/economy/image" + data.icon;
-          skinIcon.style.display = "block";
-        } else {
-          skinIcon.src = "";
-          skinIcon.style.display = "none";
-        }
-
-        const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
-        if (py && py.percent >= (window.currentMinPercent || 0) && py.rub >= (window.currentMinRub || 0)) {
-  createProfitCard(name, cardInfoYP);
-}
-
-        const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
-        if (pb && pb.percent >= (window.currentMinPercent || 0) && pb.rub >= (window.currentMinRub || 0)) {
-  createProfitCard(name, cardInfoBF);
-}
-
-        currentIndex = (currentIndex + 1) % skinNames.length;
-        timeoutId = setTimeout(checkNextSkin, 1000);
-      })
-      .catch(err => {
-        console.error("❌ Ошибка запроса:", err);
-        currentIndex = (currentIndex + 1) % skinNames.length;
-        timeoutId = setTimeout(checkNextSkin, 1000);
-      });
-  }
+  requestAnimationFrame(animate);
 });
 </script>
 <script>
@@ -1444,21 +1584,77 @@ filterVisibleCards();
 }
 </style>
 <script>
-document.querySelectorAll('.profit-card').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
+document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
+  const wrapper = card.querySelector('.card-inner');
+  if (!wrapper) return;
+
+  let isHovered = false;
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+
+  wrapper.style.transition = "transform 0.3s ease";
+
+  function updateNeighborTransforms(activeIndex) {
+    allCards.forEach((other, i) => {
+      if (other === card) return;
+
+      const dy = i - activeIndex;
+      const offsetY = dy === -1 ? -20 : dy === 1 ? 20 : 0;
+
+      other.dataset.baseTransform = `translateY(${offsetY}px)`;
+      if (!isHovered) {
+        other.style.transform = other.dataset.baseTransform;
+      }
+    });
+  }
+
+  card.addEventListener("mousemove", (e) => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = -(y - centerY) / 10;
-    const rotateY = (x - centerX) / 10;
-    card.style.transform = `scale(1.03) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    mouseX = (x - centerX) / 5;
+    mouseY = -(y - centerY) / 2;
+    isHovered = true;
+    updateNeighborTransforms(index);
   });
 
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
+  card.addEventListener("mouseleave", () => {
+    isHovered = false;
+    allCards.forEach((c) => {
+      if (c !== card) c.style.transform = "";
+    });
   });
+
+  function animate() {
+    if (isHovered) {
+      rotX += (mouseY - rotX) * 0.1;
+      rotY += (mouseX - rotY) * 0.1;
+      wrapper.style.setProperty('--rotX', `${rotX}deg`);
+      wrapper.style.setProperty('--rotY', `${rotY}deg`);
+      allCards.forEach((other) => {
+        if (other !== card) {
+          const base = other.dataset.baseTransform || "";
+          other.style.transform = base;
+        }
+      });
+    } else {
+      rotX *= 0.9;
+      rotY *= 0.9;
+      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+        wrapper.style.removeProperty('--rotX');
+      wrapper.style.removeProperty('--rotY');;
+        rotX = 0;
+        rotY = 0;
+      } else {
+        wrapper.style.setProperty('--rotX', `${rotX}deg`);
+      wrapper.style.setProperty('--rotY', `${rotY}deg`);
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
 });
 </script>
 <style>
@@ -1472,132 +1668,167 @@ document.querySelectorAll('.profit-card').forEach(card => {
 }
 </style>
 <script>
-document.querySelectorAll('.profit-card').forEach(card => {
-  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
-  let isHovered = false;
-
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    mouseX = (x - centerX) / 4;
-    mouseY = -(y - centerY) / 4;
-    isHovered = true;
-  });
-
-  card.addEventListener('mouseleave', () => {
-    isHovered = false;
-  });
-
-  function animateTilt() {
-    if (isHovered) {
-      rotX += (mouseY - rotX) * 0.1;
-      rotY += (mouseX - rotY) * 0.1;
-      card.style.transform = `scale(1.03) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-    } else {
-      rotX *= 0.9;
-      rotY *= 0.9;
-      card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-    }
-    requestAnimationFrame(animateTilt);
-  }
-
-  animateTilt();
-});
-</script>
-
-<script>
 document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
+  const wrapper = card.querySelector('.card-inner');
+  if (!wrapper) return;
+
   let isHovered = false;
   let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
 
-  const lighting = document.createElement("div");
-  lighting.style.position = "absolute";
-  lighting.style.top = "0";
-  lighting.style.left = "0";
-  lighting.style.right = "0";
-  lighting.style.bottom = "0";
-  lighting.style.pointerEvents = "none";
-  lighting.style.borderRadius = "8px";
-  lighting.style.transition = "opacity 0.4s ease, background-position 0.2s ease";
-  lighting.style.background = "radial-gradient(circle at center, rgba(255,255,255,0.07), transparent)";
-  lighting.style.opacity = "0";
-  card.appendChild(lighting);
+  wrapper.style.transition = "transform 0.3s ease";
 
-  const reflection = document.createElement("div");
-  reflection.style.position = "absolute";
-  reflection.style.top = "0";
-  reflection.style.left = "0";
-  reflection.style.right = "0";
-  reflection.style.bottom = "0";
-  reflection.style.pointerEvents = "none";
-  reflection.style.borderRadius = "8px";
-  reflection.style.opacity = "0";
-  reflection.style.transition = "opacity 0.4s ease";
-  reflection.style.background = "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%)";
-  card.appendChild(reflection);
-
-  card.style.backdropFilter = "blur(4px)";
-  card.style.transition = "transform 0.3s ease";
-
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    mouseX = (x - centerX) / 8;
-    mouseY = -(y - centerY) / 3;
-    isHovered = true;
-
-    const percentX = (x / rect.width) * 100;
-    const percentY = (y / rect.height) * 100;
-    lighting.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.07), transparent)`;
-    lighting.style.opacity = "1";
-    reflection.style.opacity = "0.2";
-
+  function updateNeighborTransforms(activeIndex) {
     allCards.forEach((other, i) => {
       if (other === card) return;
-      const dx = i - index;
-      const offset = dx === -1 ? -30 : dx === 1 ? 30 : 0;
-      if (offset !== 0) {
-        other.style.transition = "transform 0.3s ease";
-        other.style.transform = `translateX(${offset}px)`;
+
+      const dy = i - activeIndex;
+      const offsetY = dy === -1 ? -20 : dy === 1 ? 20 : 0;
+
+      other.dataset.baseTransform = `translateY(${offsetY}px)`;
+      if (!isHovered) {
+        other.style.transform = other.dataset.baseTransform;
       }
     });
+  }
+
+  card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    mouseX = (x - centerX) / 5;
+    mouseY = -(y - centerY) / 2;
+    isHovered = true;
+    updateNeighborTransforms(index);
   });
 
-  card.addEventListener('mouseleave', () => {
+  card.addEventListener("mouseleave", () => {
     isHovered = false;
-    lighting.style.opacity = "0";
-    reflection.style.opacity = "0";
-    allCards.forEach(other => {
-      other.style.transform = "";
+    allCards.forEach((c) => {
+      if (c !== card) c.style.transform = "";
     });
   });
 
-  function animateTilt() {
+  function animate() {
     if (isHovered) {
       rotX += (mouseY - rotX) * 0.1;
       rotY += (mouseX - rotY) * 0.1;
-      card.style.transform = `scale(1.12) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      wrapper.style.setProperty('--rotX', `${rotX}deg`);
+      wrapper.style.setProperty('--rotY', `${rotY}deg`);
+      allCards.forEach((other) => {
+        if (other !== card) {
+          const base = other.dataset.baseTransform || "";
+          other.style.transform = base;
+        }
+      });
     } else {
       rotX *= 0.9;
       rotY *= 0.9;
       if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
-        card.style.removeProperty("transform");
+        wrapper.style.removeProperty('--rotX');
+      wrapper.style.removeProperty('--rotY');;
         rotX = 0;
         rotY = 0;
       } else {
-        card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        wrapper.style.setProperty('--rotX', `${rotX}deg`);
+      wrapper.style.setProperty('--rotY', `${rotY}deg`);
       }
     }
-    requestAnimationFrame(animateTilt);
+    requestAnimationFrame(animate);
   }
 
-  requestAnimationFrame(animateTilt);
+  requestAnimationFrame(animate);
+});
+</script>
+<script>
+document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
+  const wrapper = card.querySelector('.card-inner');
+  if (!wrapper) return;
+
+  let isHovered = false;
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+
+  wrapper.style.transition = "transform 0.3s ease";
+
+  function updateNeighborTransforms(activeIndex) {
+    allCards.forEach((other, i) => {
+      if (other === card) return;
+
+      const dy = i - activeIndex;
+      const offsetY = dy === -1 ? -20 : dy === 1 ? 20 : 0;
+
+      other.dataset.baseTransform = `translateY(${offsetY}px)`;
+      if (!isHovered) {
+        other.style.transform = other.dataset.baseTransform;
+      }
+    });
+  }
+
+  card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    mouseX = (x - centerX) / 5;
+    mouseY = -(y - centerY) / 2;
+    isHovered = true;
+    updateNeighborTransforms(index);
+  });
+
+  card.addEventListener("mouseleave", () => {
+    isHovered = false;
+    allCards.forEach((c) => {
+      if (c !== card) c.style.transform = "";
+    });
+  });
+
+  function animate() {
+    if (isHovered) {
+      rotX += (mouseY - rotX) * 0.1;
+      rotY += (mouseX - rotY) * 0.1;
+      wrapper.style.setProperty('--rotX', `${rotX}deg`);
+      wrapper.style.setProperty('--rotY', `${rotY}deg`);
+      allCards.forEach((other) => {
+        if (other !== card) {
+          const base = other.dataset.baseTransform || "";
+          other.style.transform = base;
+        }
+      });
+    } else {
+      rotX *= 0.9;
+      rotY *= 0.9;
+      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+        wrapper.style.removeProperty('--rotX');
+      wrapper.style.removeProperty('--rotY');;
+        rotX = 0;
+        rotY = 0;
+      } else {
+        wrapper.style.setProperty('--rotX', `${rotX}deg`);
+      wrapper.style.setProperty('--rotY', `${rotY}deg`);
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+});
+</script><script>
+document.querySelectorAll('.card-scale-wrapper').forEach(wrapper => {
+  const inner = wrapper.querySelector('.card-inner');
+  const flash = inner.querySelector('.hover-flash');
+  inner.addEventListener('mousemove', (e) => {
+    const rect = inner.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    flash.style.left = x + 'px';
+    flash.style.top = y + 'px';
+    flash.style.opacity = '1';
+  });
+  inner.addEventListener('mouseleave', () => {
+    flash.style.opacity = '0';
+  });
 });
 </script></body>
 </html>
