@@ -1805,42 +1805,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
 function createProfitCard(name, html) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "card-scale-wrapper";
-
-  const card = document.createElement("div");
-  card.className = "profit-card fade-in";
-
-  const inner = document.createElement("div");
-  inner.className = "card-inner";
-
   const iconUrl = iconMap[name];
-  const finalIconPrefix = iconUrl && iconUrl.startsWith("/")
+  const finalIcon = iconUrl && iconUrl.startsWith("/")
     ? "https://steamcommunity-a.akamaihd.net/economy/image" + iconUrl
     : iconUrl || "https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw...";
 
-  inner.innerHTML = `
-<div style="display: flex; align-items: center; height: 100%; width: 100%;">
-<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
-<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
-</div>
-<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-<strong class="copyable" style="cursor: pointer;">Test Skin 1</strong><br/>
-<div style="white-space: nowrap; margin-top: 4px;">
-            Youpin898: ¥101.00<br/>
-            ТМ: ₽1010.00<br/>
-            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽10.00 (5%)</span>
-</div>
-</div>
-</div>
-`;
+  const wrapper = document.createElement("div");
+  wrapper.innerHTML = `
+    <div class="card-scale-wrapper">
+      <div class="profit-card fade-in">
+        <div class="card-inner">
+          <div style='display: flex; align-items: center; height: 100%; width: 100%;'>
+            <div style='flex: 0 0 auto; display: flex; align-items: center; height: 100%;'>
+              <img src='${finalIcon}' style='height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;'>
+              <div style='height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;'></div>
+            </div>
+            <div style='flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;'>
+              <strong class='copyable' style='cursor: pointer;'>${name}</strong><br>
+              <div style='white-space: nowrap; margin-top: 4px;'>${html}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 
-  card.appendChild(inner);
-  wrapper.appendChild(card);
-  document.getElementById("profit-list").appendChild(wrapper);
+  const finalWrapper = wrapper.firstElementChild;
+  document.getElementById("profit-list").appendChild(finalWrapper);
 
+  const card = finalWrapper.querySelector(".profit-card");
+
+  // 3D hover effect
   card.style.transformStyle = "preserve-3d";
   card.style.transition = "transform 0.15s ease";
   card.style.perspective = "1000px";
@@ -1860,9 +1857,9 @@ function createProfitCard(name, html) {
     card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
   });
 
-  inner.querySelector(".copyable")?.addEventListener("click", () => {
+  finalWrapper.querySelector(".copyable")?.addEventListener("click", () => {
     navigator.clipboard.writeText(name).then(() => {
-      const label = inner.querySelector(".copyable");
+      const label = finalWrapper.querySelector(".copyable");
       if (label) {
         label.classList.add("copied");
         setTimeout(() => label.classList.remove("copied"), 500);
