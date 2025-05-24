@@ -1884,6 +1884,42 @@ function createProfitCard(name, html) {
       setTimeout(() => title.classList.remove("copied"), 500);
     });
   });
+
+  // 3D-эффект как у тестовых карточек
+  (function() {
+    const wrapperInner = inner; // .card-inner
+    wrapperInner.style.transition = "transform 0.3s ease";
+    let isHovered = false, mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+    card.addEventListener("mousemove", e => {
+      const rect = card.getBoundingClientRect();
+      mouseX = (e.clientX - rect.left - rect.width/2)/5;
+      mouseY = -(e.clientY - rect.top - rect.height/2)/2;
+      isHovered = true;
+    });
+    card.addEventListener("mouseleave", () => {
+      isHovered = false;
+    });
+    function animate3D() {
+      if (isHovered) {
+        rotX += (mouseY - rotX) * 0.1;
+        rotY += (mouseX - rotY) * 0.1;
+        wrapperInner.style.setProperty("--rotX", rotX + "deg");
+        wrapperInner.style.setProperty("--rotY", rotY + "deg");
+      } else {
+        rotX *= 0.9; rotY *= 0.9;
+        if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+          wrapperInner.style.removeProperty("--rotX");
+          wrapperInner.style.removeProperty("--rotY");
+        } else {
+          wrapperInner.style.setProperty("--rotX", rotX + "deg");
+          wrapperInner.style.setProperty("--rotY", rotY + "deg");
+        }
+      }
+      requestAnimationFrame(animate3D);
+    }
+    requestAnimationFrame(animate3D);
+  })();
+
 }
 
 function checkNextSkin() {
@@ -1940,6 +1976,5 @@ function checkNextSkin() {
         timeoutId = setTimeout(checkNextSkin, 1000);
       });
   }
-});
-</script></body>
+});</script></body>
 </html>
