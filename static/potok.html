@@ -1881,8 +1881,6 @@ function createProfitCard(name, html) {
   wrapper.appendChild(card);
   document.getElementById("profit-list").appendChild(wrapper);
 
-  const allCards = Array.from(document.querySelectorAll('.profit-card'));
-  const idx = allCards.indexOf(card);
   let isHovered = false;
   let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
 
@@ -1891,6 +1889,9 @@ function createProfitCard(name, html) {
     mouseX = (e.clientX - rect.left - rect.width / 2) / 5;
     mouseY = -(e.clientY - rect.top - rect.height / 2) / 2;
     isHovered = true;
+
+    const allCards = Array.from(document.querySelectorAll('.profit-card'));
+    const idx = allCards.indexOf(card);
 
     allCards.forEach((other, i) => {
       if (other === card) return;
@@ -1902,7 +1903,9 @@ function createProfitCard(name, html) {
 
   card.addEventListener('mouseleave', () => {
     isHovered = false;
-    allCards.forEach((c) => { if (c !== card) c.style.transform = ""; });
+    document.querySelectorAll('.profit-card').forEach((c) => {
+      if (c !== card) c.style.transform = "";
+    });
   });
 
   function animate() {
