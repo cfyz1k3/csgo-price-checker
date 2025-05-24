@@ -1086,7 +1086,56 @@ input[type="range"]::-moz-range-thumb {
 <button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
     Start
   </button>
-</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div><script>
+</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+<div class="profit-card fade-in">
+<div style="display: flex; align-items: center; height: 100%; width: 100%;">
+<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
+<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+</div>
+<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+<strong class="copyable" style="cursor: pointer;">Test Skin 1</strong><br/>
+<div style="white-space: nowrap; margin-top: 4px;">
+            Youpin898: ¥101.00<br/>
+            ТМ: ₽1010.00<br/>
+            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽10.00 (5%)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="profit-card fade-in">
+<div style="display: flex; align-items: center; height: 100%; width: 100%;">
+<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
+<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+</div>
+<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+<strong class="copyable" style="cursor: pointer;">Test Skin 2</strong><br/>
+<div style="white-space: nowrap; margin-top: 4px;">
+            Youpin898: ¥102.00<br/>
+            ТМ: ₽1020.00<br/>
+            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽20.00 (10%)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="profit-card fade-in">
+<div style="display: flex; align-items: center; height: 100%; width: 100%;">
+<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
+<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+</div>
+<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+<strong class="copyable" style="cursor: pointer;">Test Skin 3</strong><br/>
+<div style="white-space: nowrap; margin-top: 4px;">
+            Youpin898: ¥103.00<br/>
+            ТМ: ₽1030.00<br/>
+            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽30.00 (15%)</span>
+</div>
+</div>
+</div>
+</div>
+</div><script>
 let skinIcons = {};
 fetch("buff163_icons.json")
   .then(res => res.json())
@@ -1132,7 +1181,6 @@ document.addEventListener("click", (e) => {
   }
 });
 </script>
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
@@ -1211,8 +1259,8 @@ function apply3DEffect(card) {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    mouseX = (x - centerX) / 12;
-    mouseY = -(y - centerY) / 12;
+    mouseX = (x - centerX) / 4;
+    mouseY = -(y - centerY) / 4;
     isHovered = true;
   });
 
@@ -1476,8 +1524,8 @@ document.querySelectorAll('.profit-card').forEach(card => {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    mouseX = (x - centerX) / 12;
-    mouseY = -(y - centerY) / 12;
+    mouseX = (x - centerX) / 4;
+    mouseY = -(y - centerY) / 4;
     isHovered = true;
   });
 
@@ -1501,10 +1549,11 @@ document.querySelectorAll('.profit-card').forEach(card => {
   animateTilt();
 });
 </script>
+
 <script>
-document.querySelectorAll('.profit-card').forEach(card => {
-  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
   let isHovered = false;
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
 
   card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
@@ -1512,20 +1561,36 @@ document.querySelectorAll('.profit-card').forEach(card => {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    mouseX = (x - centerX) / 12;
-    mouseY = -(y - centerY) / 12;
+    mouseX = (x - centerX) / 8;
+    mouseY = -(y - centerY) / 3;
     isHovered = true;
+
+    allCards.forEach((other, i) => {
+      if (other === card) return;
+      const offset = Math.max(0, 40 - Math.abs(i - index) * 20);
+      if (i < index) {
+        other.style.marginRight = `${offset}px`;
+        other.style.marginLeft = "0px";
+      } else {
+        other.style.marginLeft = `${offset}px`;
+        other.style.marginRight = "0px";
+      }
+    });
   });
 
   card.addEventListener('mouseleave', () => {
     isHovered = false;
+    allCards.forEach(other => {
+      other.style.marginLeft = "";
+      other.style.marginRight = "";
+    });
   });
 
   function animateTilt() {
     if (isHovered) {
       rotX += (mouseY - rotX) * 0.1;
       rotY += (mouseX - rotY) * 0.1;
-      card.style.transform = `scale(1.07) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      card.style.transform = `scale(1.12) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
     } else {
       rotX *= 0.9;
       rotY *= 0.9;
@@ -1542,6 +1607,5 @@ document.querySelectorAll('.profit-card').forEach(card => {
 
   requestAnimationFrame(animateTilt);
 });
-</script>
-</body>
+</script></body>
 </html>
