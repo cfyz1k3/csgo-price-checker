@@ -1068,10 +1068,11 @@ input[type="range"]::-moz-range-thumb {
 <div class="inner one"></div>
 <div class="inner two"></div>
 <div class="inner three"></div>
+</div><div style="margin-top: 30px;">
+<button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
+    Start
+  </button>
 </div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-
-
-
 </div>
 <script>
 let skinIcons = {};
@@ -1119,11 +1120,6 @@ document.addEventListener("click", (e) => {
   }
 });
 </script>
-<div style="margin-top: 30px;">
-<button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
-    Start
-  </button>
-</div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
@@ -1448,7 +1444,6 @@ document.querySelectorAll('.profit-card').forEach(card => {
   animateTilt();
 });
 </script>
-
 <script>
 document.querySelectorAll('.profit-card').forEach(card => {
   let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
@@ -1491,6 +1486,5 @@ document.querySelectorAll('.profit-card').forEach(card => {
   requestAnimationFrame(animateTilt);
 });
 </script>
-
 </body>
 </html>
