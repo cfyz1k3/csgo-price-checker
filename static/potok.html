@@ -456,6 +456,15 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
+
+#profit-list {
+  perspective: 1000px;
+}
+.profit-card {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.3s ease;
+}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -1380,24 +1389,7 @@ filterVisibleCards();
   transition: transform 0.25s ease, opacity 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
 }
 </style>
-<script>
-document.querySelectorAll('.profit-card').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = -(y - centerY) / 10;
-    const rotateY = (x - centerX) / 10;
-    card.style.transform = `scale(1.03) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  });
 
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-  });
-});
-</script>
 <style>
 #profit-list {
   perspective: 1000px;
@@ -1408,9 +1400,12 @@ document.querySelectorAll('.profit-card').forEach(card => {
   transition: transform 0.2s ease, opacity 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
 }
 </style>
+
+
 <script>
 document.querySelectorAll('.profit-card').forEach(card => {
-  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+  let currentX = 0, currentY = 0;
+  let targetX = 0, targetY = 0;
   let isHovered = false;
 
   card.addEventListener('mousemove', (e) => {
@@ -1419,8 +1414,9 @@ document.querySelectorAll('.profit-card').forEach(card => {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    mouseX = (x - centerX) / 12;
-    mouseY = -(y - centerY) / 12;
+
+    targetX = Math.max(-10, Math.min(10, (x - centerX) / 8));
+    targetY = Math.max(-8, Math.min(8, -(y - centerY) / 12));
     isHovered = true;
   });
 
@@ -1428,63 +1424,30 @@ document.querySelectorAll('.profit-card').forEach(card => {
     isHovered = false;
   });
 
-  function animateTilt() {
+  function animate() {
     if (isHovered) {
-      rotX += (mouseY - rotX) * 0.1;
-      rotY += (mouseX - rotY) * 0.1;
-      card.style.transform = `scale(1.03) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      currentX += (targetX - currentX) * 0.1;
+      currentY += (targetY - currentY) * 0.1;
+      const rX = Math.round(currentY * 100) / 100;
+      const rY = Math.round(currentX * 100) / 100;
+      card.style.transform = `scale(1.07) rotateX(${rX}deg) rotateY(${rY}deg)`;
     } else {
-      rotX *= 0.9;
-      rotY *= 0.9;
-      card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-    }
-    requestAnimationFrame(animateTilt);
-  }
-
-  animateTilt();
-});
-</script>
-<script>
-document.querySelectorAll('.profit-card').forEach(card => {
-  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
-  let isHovered = false;
-
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    mouseX = (x - centerX) / 12;
-    mouseY = -(y - centerY) / 12;
-    isHovered = true;
-  });
-
-  card.addEventListener('mouseleave', () => {
-    isHovered = false;
-  });
-
-  function animateTilt() {
-    if (isHovered) {
-      rotX += (mouseY - rotX) * 0.1;
-      rotY += (mouseX - rotY) * 0.1;
-      card.style.transform = `scale(1.07) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-    } else {
-      rotX *= 0.9;
-      rotY *= 0.9;
-      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+      currentX *= 0.85;
+      currentY *= 0.85;
+      if (Math.abs(currentX) < 0.01 && Math.abs(currentY) < 0.01) {
         card.style.removeProperty("transform");
-        rotX = 0;
-        rotY = 0;
+        currentX = 0;
+        currentY = 0;
       } else {
-        card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        const rX = Math.round(currentY * 100) / 100;
+        const rY = Math.round(currentX * 100) / 100;
+        card.style.transform = `scale(1) rotateX(${rX}deg) rotateY(${rY}deg)`;
       }
     }
-    requestAnimationFrame(animateTilt);
+    requestAnimationFrame(animate);
   }
 
-  requestAnimationFrame(animateTilt);
+  requestAnimationFrame(animate);
 });
-</script>
-</body>
+</script></body>
 </html>
