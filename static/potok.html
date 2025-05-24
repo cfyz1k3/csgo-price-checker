@@ -1808,6 +1808,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
 function createProfitCard(name, html) {
   const wrapper = document.createElement("div");
   wrapper.className = "card-scale-wrapper";
@@ -1824,11 +1825,11 @@ function createProfitCard(name, html) {
   outer.style.height = "100%";
   outer.style.width = "100%";
 
-  const leftBlock = document.createElement("div");
-  leftBlock.style.flex = "0 0 auto";
-  leftBlock.style.display = "flex";
-  leftBlock.style.alignItems = "center";
-  leftBlock.style.height = "100%";
+  const left = document.createElement("div");
+  left.style.flex = "0 0 auto";
+  left.style.display = "flex";
+  left.style.alignItems = "center";
+  left.style.height = "100%";
 
   const img = document.createElement("img");
   const iconUrl = iconMap[name];
@@ -1842,22 +1843,22 @@ function createProfitCard(name, html) {
   img.style.marginLeft = "20px";
   img.style.marginRight = "16px";
 
-  const separator = document.createElement("div");
-  separator.style.height = "70px";
-  separator.style.width = "2px";
-  separator.style.background = "linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%)";
-  separator.style.marginRight = "16px";
+  const sep = document.createElement("div");
+  sep.style.height = "70px";
+  sep.style.width = "2px";
+  sep.style.background = "linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%)";
+  sep.style.marginRight = "16px";
 
-  leftBlock.appendChild(img);
-  leftBlock.appendChild(separator);
+  left.appendChild(img);
+  left.appendChild(sep);
 
-  const rightBlock = document.createElement("div");
-  rightBlock.style.flex = "1";
-  rightBlock.style.padding = "10px 10px 10px 0";
-  rightBlock.style.textAlign = "left";
-  rightBlock.style.display = "flex";
-  rightBlock.style.flexDirection = "column";
-  rightBlock.style.justifyContent = "center";
+  const right = document.createElement("div");
+  right.style.flex = "1";
+  right.style.padding = "10px 10px 10px 0";
+  right.style.textAlign = "left";
+  right.style.display = "flex";
+  right.style.flexDirection = "column";
+  right.style.justifyContent = "center";
 
   const title = document.createElement("strong");
   title.className = "copyable";
@@ -1869,21 +1870,29 @@ function createProfitCard(name, html) {
   details.style.marginTop = "4px";
   details.innerHTML = html;
 
-  rightBlock.appendChild(title);
-  rightBlock.appendChild(document.createElement("br"));
-  rightBlock.appendChild(details);
+  right.appendChild(title);
+  right.appendChild(document.createElement("br"));
+  right.appendChild(details);
 
-  outer.appendChild(leftBlock);
-  outer.appendChild(rightBlock);
+  outer.appendChild(left);
+  outer.appendChild(right);
   inner.appendChild(outer);
   card.appendChild(inner);
   wrapper.appendChild(card);
   document.getElementById("profit-list").appendChild(wrapper);
 
-  // Neighbor shift effect on card
+  // Hover tilt logic using CSS variables
   const allCards = Array.from(document.querySelectorAll('.profit-card'));
   const idx = allCards.indexOf(card);
-  card.addEventListener('mousemove', () => {
+  let isHovered = false;
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    mouseX = (e.clientX - rect.left - rect.width / 2) / 5;
+    mouseY = -(e.clientY - rect.top - rect.height / 2) / 2;
+    isHovered = true;
+
     allCards.forEach((other, i) => {
       if (other === card) return;
       const dy = i - idx;
@@ -1891,23 +1900,41 @@ function createProfitCard(name, html) {
       other.style.transform = `translateY(${offsetY}px)`;
     });
   });
+
   card.addEventListener('mouseleave', () => {
-    allCards.forEach(c2 => c2.style.transform = '');
+    isHovered = false;
+    allCards.forEach((c) => { if (c !== card) c.style.transform = ""; });
   });
 
-  // Tilt effect on inner
-  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
-  let isHoveredTilt = false;
+  function animate() {
+    if (isHovered) {
+      rotX += (mouseY - rotX) * 0.1;
+      rotY += (mouseX - rotY) * 0.1;
+      inner.style.setProperty('--rotX', `${rotX}deg`);
+      inner.style.setProperty('--rotY', `${rotY}deg`);
+    } else {
+      rotX *= 0.9;
+      rotY *= 0.9;
+      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+        inner.style.removeProperty('--rotX');
+        inner.style.removeProperty('--rotY');
+        rotX = rotY = 0;
+      } else {
+        inner.style.setProperty('--rotX', `${rotX}deg`);
+        inner.style.setProperty('--rotY', `${rotY}deg`);
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
 
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    mouseX = (e.clientX - rect.left - rect.width/2) / 12;
-    mouseY = -(e.clientY - rect.top - rect.height/2) / 12;
-    isHoveredTilt = true;
+  title.addEventListener("click", () => {
+    navigator.clipboard.writeText(name).then(() => {
+      title.classList.add("copied");
+      setTimeout(() => title.classList.remove("copied"), 500);
+    });
   });
-  card.addEventListener('mouseleave', () => {
-    isHoveredTilt = false;
-  });
+}
 
   function animateTilt() {
     if (isHoveredTilt) {
