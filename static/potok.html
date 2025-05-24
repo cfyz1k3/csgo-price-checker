@@ -1555,6 +1555,21 @@ document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
   let isHovered = false;
   let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
 
+  const highlight = document.createElement("div");
+  highlight.style.position = "absolute";
+  highlight.style.top = "0";
+  highlight.style.left = "0";
+  highlight.style.right = "0";
+  highlight.style.bottom = "0";
+  highlight.style.pointerEvents = "none";
+  highlight.style.transition = "opacity 0.3s ease";
+  highlight.style.borderRadius = "8px";
+  highlight.style.background = "radial-gradient(circle at center, rgba(255,255,255,0.08), transparent)";
+  highlight.style.opacity = "0";
+  card.appendChild(highlight);
+
+  card.style.transition = "transform 0.3s ease, box-shadow 0.3s ease";
+
   card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -1567,23 +1582,26 @@ document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
 
     allCards.forEach((other, i) => {
       if (other === card) return;
-      const offset = Math.max(0, 40 - Math.abs(i - index) * 20);
-      if (i < index) {
-        other.style.marginRight = `${offset}px`;
-        other.style.marginLeft = "0px";
-      } else {
-        other.style.marginLeft = `${offset}px`;
-        other.style.marginRight = "0px";
+
+      const dx = i - index;
+      const offset = dx === -1 ? -30 : dx === 1 ? 30 : 0;
+
+      if (offset !== 0) {
+        other.style.transition = "transform 0.3s ease";
+        other.style.transform = `translateX(${offset}px)`;
       }
     });
+
+    highlight.style.opacity = "1";
   });
 
   card.addEventListener('mouseleave', () => {
     isHovered = false;
     allCards.forEach(other => {
-      other.style.marginLeft = "";
-      other.style.marginRight = "";
+      other.style.transform = "";
     });
+    highlight.style.opacity = "0";
+    card.style.boxShadow = "";
   });
 
   function animateTilt() {
@@ -1591,15 +1609,22 @@ document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
       rotX += (mouseY - rotX) * 0.1;
       rotY += (mouseX - rotY) * 0.1;
       card.style.transform = `scale(1.12) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      const shadowX = -rotY * 2;
+      const shadowY = rotX * 2;
+      card.style.boxShadow = `${shadowX}px ${shadowY}px 20px rgba(0,0,0,0.4)`;
     } else {
       rotX *= 0.9;
       rotY *= 0.9;
       if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
         card.style.removeProperty("transform");
+        card.style.boxShadow = "";
         rotX = 0;
         rotY = 0;
       } else {
         card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        const shadowX = -rotY * 2;
+        const shadowY = rotX * 2;
+        card.style.boxShadow = `${shadowX}px ${shadowY}px 20px rgba(0,0,0,0.4)`;
       }
     }
     requestAnimationFrame(animateTilt);
