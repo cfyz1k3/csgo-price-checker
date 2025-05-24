@@ -456,6 +456,15 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
+
+#profit-list {
+  perspective: 1000px;
+}
+.profit-card {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.3s ease;
+}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -1189,7 +1198,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function createProfitCard(name, html) {
     const card = document.createElement("div");
-    card.className = "profit-card";
+    card.className = "profit-card fade-in";
     const iconURL = iconMap[name];
     const imageHTML = iconURL ? `<img src="${iconURL}" style="width: 40px; float: right; margin-left: 10px;">` : "";
     const nameHTML = `<strong class="copyable" style="cursor: pointer;">${name}</strong>`;
