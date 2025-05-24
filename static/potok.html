@@ -456,15 +456,6 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 
 
-
-#profit-list {
-  perspective: 1000px;
-}
-.profit-card {
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  transition: transform 0.3s ease;
-}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -1081,9 +1072,7 @@ input[type="range"]::-moz-range-thumb {
 <button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
     Start
   </button>
-</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-</div>
-<script>
+</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div><script>
 let skinIcons = {};
 fetch("buff163_icons.json")
   .then(res => res.json())
@@ -1129,6 +1118,7 @@ document.addEventListener("click", (e) => {
   }
 });
 </script>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
@@ -1196,26 +1186,71 @@ document.addEventListener("DOMContentLoaded", () => {
     return `<span style="color:${color};${bold}">${icon} ₽${profit.rub.toFixed(2)} (${profit.percent.toFixed(2)}%)</span>`;
   }
 
-  function createProfitCard(name, html) {
+  
+function apply3DEffect(card) {
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+  let isHovered = false;
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    mouseX = (x - centerX) / 12;
+    mouseY = -(y - centerY) / 12;
+    isHovered = true;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    isHovered = false;
+  });
+
+  function animateTilt() {
+    if (isHovered) {
+      rotX += (mouseY - rotX) * 0.1;
+      rotY += (mouseX - rotY) * 0.1;
+      card.style.transform = `scale(1.07) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    } else {
+      rotX *= 0.9;
+      rotY *= 0.9;
+      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+        card.style.removeProperty("transform");
+        rotX = 0;
+        rotY = 0;
+      } else {
+        card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      }
+    }
+    requestAnimationFrame(animateTilt);
+  }
+
+  requestAnimationFrame(animateTilt);
+}
+
+
+function createProfitCard(name, html) {
     const card = document.createElement("div");
-    card.className = "profit-card fade-in";
+    card.className = "profit-card";
     const iconURL = iconMap[name];
     const imageHTML = iconURL ? `<img src="${iconURL}" style="width: 40px; float: right; margin-left: 10px;">` : "";
     const nameHTML = `<strong class="copyable" style="cursor: pointer;">${name}</strong>`;
     
     
 card.innerHTML = `
-    <div style="display: flex; align-items: center; height: 100%; width: 100%;">
+  <div style="display: flex; align-items: center; height: 100%; width: 100%;">
+    ${iconURL ? `
       <div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
         <img src="${iconURL}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
         <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
       </div>
-      <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-        <strong class="copyable" style="cursor: pointer;">${name}</strong><br/>
-        <div style="white-space: nowrap; margin-top: 4px;">${html}</div>
-      </div>
+    ` : ""}
+    <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+      <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
+      <div style="white-space: nowrap; margin-top: 4px;">Профит: ${html}</div>
     </div>
-  `;
+  </div>
+`;
 
     
     card.querySelector(".copyable")?.addEventListener("click", () => {
@@ -1229,6 +1264,7 @@ card.innerHTML = `
       });
     });
     profitList.appendChild(card);
+    apply3DEffect(card);
   }
 
   function checkNextSkin() {
