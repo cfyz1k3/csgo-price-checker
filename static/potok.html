@@ -1881,7 +1881,6 @@ function createProfitCard(name, html) {
   wrapper.appendChild(card);
   document.getElementById("profit-list").appendChild(wrapper);
 
-  // Hover tilt logic using CSS variables
   const allCards = Array.from(document.querySelectorAll('.profit-card'));
   const idx = allCards.indexOf(card);
   let isHovered = false;
@@ -1928,34 +1927,6 @@ function createProfitCard(name, html) {
   }
   requestAnimationFrame(animate);
 
-  title.addEventListener("click", () => {
-    navigator.clipboard.writeText(name).then(() => {
-      title.classList.add("copied");
-      setTimeout(() => title.classList.remove("copied"), 500);
-    });
-  });
-}
-
-  function animateTilt() {
-    if (isHoveredTilt) {
-      rotX += (mouseY - rotX) * 0.1;
-      rotY += (mouseX - rotY) * 0.1;
-      inner.style.transform = `scale(1.06) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-    } else {
-      rotX *= 0.9;
-      rotY *= 0.9;
-      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
-        inner.style.removeProperty('transform');
-        rotX = rotY = 0;
-      } else {
-        inner.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-      }
-    }
-    requestAnimationFrame(animateTilt);
-  }
-  requestAnimationFrame(animateTilt);
-
-  // Copy event
   title.addEventListener("click", () => {
     navigator.clipboard.writeText(name).then(() => {
       title.classList.add("copied");
