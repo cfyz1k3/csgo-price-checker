@@ -1411,7 +1411,7 @@ function updateDisplay() {
 function filterVisibleCards() {
   const showYoupin = document.getElementById("filter-youpin")?.checked ?? true;
   const showBuff = document.getElementById("filter-buff")?.checked ?? true;
-  const cards = document.querySelectorAll('.profit-card');
+  const cards = document.querySelectorAll('.card-scale-wrapper');
 
   cards.forEach(card => {
     const isYoupin = card.innerText.includes("Youpin898:");
@@ -1432,16 +1432,18 @@ function filterVisibleCards() {
     clearTimeout(card._hideTimer);
 
     if (visible) {
-      card.style.display = "flex";
+      card.style.display = "block";
       requestAnimationFrame(() => {
-        card.classList.remove("fade-out");
-        card.classList.add("fade-in");
+        if(inner) inner.classList.remove("fade-out");
+        if(inner) inner.classList.add("fade-in");
       });
     } else {
-      card.classList.remove("fade-in");
-      card.classList.add("fade-out");
+      if(inner) inner.classList.remove("fade-in");
+      const inner = card.querySelector('.profit-card');
+    if(inner) inner.classList.add("fade-out");
       card._hideTimer = setTimeout(() => {
         card.style.display = "none";
+        if(inner) inner.classList.remove("fade-out");
       }, 400);
     }
   });
