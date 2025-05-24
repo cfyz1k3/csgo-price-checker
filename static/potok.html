@@ -1785,7 +1785,9 @@ document.addEventListener("DOMContentLoaded", () => {
   
 
 
-function createProfitCard(name, html, iconUrl = "") {
+
+
+function createProfitCard(name, html) {
   const wrapper = document.createElement("div");
   wrapper.className = "card-scale-wrapper";
 
@@ -1795,14 +1797,15 @@ function createProfitCard(name, html, iconUrl = "") {
   const inner = document.createElement("div");
   inner.className = "card-inner";
 
-  const safeIcon = iconUrl && iconUrl.startsWith("/")
+  const iconUrl = iconMap[name];
+  const finalIcon = iconUrl && iconUrl.startsWith("/")
     ? "https://steamcommunity-a.akamaihd.net/economy/image" + iconUrl
     : iconUrl || "https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw...";
 
   inner.innerHTML = `
     <div style="display: flex; align-items: center; height: 100%; width: 100%;">
       <div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-        <img src="${safeIcon}" class="skin-icon" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
+        <img src="${finalIcon}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
         <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
       </div>
       <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
