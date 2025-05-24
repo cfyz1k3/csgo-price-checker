@@ -1555,20 +1555,34 @@ document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
   let isHovered = false;
   let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
 
-  const highlight = document.createElement("div");
-  highlight.style.position = "absolute";
-  highlight.style.top = "0";
-  highlight.style.left = "0";
-  highlight.style.right = "0";
-  highlight.style.bottom = "0";
-  highlight.style.pointerEvents = "none";
-  highlight.style.transition = "opacity 0.3s ease";
-  highlight.style.borderRadius = "8px";
-  highlight.style.background = "radial-gradient(circle at center, rgba(255,255,255,0.08), transparent)";
-  highlight.style.opacity = "0";
-  card.appendChild(highlight);
+  const lighting = document.createElement("div");
+  lighting.style.position = "absolute";
+  lighting.style.top = "0";
+  lighting.style.left = "0";
+  lighting.style.right = "0";
+  lighting.style.bottom = "0";
+  lighting.style.pointerEvents = "none";
+  lighting.style.borderRadius = "8px";
+  lighting.style.transition = "opacity 0.4s ease, background-position 0.2s ease";
+  lighting.style.background = "radial-gradient(circle at center, rgba(255,255,255,0.07), transparent)";
+  lighting.style.opacity = "0";
+  card.appendChild(lighting);
 
-  card.style.transition = "transform 0.3s ease, box-shadow 0.3s ease";
+  const reflection = document.createElement("div");
+  reflection.style.position = "absolute";
+  reflection.style.top = "0";
+  reflection.style.left = "0";
+  reflection.style.right = "0";
+  reflection.style.bottom = "0";
+  reflection.style.pointerEvents = "none";
+  reflection.style.borderRadius = "8px";
+  reflection.style.opacity = "0";
+  reflection.style.transition = "opacity 0.4s ease";
+  reflection.style.background = "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%)";
+  card.appendChild(reflection);
+
+  card.style.backdropFilter = "blur(4px)";
+  card.style.transition = "transform 0.3s ease";
 
   card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
@@ -1580,28 +1594,30 @@ document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
     mouseY = -(y - centerY) / 3;
     isHovered = true;
 
+    const percentX = (x / rect.width) * 100;
+    const percentY = (y / rect.height) * 100;
+    lighting.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.07), transparent)`;
+    lighting.style.opacity = "1";
+    reflection.style.opacity = "0.2";
+
     allCards.forEach((other, i) => {
       if (other === card) return;
-
       const dx = i - index;
       const offset = dx === -1 ? -30 : dx === 1 ? 30 : 0;
-
       if (offset !== 0) {
         other.style.transition = "transform 0.3s ease";
         other.style.transform = `translateX(${offset}px)`;
       }
     });
-
-    highlight.style.opacity = "1";
   });
 
   card.addEventListener('mouseleave', () => {
     isHovered = false;
+    lighting.style.opacity = "0";
+    reflection.style.opacity = "0";
     allCards.forEach(other => {
       other.style.transform = "";
     });
-    highlight.style.opacity = "0";
-    card.style.boxShadow = "";
   });
 
   function animateTilt() {
@@ -1609,22 +1625,15 @@ document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
       rotX += (mouseY - rotX) * 0.1;
       rotY += (mouseX - rotY) * 0.1;
       card.style.transform = `scale(1.12) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-      const shadowX = -rotY * 2;
-      const shadowY = rotX * 2;
-      card.style.boxShadow = `${shadowX}px ${shadowY}px 20px rgba(0,0,0,0.4)`;
     } else {
       rotX *= 0.9;
       rotY *= 0.9;
       if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
         card.style.removeProperty("transform");
-        card.style.boxShadow = "";
         rotX = 0;
         rotY = 0;
       } else {
         card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-        const shadowX = -rotY * 2;
-        const shadowY = rotX * 2;
-        card.style.boxShadow = `${shadowX}px ${shadowY}px 20px rgba(0,0,0,0.4)`;
       }
     }
     requestAnimationFrame(animateTilt);
