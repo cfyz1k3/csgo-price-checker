@@ -453,6 +453,9 @@ body:not(.light-theme) .checkbox input:checked + label {
   border-color: var(--text-color);
 }
 
+
+
+
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -627,10 +630,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   transform: scale(1);
 }
 
-.profit-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
+
 
 
 
@@ -674,10 +674,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   transform: scale(1);
 }
 
-.profit-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
+
 
 
 .checkbox input:checked + label {
@@ -1054,7 +1051,6 @@ input[type="range"]::-moz-range-thumb {
 </div>
 </div>
 <!-- КНОПКА POTOK С ИКОНКОЙ -->
-
 <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;">
 <button onclick="location.href='index.html'" style="display: flex; align-items: center; gap: 8px;">
 <img alt="Potok Icon" class="potok-icon" src="back_icon.png" style="height: 28px;"/>
@@ -1072,7 +1068,11 @@ input[type="range"]::-moz-range-thumb {
 <div class="inner one"></div>
 <div class="inner two"></div>
 <div class="inner three"></div>
-</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
+</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+
+
+
+</div>
 <script>
 let skinIcons = {};
 fetch("buff163_icons.json")
@@ -1209,7 +1209,7 @@ card.innerHTML = `
     ` : ""}
     <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
       <strong class="copyable" style="cursor: pointer;">${name}</strong><br>
-      <div style="white-space: nowrap; margin-top: 4px;">Профит:<br>${html}</div>
+      <div style="white-space: nowrap; margin-top: 4px;">Профит: ${html}</div>
     </div>
   </div>
 `;
@@ -1373,5 +1373,58 @@ document.getElementById("filter-buff").addEventListener("change", filterVisibleC
 
 updateDisplay();
 filterVisibleCards();
-</script></body>
+</script>
+<style>
+#profit-list {
+  perspective: 1000px;
+}
+.profit-card {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.25s ease, opacity 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
+}
+</style>
+<script>
+document.querySelectorAll('.profit-card').forEach(card => {
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+  let isHovered = false;
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    mouseX = (x - centerX) / 12;
+    mouseY = -(y - centerY) / 12;
+    isHovered = true;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    isHovered = false;
+  });
+
+  function animateTilt() {
+    if (isHovered) {
+      rotX += (mouseY - rotX) * 0.1;
+      rotY += (mouseX - rotY) * 0.1;
+      card.style.transform = `scale(1.07) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    } else {
+      rotX *= 0.9;
+      rotY *= 0.9;
+      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+        card.style.removeProperty("transform");
+        rotX = 0;
+        rotY = 0;
+      } else {
+        card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      }
+    }
+    requestAnimationFrame(animateTilt);
+  }
+
+  requestAnimationFrame(animateTilt);
+});
+</script>
+</body>
 </html>
