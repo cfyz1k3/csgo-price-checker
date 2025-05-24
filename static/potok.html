@@ -1787,6 +1787,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
 function createProfitCard(name, html) {
   const wrapper = document.createElement("div");
   wrapper.className = "card-scale-wrapper";
@@ -1805,7 +1806,7 @@ function createProfitCard(name, html) {
   inner.innerHTML = `
     <div style="display: flex; align-items: center; height: 100%; width: 100%;">
       <div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-        <img src="${finalIcon}" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
+        <img src="${finalIcon}" class="skin-icon" style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;">
         <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
       </div>
       <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
@@ -1818,6 +1819,45 @@ function createProfitCard(name, html) {
   card.appendChild(inner);
   wrapper.appendChild(card);
   document.getElementById("profit-list").appendChild(wrapper);
+
+  // 3D hover effect
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+  let isHovered = false;
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    mouseX = (x - centerX) / 12;
+    mouseY = -(y - centerY) / 12;
+    isHovered = true;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    isHovered = false;
+  });
+
+  function animateTilt() {
+    if (isHovered) {
+      rotX += (mouseY - rotX) * 0.1;
+      rotY += (mouseX - rotY) * 0.1;
+      card.style.transform = `scale(1.07) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    } else {
+      rotX *= 0.9;
+      rotY *= 0.9;
+      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+        card.style.removeProperty("transform");
+        rotX = 0;
+        rotY = 0;
+      } else {
+        card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      }
+    }
+    requestAnimationFrame(animateTilt);
+  }
+  requestAnimationFrame(animateTilt);
 
   inner.querySelector(".copyable")?.addEventListener("click", () => {
     navigator.clipboard.writeText(name).then(() => {
