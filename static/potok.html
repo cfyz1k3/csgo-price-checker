@@ -1119,6 +1119,19 @@ input[type="range"]::-moz-range-thumb {
 
 
 
+</style><style>
+.card-scale-wrapper.fade-out {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.card-scale-wrapper.fade-in {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
 </style></head>
 <body>
 <div style="position: fixed; top: 100px; left: 20px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
@@ -1411,9 +1424,10 @@ function updateDisplay() {
 function filterVisibleCards() {
   const showYoupin = document.getElementById("filter-youpin")?.checked ?? true;
   const showBuff = document.getElementById("filter-buff")?.checked ?? true;
-  const cards = document.querySelectorAll('.card-scale-wrapper');
+  const wrappers = document.querySelectorAll('.card-scale-wrapper');
 
-  cards.forEach(card => {
+  wrappers.forEach(wrapper => {
+    const card = wrapper.querySelector('.profit-card');
     const isYoupin = card.innerText.includes("Youpin898:");
     const isBuff = card.innerText.includes("BUFF163:");
     const text = card.innerText;
@@ -1429,21 +1443,20 @@ function filterVisibleCards() {
       percent >= (window.currentMinPercent || 0)
     );
 
-    clearTimeout(card._hideTimer);
+    clearTimeout(wrapper._hideTimer);
 
     if (visible) {
-      card.style.display = "block";
+      wrapper.style.display = "block";
       requestAnimationFrame(() => {
-        if(inner) inner.classList.remove("fade-out");
-        if(inner) inner.classList.add("fade-in");
+        wrapper.classList.remove("fade-out"); card?.classList.remove("fade-out");
+        wrapper.classList.add("fade-in"); card?.classList.add("fade-in");
       });
     } else {
-      if(inner) inner.classList.remove("fade-in");
-      const inner = card.querySelector('.profit-card');
-    if(inner) inner.classList.add("fade-out");
-      card._hideTimer = setTimeout(() => {
-        card.style.display = "none";
-        if(inner) inner.classList.remove("fade-out");
+      wrapper.classList.remove("fade-in"); card?.classList.remove("fade-in");
+      wrapper.classList.add("fade-out"); card?.classList.add("fade-out");
+      wrapper._hideTimer = setTimeout(() => {
+        wrapper.style.display = "none";
+        wrapper.classList.remove("fade-out"); card?.classList.remove("fade-out");
       }, 400);
     }
   });
@@ -1790,6 +1803,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
 function createProfitCard(name, html) {
   const wrapper = document.createElement("div");
   wrapper.className = "card-scale-wrapper";
@@ -1822,45 +1837,27 @@ function createProfitCard(name, html) {
   wrapper.appendChild(card);
   document.getElementById("profit-list").appendChild(wrapper);
 
-  // 3D hover effect
-  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
-  let isHovered = false;
+  // 3D эффект как у тестовых
+  card.style.transformStyle = "preserve-3d";
+  card.style.transition = "transform 0.15s ease";
+  card.style.perspective = "1000px";
 
-  card.addEventListener('mousemove', (e) => {
+  card.addEventListener("mousemove", (e) => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    mouseX = (x - centerX) / 12;
-    mouseY = -(y - centerY) / 12;
-    isHovered = true;
+    const rotX = -(y - centerY) / 8;
+    const rotY = (x - centerX) / 8;
+    card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.07)`;
   });
 
-  card.addEventListener('mouseleave', () => {
-    isHovered = false;
+  card.addEventListener("mouseleave", () => {
+    card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
   });
 
-  function animateTilt() {
-    if (isHovered) {
-      rotX += (mouseY - rotX) * 0.1;
-      rotY += (mouseX - rotY) * 0.1;
-      card.style.transform = `scale(1.07) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-    } else {
-      rotX *= 0.9;
-      rotY *= 0.9;
-      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
-        card.style.removeProperty("transform");
-        rotX = 0;
-        rotY = 0;
-      } else {
-        card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-      }
-    }
-    requestAnimationFrame(animateTilt);
-  }
-  requestAnimationFrame(animateTilt);
-
+  // Копирование
   inner.querySelector(".copyable")?.addEventListener("click", () => {
     navigator.clipboard.writeText(name).then(() => {
       const label = inner.querySelector(".copyable");
@@ -1926,6 +1923,26 @@ function checkNextSkin() {
         timeoutId = setTimeout(checkNextSkin, 1000);
       });
   }
+});
+</script><script>
+document.addEventListener("DOMContentLoaded", () => {
+  createProfitCard("★ Karambit | Doppler (Factory New)", `
+    <div>Youpin898: ¥246.69</div>
+    <div>BUFF163: ¥9999.99</div>
+    <div>Профит: ↑ ₽464.47 (15.69%)</div>
+  `);
+
+  createProfitCard("AK-47 | Fire Serpent (Field-Tested)", `
+    <div>Youpin898: ¥189.50</div>
+    <div>BUFF163: ¥850.00</div>
+    <div>Профит: ↑ ₽280.12 (12.03%)</div>
+  `);
+
+  createProfitCard("AWP | Dragon Lore (Minimal Wear)", `
+    <div>Youpin898: ¥560.00</div>
+    <div>BUFF163: ¥1380.00</div>
+    <div>Профит: ↑ ₽700.77 (21.75%)</div>
+  `);
 });
 </script></body>
 </html>
