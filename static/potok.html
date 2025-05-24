@@ -1806,6 +1806,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
 function createProfitCard(name, html) {
   const wrapper = document.createElement("div");
   wrapper.className = "card-scale-wrapper";
@@ -1878,48 +1879,67 @@ function createProfitCard(name, html) {
   wrapper.appendChild(card);
   document.getElementById("profit-list").appendChild(wrapper);
 
+  // Neighbor shift effect
+  const allCards = Array.from(document.querySelectorAll('.profit-card'));
+  const idx = allCards.indexOf(card);
+  card.addEventListener('mousemove', () => {
+    allCards.forEach((other, i) => {
+      if (other === card) return;
+      const dy = i - idx;
+      const offsetY = dy === -1 ? -20 : dy === 1 ? 20 : 0;
+      other.style.transform = `translateY(${offsetY}px)`;
+    });
+  });
+  card.addEventListener('mouseleave', () => {
+    allCards.forEach(c2 => c2.style.transform = '');
+  });
+
+  // Tilt effect
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+  let isHovered = false;
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    mouseX = (x - centerX) / 12;
+    mouseY = -(y - centerY) / 12;
+    isHovered = true;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    isHovered = false;
+  });
+
+  function animateTilt() {
+    if (isHovered) {
+      rotX += (mouseY - rotX) * 0.1;
+      rotY += (mouseX - rotY) * 0.1;
+      card.style.transform = `scale(1.07) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    } else {
+      rotX *= 0.9;
+      rotY *= 0.9;
+      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+        card.style.removeProperty("transform");
+        rotX = 0;
+        rotY = 0;
+      } else {
+        card.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      }
+    }
+    requestAnimationFrame(animateTilt);
+  }
+  requestAnimationFrame(animateTilt);
+
+  // Copy event
   title.addEventListener("click", () => {
     navigator.clipboard.writeText(name).then(() => {
       title.classList.add("copied");
       setTimeout(() => title.classList.remove("copied"), 500);
     });
   });
-
-  // 3D-эффект как у тестовых карточек
-  (function() {
-    const wrapperInner = inner; // .card-inner
-    wrapperInner.style.transition = "transform 0.3s ease";
-    let isHovered = false, mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
-    card.addEventListener("mousemove", e => {
-      const rect = card.getBoundingClientRect();
-      mouseX = (e.clientX - rect.left - rect.width/2)/5;
-      mouseY = -(e.clientY - rect.top - rect.height/2)/2;
-      isHovered = true;
-    });
-    card.addEventListener("mouseleave", () => {
-      isHovered = false;
-    });
-    function animate3D() {
-      if (isHovered) {
-        rotX += (mouseY - rotX) * 0.1;
-        rotY += (mouseX - rotY) * 0.1;
-        wrapperInner.style.setProperty("--rotX", rotX + "deg");
-        wrapperInner.style.setProperty("--rotY", rotY + "deg");
-      } else {
-        rotX *= 0.9; rotY *= 0.9;
-        if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
-          wrapperInner.style.removeProperty("--rotX");
-          wrapperInner.style.removeProperty("--rotY");
-        } else {
-          wrapperInner.style.setProperty("--rotX", rotX + "deg");
-          wrapperInner.style.setProperty("--rotY", rotY + "deg");
-        }
-      }
-      requestAnimationFrame(animate3D);
-    }
-    requestAnimationFrame(animate3D);
-  })();
-
 }
 
 function checkNextSkin() {
