@@ -1806,56 +1806,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
 function createProfitCard(name, html) {
   const iconUrl = iconMap[name];
-  const finalIcon = iconUrl && iconUrl.startsWith("/")
+  const finalIconPrefix = iconUrl && iconUrl.startsWith("/")
     ? "https://steamcommunity-a.akamaihd.net/economy/image" + iconUrl
     : iconUrl || "https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw...";
 
   const wrapper = document.createElement("div");
-  wrapper.innerHTML = `
-    <div class="card-scale-wrapper">
-      <div class="profit-card fade-in">
-        <div class="card-inner">
-          <div style='display: flex; align-items: center; height: 100%; width: 100%;'>
-            <div style='flex: 0 0 auto; display: flex; align-items: center; height: 100%;'>
-              <img src='${finalIcon}' style='height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;'>
-              <div style='height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;'></div>
-            </div>
-            <div style='flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;'>
-              <strong class='copyable' style='cursor: pointer;'>${name}</strong><br>
-              <div style='white-space: nowrap; margin-top: 4px;'>${html}</div>
-            </div>
-          </div>
-        </div>
-      </div>
+  wrapper.innerHTML = `<div class="card-scale-wrapper">
+ <div class="profit-card fade-in">
+  <div class="card-inner">
+   <div style="display: flex; align-items: center; height: 100%; width: 100%;">
+    <div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
+     <img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
+     <div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;">
+     </div>
     </div>
-  `;
-
+    <div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
+     <strong class="copyable" style="cursor: pointer;">
+      Test Skin 1
+     </strong>
+     <br/>
+     <div style="white-space: nowrap; margin-top: 4px;">
+      Youpin898: ¥101.00
+      <br/>
+      ТМ: ₽1010.00
+      <br/>
+      Профит:
+      <span style="color: rgb(80, 220, 120); font-weight: bold;">
+       ↑ ₽10.00 (5%)
+      </span>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+`;
   const finalWrapper = wrapper.firstElementChild;
   document.getElementById("profit-list").appendChild(finalWrapper);
 
   const card = finalWrapper.querySelector(".profit-card");
-
-  // 3D hover effect
-  card.style.transformStyle = "preserve-3d";
-  card.style.transition = "transform 0.15s ease";
-  card.style.perspective = "1000px";
-
-  card.addEventListener("mousemove", (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotX = -(y - centerY) / 8;
-    const rotY = (x - centerX) / 8;
-    card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.07)`;
-  });
-
-  card.addEventListener("mouseleave", () => {
-    card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
-  });
+  if (typeof setupCardTilt === "function") {
+    setupCardTilt(card);
+  }
 
   finalWrapper.querySelector(".copyable")?.addEventListener("click", () => {
     navigator.clipboard.writeText(name).then(() => {
@@ -1923,5 +1919,62 @@ function checkNextSkin() {
       });
   }
 });
+</script><script>
+function setupCardTilt(card) {
+  const inner = card.querySelector('.card-inner');
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+  let isHovered = false;
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    mouseX = (x - centerX) / 12;
+    mouseY = -(y - centerY) / 12;
+    isHovered = true;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    isHovered = false;
+  });
+
+  function animateTilt() {
+    if (!card.isConnected) return;
+    if (isHovered) {
+      rotX += (mouseY - rotX) * 0.1;
+      rotY += (mouseX - rotY) * 0.1;
+      inner.style.transform = `scale(1.06) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+      document.querySelectorAll('.profit-card').forEach(other => {
+        if (other !== card) {
+          const oRect = other.getBoundingClientRect();
+          const cRect = card.getBoundingClientRect();
+          const distance = Math.abs(oRect.top - cRect.top) + Math.abs(oRect.left - cRect.left);
+          const offsetY = Math.min(12, 140 / distance);
+          other.style.transform = `translateY(${offsetY}px)`;
+        }
+      });
+
+    } else {
+      rotX *= 0.9;
+      rotY *= 0.9;
+      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+        inner.style.removeProperty("transform");
+        document.querySelectorAll('.profit-card').forEach(other => {
+          other.style.removeProperty("transform");
+        });
+        rotX = 0;
+        rotY = 0;
+      } else {
+        inner.style.transform = `scale(1) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      }
+    }
+    requestAnimationFrame(animateTilt);
+  }
+
+  requestAnimationFrame(animateTilt);
+}
 </script></body>
 </html>
