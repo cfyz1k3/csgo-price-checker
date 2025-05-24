@@ -541,118 +541,6 @@ body:not(.light-theme) .checkbox input:checked + label {
 .card-scale-wrapper:hover {
   transform: scale(1.12);
 }
-
-.card-inner::after {
-  content: "";
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.25) 0%, transparent 80%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-  z-index: 2;
-}
-.card-scale-wrapper:hover .card-inner::after {
-  opacity: 1;
-}
-.card-inner {
-  position: relative;
-  z-index: 1;
-}
-
-.card-inner::after {
-  content: "";
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 60%);
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.3s ease;
-  z-index: 2;
-}
-.card-scale-wrapper:hover .card-inner::after {
-  opacity: 1;
-}
-
-.hover-flash {
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 60%);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 2;
-}
-
-.hover-flash {
-  position: absolute;
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease, left 0s, top 0s;
-  z-index: 2;
-  mix-blend-mode: screen;
-}
-
-.hover-flash {
-  position: absolute;
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  z-index: 10;
-}
-
-.card-inner {
-  position: relative;
-}
-
-.card-inner {
-  position: relative;
-  border-radius: 8px;
-  transition: box-shadow 0.3s ease;
-}
-
-.card-scale-wrapper:hover .card-inner,
-.card-scale-wrapper:focus-within .card-inner {
-  box-shadow: 0 0 12px 4px var(--theme-glow, rgba(0, 123, 255, 0.5));
-}
-
-/* Flash positioning and dimmed effect */
-.hover-flash {
-  position: absolute;
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  z-index: 10;
-}
-
-.card-scale-wrapper:hover .card-inner,
-.card-scale-wrapper:focus-within .card-inner {
-  box-shadow: 0 0 16px 5px var(--theme-color, rgba(255, 255, 255, 0.4));
-}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -1284,85 +1172,10 @@ input[type="range"]::-moz-range-thumb {
     Start
   </button>
 </div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-<div class="card-scale-wrapper"><div class="profit-card fade-in"><div class="card-inner">
-<div style="display: flex; align-items: center; height: 100%; width: 100%;">
-<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
-<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
+
+
+
 </div>
-<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-<strong class="copyable" style="cursor: pointer;">Test Skin 1</strong><br/>
-<div style="white-space: nowrap; margin-top: 4px;">
-            Youpin898: ¥101.00<br/>
-            ТМ: ₽1010.00<br/>
-            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽10.00 (5%)</span>
-</div>
-</div>
-</div>
-<div class="hover-flash"></div></div></div></div>
-<div class="card-scale-wrapper"><div class="profit-card fade-in"><div class="card-inner">
-<div style="display: flex; align-items: center; height: 100%; width: 100%;">
-<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
-<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
-</div>
-<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-<strong class="copyable" style="cursor: pointer;">Test Skin 2</strong><br/>
-<div style="white-space: nowrap; margin-top: 4px;">
-            Youpin898: ¥102.00<br/>
-            ТМ: ₽1020.00<br/>
-            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽20.00 (10%)</span>
-</div>
-</div>
-</div>
-<div class="hover-flash"></div></div></div></div>
-<div class="card-scale-wrapper"><div class="profit-card fade-in"><div class="card-inner">
-<div style="display: flex; align-items: center; height: 100%; width: 100%;">
-<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
-<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
-</div>
-<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-<strong class="copyable" style="cursor: pointer;">Test Skin 3</strong><br/>
-<div style="white-space: nowrap; margin-top: 4px;">
-            Youpin898: ¥103.00<br/>
-            ТМ: ₽1030.00<br/>
-            Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽30.00 (15%)</span>
-</div>
-</div>
-</div>
-<div class="hover-flash"></div></div></div></div>
-<div class="card-scale-wrapper"><div class="profit-card fade-in"><div class="card-inner">
-<div style="display: flex; align-items: center; height: 100%; width: 100%;">
-<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
-<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
-</div>
-<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-<strong class="copyable" style="cursor: pointer;">Test Skin 4</strong><br/>
-<div style="white-space: nowrap; margin-top: 4px;">
-              Youpin898: ¥104.00<br/>
-              ТМ: ₽1040.00<br/>
-              Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽40.00 (20%)</span>
-</div>
-</div>
-</div>
-<div class="hover-flash"></div></div></div></div><div class="card-scale-wrapper"><div class="profit-card fade-in"><div class="card-inner">
-<div style="display: flex; align-items: center; height: 100%; width: 100%;">
-<div style="flex: 0 0 auto; display: flex; align-items: center; height: 100%;">
-<img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJzfbw..." style="height: 96px; width: 96px; object-fit: contain; margin-left: 20px; margin-right: 16px;"/>
-<div style="height: 70px; width: 2px; background: linear-gradient(to bottom, transparent 0%, var(--text-color) 20%, var(--text-color) 80%, transparent 100%); margin-right: 16px;"></div>
-</div>
-<div style="flex: 1; padding: 10px 10px 10px 0; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-<strong class="copyable" style="cursor: pointer;">Test Skin 5</strong><br/>
-<div style="white-space: nowrap; margin-top: 4px;">
-              Youpin898: ¥105.00<br/>
-              ТМ: ₽1050.00<br/>
-              Профит: <span style="color: rgb(80, 220, 120); font-weight: bold;">↑ ₽50.00 (25%)</span>
-</div>
-</div>
-</div>
-<div class="hover-flash"></div></div></div></div></div>
 <script>
 let skinIcons = {};
 fetch("buff163_icons.json")
@@ -1666,6 +1479,95 @@ document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
   backface-visibility: hidden;
   transition: transform 0.2s ease, opacity 0.4s ease, height 0.4s ease, margin 0.4s ease, padding 0.4s ease, width 0.4s ease;
 }
+
+.profit-card:hover .card-inner {
+  outline: 3px solid var(--text-color);
+  outline-offset: -2px;
+  box-shadow: 0 0 12px 3px var(--text-color);
+}
+
+.profit-card:hover .card-inner {
+  outline: 3px double var(--text-color);
+  outline-offset: -3px;
+  box-shadow: 0 0 8px 2px var(--text-color), 0 0 1px 1px var(--text-color) inset;
+}
+
+.profit-card:hover .card-inner {
+  transform: translateY(-3px) scale(1.02);
+}
+.card-inner {
+  transition: transform 0.25s ease;
+}
+
+/* Обновляем transform при наведении, без удаления rotate */
+.profit-card:hover .card-inner {
+  transform: perspective(800px) rotateX(var(--rotX, 0deg)) rotateY(var(--rotY, 0deg)) translateY(-3px) scale(1.02);
+}
+
+/* Восстановим переменные трансформации */
+.card-inner {
+  transition: transform 0.25s ease;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.card-inner {
+  position: relative;
+}
+
+.hover-flash {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-flash {
+  pointer-events: none;
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 60%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.card-inner {
+  border-radius: 10px;
+  box-shadow: 0 0 2px rgba(0,0,0,0.15);
+}
+
+.card-inner {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.hover-flash {
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 65%);
+}
+
+.card-inner {
+  filter: blur(0.1px);
+  box-shadow: none !important;
+}
 </style>
 <script>
 document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
@@ -1815,8 +1717,7 @@ document.querySelectorAll('.profit-card').forEach((card, index, allCards) => {
   requestAnimationFrame(animate);
 });
 </script><script>
-document.querySelectorAll('.card-scale-wrapper').forEach(wrapper => {
-  const inner = wrapper.querySelector('.card-inner');
+document.querySelectorAll('.card-inner').forEach(inner => {
   const flash = inner.querySelector('.hover-flash');
   inner.addEventListener('mousemove', (e) => {
     const rect = inner.getBoundingClientRect();
