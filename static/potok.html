@@ -1686,31 +1686,31 @@ function createProfitCard(name, html) {
   });
 }
 
-
 function checkNextSkin() {
     if (!isRunning || !skinNames.length) return;
 
     const name = skinNames[currentIndex];
-    const salesCount = salesMap[name] ?? 0;
-
-    if (salesCount < 5) {
-        console.log(`⏭️ Пропуск: ${name}, продаж: ${salesCount}`);
-        parsedCount++;
-        updateProgress(parsedCount, totalCount);
-        currentIndex = (currentIndex + 1) % skinNames.length;
-        timeoutId = setTimeout(checkNextSkin, 0);
-        return;
-    }
-
     skinNameDiv.textContent = `Проверка: ${name}`;
 
+    
+    const salesCount = salesMap[name] ?? 0;
+    if (salesCount < 5) {
+      console.log(`⏭️ Пропуск: ${name}, продаж: ${salesCount}`);
+      parsedCount++;
+      updateProgress(parsedCount, totalCount);
+      currentIndex = (currentIndex + 1) % skinNames.length;
+      timeoutId = setTimeout(checkNextSkin, 0);
+      return;
+    }
+    
     fetch(`/api/price?name=${encodeURIComponent(name)}`)
       .then(res => res.json())
       .then(data => {
+        const salesCount = salesMap[name] ?? 0;
+        const buff = data.buff !== null ? `¥${data.buff.toFixed(2)}` : "—";
         const youpinPrice = data.youpin !== null ? `¥${data.youpin.toFixed(2)}` : "—";
         console.log(`🟢 API: ${name}, Youpin: ${youpinPrice}, Продаж: ${salesCount}`);
-
-        const buff = data.buff !== null ? `¥${data.buff.toFixed(2)}` : "—";
+        const youpin = data.youpin !== null ? `¥${data.youpin.toFixed(2)}` : "—";
         const tm = data.leg1t !== null ? `₽${(data.leg1t / 100).toFixed(2)}` : "—";
 
         const py = data.profit_youpin;
@@ -1720,7 +1720,7 @@ function checkNextSkin() {
         const profitBHTML = formatProfitHTML(pb);
 
         resultsDiv.innerHTML = `
-          <div>Youpin898: ${youpinPrice}</div>
+          <div>Youpin898: ${youpin}</div>
           <div>BUFF163: ${buff}</div>
           <div>ТМ: ${tm}</div>
           <div>Профит Youpin898: ${profitYHTML}</div>
@@ -1735,30 +1735,10 @@ function checkNextSkin() {
           skinIcon.style.display = "none";
         }
 
-        const cardInfoYP = `Youpin898: ${youpinPrice}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
+        const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
         if (py && py.percent >= (window.currentMinPercent || 0) && py.rub >= (window.currentMinRub || 0)) {
-          createProfitCard(name, cardInfoYP, data.icon);
-        }
-
-        const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
-        if (pb && pb.percent >= (window.currentMinPercent || 0) && pb.rub >= (window.currentMinRub || 0)) {
-          createProfitCard(name, cardInfoBF, data.icon);
-        }
-
-        currentIndex = (currentIndex + 1) % skinNames.length;
-        parsedCount++;
-        updateProgress(parsedCount, totalCount);
-        timeoutId = setTimeout(checkNextSkin, 1000);
-      })
-      .catch(err => {
-        console.error("❌ Ошибка запроса:", err);
-        currentIndex = (currentIndex + 1) % skinNames.length;
-        parsedCount++;
-        updateProgress(parsedCount, totalCount);
-        timeoutId = setTimeout(checkNextSkin, 1000);
-      });
+  createProfitCard(name, cardInfoYP, data.icon);
 }
-
 
         const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
         if (pb && pb.percent >= (window.currentMinPercent || 0) && pb.rub >= (window.currentMinRub || 0)) {
