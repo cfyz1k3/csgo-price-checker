@@ -1745,6 +1745,8 @@ function checkNextSkin() {
 
         currentIndex = (currentIndex + 1) % skinNames.length;
         
+        parsedCount++;
+        updateProgress(parsedCount, totalCount);
         timeoutId = setTimeout(checkNextSkin, 1000);
       })
       .catch(err => {
