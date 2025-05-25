@@ -101,16 +101,10 @@ def youpin_skin_names():
 @app.route("/api/sales")
 def get_sales():
     try:
-        response = requests.get("https://market.csgo.com/api/v2/prices/class_instance/RUB.json", timeout=10)
-        r = response.json()
-        All_Sales = {}
-        for key in r["items"]:
-            name = r["items"][key]['market_hash_name']
-            popularity_7d = r["items"][key].get('popularity_7d') or 0
-            All_Sales[name] = All_Sales.get(name, 0) + int(popularity_7d)
-        return jsonify(All_Sales)
+        with open("sales.json", "r", encoding="utf-8") as f:
+            return jsonify(json.load(f))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": f"Не удалось прочитать sales.json: {str(e)}"}), 500
 
 @app.route("/")
 def index():
