@@ -1,4 +1,3 @@
-
 from flask import Flask, request, jsonify, send_from_directory, session, redirect
 import requests
 import json
@@ -98,6 +97,20 @@ def get_skin_names():
 @app.route("/api/youpin_names")
 def youpin_skin_names():
     return jsonify(list(find_id.keys()))
+
+@app.route("/api/sales")
+def get_sales():
+    try:
+        response = requests.get("https://market.csgo.com/api/v2/prices/class_instance/RUB.json", timeout=10)
+        r = response.json()
+        All_Sales = {}
+        for key in r["items"]:
+            name = r["items"][key]['market_hash_name']
+            popularity_7d = r["items"][key].get('popularity_7d') or 0
+            All_Sales[name] = All_Sales.get(name, 0) + int(popularity_7d)
+        return jsonify(All_Sales)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/")
 def index():
