@@ -1625,7 +1625,6 @@ function createProfitCard(name, html) {
   details.style.whiteSpace = "nowrap";
   details.style.marginTop = "4px";
   
-
 const salesCount = salesMap[name] ?? 0;
 parsedCount++;
 updateProgress(parsedCount, totalCount);
@@ -1635,29 +1634,190 @@ if (salesCount < 5) {
   return;
 }
 
-fetch(`/api/price?name=${encodeURIComponent(name)}`)
-  .then(res => res.json())
-  .then(data => {
-    const buffPrice = data.buff ?? null;
-    const youpinPrice = data.youpin ?? null;
-    const tmPrice = data.tm ?? null;
+        parsedCount++;
+        updateProgress(parsedCount, totalCount);
+        if (salesCount < 5) {
+          currentIndex++;
+          timeoutId = setTimeout(checkNextSkin, 1000);
+          return;
+        }
+  details.innerHTML = html;
+  const badge = document.createElement("div");
+  badge.className = "sales-badge";
+  badge.textContent = salesCount;
+  inner.appendChild(badge);
 
-    const pb = calculateProfit(buffPrice, youpinPrice, tmPrice);
+  right.appendChild(title);
+  right.appendChild(document.createElement("br"));
+  right.appendChild(details);
 
-    const label = [
-      `Youpin898: ${youpinPrice ? `¥${youpinPrice}` : "—"}`,
-      `BUFF163: ${buffPrice ? `¥${buffPrice}` : "—"}`,
-      `ТМ: ${tmPrice ? `¥${tmPrice}` : "—"}`,
-      `Sales: ${salesCount}`
-    ].join('\n');
+  outer.appendChild(left);
+  outer.appendChild(right);
+  inner.appendChild(outer);
+  card.appendChild(inner);
+  wrapper.appendChild(card);
+  document.getElementById("profit-list").appendChild(wrapper);
 
-    if (pb.percent >= minProfit && pb.price >= minPrice) {
-      createProfitCard(name, pb.price, pb.percent, label);
+  let isHovered = false;
+  let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+
+
+
+  function animate() {
+    if (isHovered) {
+      rotX += (mouseY - rotX) * 0.1;
+      rotY += (mouseX - rotY) * 0.1;
+      inner.style.setProperty('--rotX', `${rotX}deg`);
+      inner.style.setProperty('--rotY', `${rotY}deg`);
+    } else {
+      rotX *= 0.9;
+      rotY *= 0.9;
+      if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+        inner.style.removeProperty('--rotX');
+        inner.style.removeProperty('--rotY');
+        rotX = rotY = 0;
+      } else {
+        inner.style.setProperty('--rotX', `${rotX}deg`);
+        inner.style.setProperty('--rotY', `${rotY}deg`);
+      }
     }
+    requestAnimationFrame(animate);
+  setupHoverEffects();
+  }
+  requestAnimationFrame(animate);
+  setupHoverEffects();
 
-    currentIndex++;
-    timeoutId = setTimeout(checkNextSkin, 1000);
+  title.addEventListener("click", () => {
+    navigator.clipboard.writeText(name).then(() => {
+      title.classList.add("copied");
+      setTimeout(() => title.classList.remove("copied"), 500);
+    });
   });
+}
+
+function checkNextSkin() {
+    if (!isRunning || !skinNames.length) return;
+
+    const name = skinNames[currentIndex];
+    skinNameDiv.textContent = `Проверка: ${name}`;
+
+    fetch(`/api/price?name=${encodeURIComponent(name)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.youpin !== null) {
+          console.log(`Youpin запрос: ${name} | Sales: ${salesMap[name] ?? 0}`);
+        }
+        const buff = data.buff !== null ? `¥${data.buff.toFixed(2)}` : "—";
+        const youpin = data.youpin !== null ? `¥${data.youpin.toFixed(2)}` : "—";
+        const tm = data.leg1t !== null ? `₽${(data.leg1t / 100).toFixed(2)}` : "—";
+
+        const py = data.profit_youpin;
+        const pb = data.profit_buff;
+
+        const profitYHTML = formatProfitHTML(py);
+        const profitBHTML = formatProfitHTML(pb);
+
+        resultsDiv.innerHTML = `
+          <div>Youpin898: ${youpin}</div>
+          <div>BUFF163: ${buff}</div>
+          <div>ТМ: ${tm}</div>
+          <div>Профит Youpin898: ${profitYHTML}</div>
+          <div>Профит BUFF163: ${profitBHTML}</div>
+        `;
+
+        if (data.icon && data.icon.startsWith("/")) {
+          skinIcon.src = "https://steamcommunity-a.akamaihd.net/economy/image" + data.icon;
+          skinIcon.style.display = "block";
+        } else {
+          skinIcon.src = "";
+          skinIcon.style.display = "none";
+        }
+
+        const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
+        if (py && py.percent >= (window.currentMinPercent || 0) && py.rub >= (window.currentMinRub || 0)) {
+  createProfitCard(name, cardInfoYP, data.icon);
+}
+
+        const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
+        if (pb && pb.percent >= (window.currentMinPercent || 0) && pb.rub >= (window.currentMinRub || 0)) {
+  createProfitCard(name, cardInfoBF, data.icon);
+}
+
+        currentIndex = (currentIndex + 1) % skinNames.length;
+        parsedCount++;
+        updateProgress(parsedCount, totalCount);
+        timeoutId = setTimeout(checkNextSkin, 1000);
+      })
+      .catch(err => {
+        console.error("❌ Ошибка запроса:", err);
+        currentIndex = (currentIndex + 1) % skinNames.length;
+        parsedCount++;
+        updateProgress(parsedCount, totalCount);
+        timeoutId = setTimeout(checkNextSkin, 1000);
+      });
+  }
+});
+function setupHoverEffects() {
+  document.querySelectorAll('.profit-card').forEach((card) => {
+    const wrapper = card.querySelector('.card-inner');
+    if (!wrapper || card._hoverSetup) return;
+    card._hoverSetup = true;
+
+    let isHovered = false;
+    let mouseX = 0, mouseY = 0, rotX = 0, rotY = 0;
+
+    wrapper.style.transition = "transform 0.3s ease";
+
+    function animate() {
+      if (isHovered) {
+        rotX += (mouseY - rotX) * 0.1;
+        rotY += (mouseX - rotY) * 0.1;
+        wrapper.style.setProperty('--rotX', `${rotX}deg`);
+        wrapper.style.setProperty('--rotY', `${rotY}deg`);
+      } else {
+        rotX *= 0.9;
+        rotY *= 0.9;
+        if (Math.abs(rotX) < 0.01 && Math.abs(rotY) < 0.01) {
+          wrapper.style.removeProperty('--rotX');
+          wrapper.style.removeProperty('--rotY');
+          rotX = 0; rotY = 0;
+        } else {
+          wrapper.style.setProperty('--rotX', `${rotX}deg`);
+          wrapper.style.setProperty('--rotY', `${rotY}deg`);
+        }
+      }
+      requestAnimationFrame(animate);
+  setupHoverEffects();
+    }
+    requestAnimationFrame(animate);
+  setupHoverEffects();
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      mouseX = (e.clientX - rect.left - rect.width / 2) / 5;
+      mouseY = -(e.clientY - rect.top - rect.height / 2) / 2;
+      isHovered = true;
+
+      const allCards = Array.from(document.querySelectorAll('.profit-card')).filter(c => c.offsetParent !== null);
+      const idx = allCards.indexOf(card);
+
+      allCards.forEach((other, i) => {
+        if (other === card) return;
+        const dy = i - idx;
+        const offsetY = dy === -1 ? -20 : dy === 1 ? 20 : 0;
+        other.style.transform = `translateY(${offsetY}px)`;
+      });
+    });
+
+    card.addEventListener('mouseleave', () => {
+      isHovered = false;
+      document.querySelectorAll('.profit-card').forEach((c) => {
+        if (c !== card) c.style.transform = "";
+      });
+    });
+  });
+}
+
 </script><script>
 function setupHoverEffects() {
   document.querySelectorAll('.profit-card').forEach((card) => {
