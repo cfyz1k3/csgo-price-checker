@@ -1699,6 +1699,7 @@ function checkNextSkin() {
 
     const name = skinNames[currentIndex];
         const salesCount = salesMap[name] ?? 0;
+        const salesCount = salesMap[name] ?? 0;
     skinNameDiv.textContent = `Проверка: ${name}`;
 
     fetch(`/api/price?name=${encodeURIComponent(name)}`)
