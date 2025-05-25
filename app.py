@@ -4,6 +4,7 @@ import json
 import time
 import os
 
+from update_sales import update_sales
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
@@ -101,6 +102,9 @@ def youpin_skin_names():
 @app.route("/api/sales")
 def get_sales():
     try:
+        if not os.path.exists("sales.json"):
+            print("⚠️ sales.json не найден — создаём")
+            update_sales()
         with open("sales.json", "r", encoding="utf-8") as f:
             return jsonify(json.load(f))
     except Exception as e:
