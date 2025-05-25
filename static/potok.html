@@ -1407,7 +1407,10 @@ setupHoverEffects();
 </style>
 <script>
 let salesMap = {};
-fetch('/api/sales').then(res => res.json()).then(data => { salesMap = data; });
+fetch('/api/sales').then(res => res.json()).then(data => {
+  salesMap = data;
+  if (!Object.keys(salesMap).length) console.warn("⚠️ salesMap пустой");
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
@@ -1551,7 +1554,7 @@ function createProfitCard(name, html) {
   const badge = document.createElement("div");
   badge.className = "sales-badge";
   badge.textContent = salesCount;
-  card.appendChild(badge);
+  inner.appendChild(badge);
 
   right.appendChild(title);
   right.appendChild(document.createElement("br"));
