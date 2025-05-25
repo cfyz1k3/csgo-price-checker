@@ -1625,8 +1625,7 @@ function createProfitCard(name, html) {
   details.style.whiteSpace = "nowrap";
   details.style.marginTop = "4px";
   const salesCount = salesMap[name] ?? 0;
-        parsedCount++;
-        updateProgress(parsedCount, totalCount);
+        
         if (salesCount < 5) {
           currentIndex++;
           timeoutId = setTimeout(checkNextSkin, 0);
@@ -1696,8 +1695,7 @@ function checkNextSkin() {
     const salesCount = salesMap[name] ?? 0;
     if (salesCount < 5) {
       console.log(`⏭️ Пропуск: ${name}, продаж: ${salesCount}`);
-      parsedCount++;
-      updateProgress(parsedCount, totalCount);
+      
       currentIndex = (currentIndex + 1) % skinNames.length;
       timeoutId = setTimeout(checkNextSkin, 0);
       return;
@@ -1746,15 +1744,13 @@ function checkNextSkin() {
 }
 
         currentIndex = (currentIndex + 1) % skinNames.length;
-        parsedCount++;
-        updateProgress(parsedCount, totalCount);
+        
         timeoutId = setTimeout(checkNextSkin, 1000);
       })
       .catch(err => {
         console.error("❌ Ошибка запроса:", err);
         currentIndex = (currentIndex + 1) % skinNames.length;
-        parsedCount++;
-        updateProgress(parsedCount, totalCount);
+        
         timeoutId = setTimeout(checkNextSkin, 1000);
       });
   }
