@@ -618,7 +618,7 @@ function updateProgress(current, total) {
   totalCount = total;
   const progressEl = document.getElementById("parse-progress");
   if (progressEl) {
-    progressEl.innerHTML = `<span>${parsedCount}</span> / <span>${totalCount}</span>`;
+    progressEl.innerHTML = `<span style="display:inline-block; animation: fadeSlide 0.3s ease;">${parsedCount}</span> / <span style="display:inline-block; animation: fadeSlide 0.3s ease;">${totalCount}</span>`;
   }
 }
 </script>
@@ -1511,6 +1511,8 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(res => res.json())
         .then(data => {
           skinNames = data;
+          totalCount = skinNames.length;
+          parsedCount = 0;
           currentIndex = 0;
           if (skinNames.length > 0) checkNextSkin();
         });
@@ -1723,11 +1725,15 @@ function checkNextSkin() {
 }
 
         currentIndex = (currentIndex + 1) % skinNames.length;
+        parsedCount++;
+        updateProgress(parsedCount, totalCount);
         timeoutId = setTimeout(checkNextSkin, 1000);
       })
       .catch(err => {
         console.error("❌ Ошибка запроса:", err);
         currentIndex = (currentIndex + 1) % skinNames.length;
+        parsedCount++;
+        updateProgress(parsedCount, totalCount);
         timeoutId = setTimeout(checkNextSkin, 1000);
       });
   }
