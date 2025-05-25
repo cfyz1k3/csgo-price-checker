@@ -1624,14 +1624,16 @@ function createProfitCard(name, html) {
   const details = document.createElement("div");
   details.style.whiteSpace = "nowrap";
   details.style.marginTop = "4px";
-  const salesCount = salesMap[name] ?? 0;
-        parsedCount++;
-        updateProgress(parsedCount, totalCount);
-        if (salesCount < 5) {
-          currentIndex++;
-          timeoutId = setTimeout(checkNextSkin, 1000);
-          return;
-        }
+  
+const salesCount = salesMap[name] ?? 0;
+parsedCount++;
+updateProgress(parsedCount, totalCount);
+if (salesCount < 5) {
+  currentIndex++;
+  timeoutId = setTimeout(checkNextSkin, 1000);
+  return;
+}
+
         parsedCount++;
         updateProgress(parsedCount, totalCount);
         if (salesCount < 5) {
