@@ -1705,7 +1705,7 @@ function checkNextSkin() {
       .then(res => res.json())
       .then(data => {
         if (data.youpin !== null) {
-          console.log(`Youpin запрос: ${name} | Sales: ${salesMap[name] ?? 0}`);
+          console.log(`Youpin: ${name} → ¥${data.youpin.toFixed(2)} (sales: ${salesCount})`);
         }
         const buff = data.buff !== null ? `¥${data.buff.toFixed(2)}` : "—";
         const youpin = data.youpin !== null ? `¥${data.youpin.toFixed(2)}` : "—";
@@ -1816,9 +1816,7 @@ function setupHoverEffects() {
       });
     });
   });
-}
-
-</script><script>
+}</script><script>
 function setupHoverEffects() {
   document.querySelectorAll('.profit-card').forEach((card) => {
     const wrapper = card.querySelector('.card-inner');
