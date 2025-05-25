@@ -1625,7 +1625,6 @@ function createProfitCard(name, html) {
   details.style.whiteSpace = "nowrap";
   details.style.marginTop = "4px";
   
-const salesCount = salesMap[name] ?? 0;
 parsedCount++;
 updateProgress(parsedCount, totalCount);
 if (salesCount < 5) {
@@ -1699,6 +1698,7 @@ function checkNextSkin() {
     if (!isRunning || !skinNames.length) return;
 
     const name = skinNames[currentIndex];
+        const salesCount = salesMap[name] ?? 0;
     skinNameDiv.textContent = `Проверка: ${name}`;
 
     fetch(`/api/price?name=${encodeURIComponent(name)}`)
