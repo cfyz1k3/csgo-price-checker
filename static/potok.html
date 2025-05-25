@@ -545,8 +545,8 @@ body:not(.light-theme) .checkbox input:checked + label {
 
 .sales-badge {
   position: absolute;
-  top: 6px;
-  right: 8px;
+  top: 2px;
+  right: 2px;
   background: linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.01));
   color: var(--text-color);
   padding: 3px 6px;
@@ -1150,6 +1150,27 @@ input[type="range"]::-moz-range-thumb {
   pointer-events: auto;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
+</style><style>
+.sales-badge {
+  z-index: 10;
+
+  max-width: 80px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.card-inner {
+  position: relative;
+}
+
+.card-inner strong.copyable {
+  max-width: calc(100% - 100px);
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 </style></head>
 <body>
 <div style="position: fixed; top: 100px; left: 20px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
@@ -1407,10 +1428,7 @@ setupHoverEffects();
 </style>
 <script>
 let salesMap = {};
-fetch('/api/sales').then(res => res.json()).then(data => {
-  salesMap = data;
-  if (!Object.keys(salesMap).length) console.warn("⚠️ salesMap пустой");
-});
+fetch('/api/sales').then(res => res.json()).then(data => { salesMap = data; });
 
 document.addEventListener("DOMContentLoaded", () => {
   let skinNames = [];
