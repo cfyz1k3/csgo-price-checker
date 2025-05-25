@@ -1628,7 +1628,9 @@ function createProfitCard(name, html) {
         
         if (salesCount < 5) {
           currentIndex++;
-          timeoutId = setTimeout(checkNextSkin, 0);
+          parsedCount++;
+      updateProgress(parsedCount, totalCount);
+      timeoutId = setTimeout(checkNextSkin, 0);
           return;
         }
   details.innerHTML = html;
@@ -1697,6 +1699,8 @@ function checkNextSkin() {
       console.log(`⏭️ Пропуск: ${name}, продаж: ${salesCount}`);
       
       currentIndex = (currentIndex + 1) % skinNames.length;
+      parsedCount++;
+      updateProgress(parsedCount, totalCount);
       timeoutId = setTimeout(checkNextSkin, 0);
       return;
     }
