@@ -1629,7 +1629,7 @@ function createProfitCard(name, html) {
         updateProgress(parsedCount, totalCount);
         if (salesCount < 5) {
           currentIndex++;
-          timeoutId = setTimeout(checkNextSkin, 1000);
+          timeoutId = setTimeout(checkNextSkin, 0);
           return;
         }
   details.innerHTML = html;
