@@ -11,12 +11,12 @@ def update_sales():
         all_sales = {}
         for key, item in r.get("items", {}).items():
             name = item.get("market_hash_name")
-            popularity_7d = item.get("popularity_7d") or 0
-            if name:
-                all_sales[name] = all_sales.get(name, 0) + int(popularity_7d)
+            popularity = item.get("popularity_7d") or 0
+            if name and int(popularity) >= 5:
+                all_sales[name] = int(popularity)
         with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-            json.dump(all_sales, f, ensure_ascii=False)
-        print(f"✅ sales.json обновлён. Записано: {len(all_sales)} скинов")
+            json.dump(all_sales, f, ensure_ascii=False, indent=2)
+        print(f"✅ Сохранено {len(all_sales)} предметов с продажами ≥ 5")
     except Exception as e:
         print("❌ Ошибка при обновлении sales:", str(e))
 
