@@ -1632,6 +1632,13 @@ function createProfitCard(name, html) {
           timeoutId = setTimeout(checkNextSkin, 1000);
           return;
         }
+        parsedCount++;
+        updateProgress(parsedCount, totalCount);
+        if (salesCount < 5) {
+          currentIndex++;
+          timeoutId = setTimeout(checkNextSkin, 1000);
+          return;
+        }
   details.innerHTML = html;
   const badge = document.createElement("div");
   badge.className = "sales-badge";
