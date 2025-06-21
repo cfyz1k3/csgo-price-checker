@@ -410,7 +410,9 @@ body.light-theme #codeModal button {
 <h1 style="color: var(--text-color);">Trad1ck checker</h1>
 <div id="autocomplete-container">
 <div style="display: flex; gap: 10px; align-items: center;">
-<input autocomplete="off" id="skinInput" placeholder="Введите название скина" style="flex: 1;" type="text"/>
+<input type="text" name="fake-username" style="display:none;">
+<input type="password" name="fake-password" style="display:none;">
+<input autocomplete="off" id="skinInput" placeholder="Введите название скина" style="flex: 1;" type="text"/ autocomplete="off">
 <button onclick="checkPrice()">Check</button>
 </div>
 <ul class="autocomplete-list" id="autocomplete"></ul>
@@ -572,9 +574,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
   window.onload = function () {
     const input = document.getElementById("skinInput");
-    input.setAttribute("autocomplete", "new-password");
+    input.setAttribute("autocomplete", "off");
 
-    input.addEventListener("keydown", function(event) {
+    document.addEventListener("keydown", function(event) {
       if (event.key === "Enter") {
         event.preventDefault();
         checkPrice();
