@@ -480,15 +480,7 @@ if (data.icon) {
         console.error(e);
       }
     }
-  
-
-document.getElementById("skinInput").addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    checkPrice();
-  }
-});
-</script>
+  </script>
 <script>
 let skinIcons = {};
 fetch("buff163_icons.json")
@@ -576,5 +568,20 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   });
 </script>
+
+<script>
+  window.onload = function () {
+    const input = document.getElementById("skinInput");
+    input.setAttribute("autocomplete", "new-password");
+
+    input.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        checkPrice();
+      }
+    });
+  };
+</script>
+
 </body>
 </html>
