@@ -600,6 +600,30 @@ body:not(.light-theme) .checkbox input:checked + label {
   display: inline-block;
   animation: fadeSlide 0.35s ease;
 }
+
+.market-icon {
+  height: 28px;
+  width: 28px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease, filter 0.3s ease;
+  vertical-align: middle;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+body.light-theme .market-icon {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(0%) saturate(7474%) hue-rotate(182deg) brightness(95%) contrast(95%);
+}
+
+.market-icon:hover {
+  opacity: 1;
+}
+
+.market-link {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -1637,7 +1661,22 @@ function createProfitCard(name, html) {
   const badge = document.createElement("div");
   badge.className = "sales-badge";
   badge.textContent = salesCount;
-  inner.appendChild(badge);
+  const badge = document.createElement("div");
+          badge.className = "sales-badge";
+          badge.textContent = salesCount;
+          inner.appendChild(badge);
+
+          // MarketCSGO иконка (правый верхний угол правой части)
+          const marketLink = document.createElement("a");
+          marketLink.href = `https://market.csgo.com/ru/${encodeURIComponent(name)}`;
+          marketLink.target = "_blank";
+          marketLink.className = "market-link";
+          const marketIcon = document.createElement("img");
+          marketIcon.className = "market-icon";
+          marketIcon.src = "marketcsgo_icon.webp";
+          marketIcon.alt = "MarketCSGO";
+          marketLink.appendChild(marketIcon);
+          right.appendChild(marketLink);
 
   right.appendChild(title);
   right.appendChild(document.createElement("br"));
