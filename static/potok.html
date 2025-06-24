@@ -600,6 +600,17 @@ body:not(.light-theme) .checkbox input:checked + label {
   display: inline-block;
   animation: fadeSlide 0.35s ease;
 }
+
+.profit-card {
+    position: relative;
+}
+.reload-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -636,7 +647,7 @@ function updateProgress(current, total) {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 420px;
+  width: 480px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -780,7 +791,7 @@ function updateProgress(current, total) {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 420px;
+  width: 480px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -826,7 +837,7 @@ function updateProgress(current, total) {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 420px;
+  width: 480px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -907,7 +918,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 420px;
+  width: 480px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -979,7 +990,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 420px;
+  width: 480px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -1004,7 +1015,7 @@ body:not(.light-theme) .checkbox input:checked + label {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 420px;
+  width: 480px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -1059,7 +1070,8 @@ body:not(.light-theme) .checkbox input:checked + label {
 let iconMap = {};
 fetch("/static/buff163_icons.json")
   .then(res => res.json())
-  .then(data => { iconMap = data; });
+  .then(data => {
+    console.log("📦 Полный results:", data); iconMap = data; });
 </script><style>
 .copyable {
   transition: color 0.3s ease, transform 0.2s ease;
@@ -1164,7 +1176,7 @@ input[type="range"]::-moz-range-thumb {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  width: 420px;
+  width: 480px;
   max-width: 95%;
   height: 120px;
   margin: 0 auto;
@@ -1225,7 +1237,19 @@ input[type="range"]::-moz-range-thumb {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-</style></head>
+</style><style>
+.market-icon {
+  height: 24px;
+  width: 24px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease, filter 0.3s ease;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+body.light-theme .market-icon {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(0%) saturate(7474%) hue-rotate(182deg) brightness(95%) contrast(95%);
+}
+</style>
+</head>
 <body>
 <div style="position: fixed; top: 100px; left: 20px; background: var(--bg-color, #1e1e1e); padding: 10px; border-radius: 8px; z-index: 999; font-size: 14px; border: 1px solid var(--text-color);">
 <ul style="list-style-type: none; padding: 0; margin: 0;">
@@ -1289,13 +1313,28 @@ input[type="range"]::-moz-range-thumb {
 <button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
     Start
   </button>
-</div><div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+</div>
+<div style="font-size: 16px; margin: 12px 0 8px 12px;">
+  <label>
+    <input type="checkbox" id="toggle3D" checked> 3D эффект
+  </label>
+</div>
+
+<div style="font-size: 16px; margin: 12px 0 8px 12px;">
+  <label>
+    <input type="checkbox" id="enable-buff-request" checked> Запрашивать BUFF163
+  </label>
+</div>
+
+
+<div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
 </div>
 <script>
 let skinIcons = {};
 fetch("buff163_icons.json")
   .then(res => res.json())
-  .then(data => { skinIcons = data; })
+  .then(data => {
+    console.log("📦 Полный results:", data); skinIcons = data; })
   .catch(err => console.error("Не удалось загрузить buff163_icons.json", err));
 
 
@@ -1482,7 +1521,16 @@ setupHoverEffects();
 </style>
 <script>
 let salesMap = {};
-fetch('/api/sales').then(res => res.json()).then(data => { salesMap = data;
+
+let find_id = {};
+fetch('/api/find_id')
+  .then(res => res.json())
+  .then(data => {
+    console.log("📦 Полный results:", data); find_id = data; console.log('✅ Загружен find_id:', find_id); });
+
+
+fetch('/api/sales').then(res => res.json()).then(data => {
+    console.log("📦 Полный results:", data); salesMap = data;
 console.log('✅ Загружен salesMap:', salesMap); });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1510,6 +1558,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fetch("/api/youpin_names")
         .then(res => res.json())
         .then(data => {
+    console.log("📦 Полный results:", data);
           skinNames = data;
           totalCount = skinNames.length;
           parsedCount = 0;
@@ -1565,7 +1614,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-function createProfitCard(name, html) {
+function createProfitCard(name, html, data) {
   const wrapper = document.createElement("div");
   wrapper.className = "card-scale-wrapper";
 
@@ -1609,9 +1658,12 @@ function createProfitCard(name, html) {
   left.appendChild(sep);
 
   const right = document.createElement("div");
-  right.style.flex = "1";
+  right.style.position = "relative";
+right.style.flex = "1";
   right.style.padding = "10px 10px 10px 0";
-  right.style.textAlign = "left";
+  right.style.textAlign = "center";
+  right.style.alignItems = "center";
+  right.style.transform = "translateX(-20px)";
   right.style.display = "flex";
   right.style.flexDirection = "column";
   right.style.justifyContent = "center";
@@ -1643,10 +1695,67 @@ function createProfitCard(name, html) {
   right.appendChild(document.createElement("br"));
   right.appendChild(details);
 
+const marketLink = document.createElement("a");
+marketLink.href = `https://market.csgo.com/ru/${encodeURIComponent(name)}`;
+marketLink.target = "_blank";
+marketLink.style.position = "absolute";
+marketLink.style.top = "32px";
+marketLink.style.right = "4px";
+marketLink.style.zIndex = "10";
+
+const marketIcon = document.createElement("img");
+marketIcon.className = "market-icon";
+  marketIcon.className = "market-icon";
+  marketIcon.src = "/static/marketcsgo_icon.webp";
+marketIcon.alt = "MarketCSGO";
+marketIcon.style.height = "32px";
+marketIcon.style.width = "32px";
+marketIcon.style.opacity = "0.75";
+marketIcon.style.transition = "opacity 0.2s ease, filter 0.3s ease";
+marketIcon.style.filter = "brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)";
+
+marketLink.appendChild(marketIcon);
+inner.appendChild(marketLink);
+
+
+
+// Youpin ID
+
+const youpinID = data.youpinID;
+
+if (youpinID) {
+    const youpinLink = document.createElement("a");
+    youpinLink.href = `https://www.youpin898.com/market/goods-list?listType=10&templateId=${youpinID}`;
+    youpinLink.target = "_blank";
+    youpinLink.style.position = "absolute";
+    youpinLink.style.top = "72px";  // ниже
+    youpinLink.style.right = "4px";
+    youpinLink.style.zIndex = "10";
+
+    const youpinIcon = document.createElement("img");
+    youpinIcon.className = "market-icon";
+  youpinIcon.className = "market-icon";
+  youpinIcon.src = "/static/youpin_icon.webp";
+    youpinIcon.alt = "Youpin898";
+    youpinIcon.style.height = "32px";
+    youpinIcon.style.width = "32px";
+    youpinIcon.style.opacity = "0.75";
+    youpinIcon.style.transition = "opacity 0.2s ease, filter 0.3s ease";
+    youpinIcon.style.filter = "brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)";
+
+    youpinLink.appendChild(youpinIcon);
+    inner.appendChild(youpinLink);
+}
+
   outer.appendChild(left);
   outer.appendChild(right);
   inner.appendChild(outer);
   card.appendChild(inner);
+
+  if (!document.getElementById('toggle3D').checked) {
+    card.classList.add('no-3d');
+  }
+
   wrapper.appendChild(card);
   document.getElementById("profit-list").appendChild(wrapper);
 
@@ -1705,9 +1814,10 @@ function checkNextSkin() {
       return;
     }
     
-    fetch(`/api/price?name=${encodeURIComponent(name)}`)
+    fetch(`/api/price?name=${encodeURIComponent(name)}&buff=${document.getElementById('enable-buff-request').checked ? 1 : 0}`)
       .then(res => res.json())
       .then(data => {
+    console.log("📦 Полный results:", data);
         const salesCount = salesMap[name] ?? 0;
         const buff = data.buff !== null ? `¥${data.buff.toFixed(2)}` : "—";
         const youpinPrice = data.youpin !== null ? `¥${data.youpin.toFixed(2)}` : "—";
@@ -1739,12 +1849,12 @@ function checkNextSkin() {
 
         const cardInfoYP = `Youpin898: ${youpin}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(py)}`;
         if (py && py.percent >= (window.currentMinPercent || 0) && py.rub >= (window.currentMinRub || 0)) {
-  createProfitCard(name, cardInfoYP, data.icon);
+  createProfitCard(name, cardInfoYP, data);
 }
 
         const cardInfoBF = `BUFF163: ${buff}<br>ТМ: ${tm}<br>Профит: ${formatProfitHTML(pb)}`;
         if (pb && pb.percent >= (window.currentMinPercent || 0) && pb.rub >= (window.currentMinRub || 0)) {
-  createProfitCard(name, cardInfoBF, data.icon);
+  createProfitCard(name, cardInfoBF, data);
 }
 
         currentIndex = (currentIndex + 1) % skinNames.length;
@@ -1881,5 +1991,60 @@ function setupHoverEffects() {
     });
   });
 }
-</script></body>
+</script>
+<style>
+.market-icon:hover {
+    transform: scale(1.15);
+    filter: brightness(1.4) drop-shadow(0 0 6px var(--text-color));
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+</style>
+
+
+<style>
+.profit-card.no-3d {
+    perspective: none !important;
+}
+.profit-card.no-3d .card-inner {
+    transform: none !important;
+}
+.market-icon {
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
+    cursor: pointer;
+}
+.market-icon:hover {
+    transform: scale(1.12);
+    filter: brightness(1.1);
+}
+.market-icon:active {
+    transform: scale(0.95);
+    filter: brightness(1.0);
+}
+</style>
+<script>
+document.getElementById('toggle3D').addEventListener('change', function() {
+    document.querySelectorAll('.profit-card').forEach(card => {
+        if (this.checked) {
+            card.classList.remove('no-3d');
+        } else {
+            card.classList.add('no-3d');
+        }
+    });
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const buffToggle = document.getElementById("enable-buff-request");
+  const saved = localStorage.getItem("enable-buff-request");
+  if (saved !== null) buffToggle.checked = saved === "1";
+
+  buffToggle.addEventListener("change", () => {
+    localStorage.setItem("enable-buff-request", buffToggle.checked ? "1" : "0");
+  });
+});
+</script>
+
+</body>
 </html>

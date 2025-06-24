@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, send_from_directory, session, redirec
 import requests
 import json
 import time
+from concurrent.futures import ThreadPoolExecutor
 import os
 
 app = Flask(__name__)
@@ -9,6 +10,8 @@ app.secret_key = "supersecretkey"
 
 with open("buff163.txt", encoding="utf-8") as f:
     skin_map = json.load(f)
+
+executor = ThreadPoolExecutor(max_workers=5)
 
 find_id = {}
 with open("youpin898.txt", encoding="utf-8") as f:
@@ -47,34 +50,61 @@ def get_price_data():
     if not goods_id:
         return jsonify({"error": f"Скин '{name}' не найден"}), 404
 
-    results = {}
+    buff_enabled = request.args.get("buff", "1") == "1"
 
-    try:
-        r = requests.get("https://buff.163.com/api/market/goods/sell_order", params={
-            "game": "csgo", "goods_id": goods_id, "page_num": 1, "sort_by": "default"
-        }, headers={"User-Agent": "Mozilla/5.0"}, timeout=5)
-        data = r.json()
-        if data["code"] == "OK" and data["data"]["items"]:
-            item = data["data"]["items"][0]
-            results["buff"] = float(item["price"])
-            results["icon"] = item["asset_info"]["info"]["icon_url"]
-        else:
-            results["buff"] = None
-            results["icon"] = None
-    except:
+    results = {"buff_enabled": buff_enabled}
+
+    def fetch_buff():
+        try:
+            r = requests.get("https://buff.163.com/api/market/goods/sell_order", params={
+                "game": "csgo", "goods_id": goods_id, "page_num": 1, "sort_by": "default"
+            }, headers={"User-Agent": "Mozilla/5.0"}, timeout=5)
+            data = r.json()
+            if data["code"] == "OK" and data["data"]["items"]:
+                item = data["data"]["items"][0]
+                return float(item["price"]), item["asset_info"]["info"]["icon_url"]
+            else:
+                return None, None
+        except:
+            return None, None
+
+    def fetch_leg1t():
+        try:
+            r = requests.get(f"https://market.csgo.com/api/v2/search-item-by-hash-name?key=v2866i5cp2ZmX6M12yJISnRdRuNbZ40&hash_name={name}", timeout=10)
+            data = r.json()
+            return float(data["data"][0]["price"]) if "data" in data else None
+        except:
+            return None
+
+    def fetch_youpin():
+        try:
+            return get_youpin_price(name)
+        except:
+            return None
+
+    futures = {}
+
+    if buff_enabled:
+        futures["buff"] = executor.submit(fetch_buff)
+    else:
         results["buff"] = None
+        results["icon"] = None
 
-    try:
-        r = requests.get(f"https://market.csgo.com/api/v2/search-item-by-hash-name?key=v2866i5cp2ZmX6M12yJISnRdRuNbZ40&hash_name={name}", timeout=10)
-        data = r.json()
-        results["leg1t"] = float(data["data"][0]["price"]) if "data" in data else None
-    except:
-        results["leg1t"] = None
+    futures["leg1t"] = executor.submit(fetch_leg1t)
+    futures["youpin"] = executor.submit(fetch_youpin)
 
-    try:
-        results["youpin"] = get_youpin_price(name)
-    except:
-        results["youpin"] = None
+    if buff_enabled:
+        buff_price, buff_icon = futures["buff"].result()
+        results["buff"] = buff_price
+        results["icon"] = buff_icon
+
+    leg1t_price = futures["leg1t"].result()
+    youpin_price = futures["youpin"].result()
+
+    results["leg1t"] = leg1t_price
+    youpinID = find_id.get(name)
+    results["youpinID"] = youpinID
+    results["youpin"] = youpin_price
 
     def profit(from_val, to_val, mult=12):
         if from_val is None or to_val is None:
@@ -127,6 +157,10 @@ def authorize():
 @app.route("/<path:filename>")
 def serve_static_file(filename):
     return send_from_directory("static", filename)
+
+@app.route("/api/find_id")
+def get_find_id():
+    return jsonify(find_id)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
