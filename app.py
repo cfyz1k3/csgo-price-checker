@@ -1,12 +1,15 @@
-
-from flask import Flask, request, jsonify, session, send_from_directory
-import requests, json, time
-from concurrent.futures import ThreadPoolExecutor
+from flask import Flask, request, jsonify, send_from_directory, session, redirect
+import requests
+import json
+import time
+import os
 
 app = Flask(__name__)
-app.secret_key = "super_secret_key"
+app.secret_key = "supersecretkey"
 
-# Загружаем find_id
+with open("buff163.txt", encoding="utf-8") as f:
+    skin_map = json.load(f)
+
 find_id = {}
 with open("youpin898.txt", encoding="utf-8") as f:
     for line in f:
@@ -17,29 +20,25 @@ with open("youpin898.txt", encoding="utf-8") as f:
         except:
             continue
 
-# Загружаем skin_map
-with open("buff163.txt", encoding="utf-8") as f:
-    skin_map = json.load(f)
-
-# Загружаем sales.json
-with open("sales.json", "r", encoding="utf-8") as f:
-    sales_map = json.load(f)
-
 def get_youpin_price(name):
-    try:
-        youpinID = find_id.get(name)
-        if not youpinID:
-            return None
-        url = "https://www.youpin898.com/api/homepage/frontPage"
-        data = {"listType": 10, "templateId": youpinID, "pageSize": 1, "sortType": 1}
-        headers = {"User-Agent": "Mozilla/5.0", "Referer": "https://www.youpin898.com"}
-        r = requests.post(url, json=data, headers=headers, timeout=10)
-        result = r.json()
-        if result["code"] == 0 and result["data"]["list"]:
-            price_str = result["data"]["list"][0]["price"]
-            return float(price_str) if price_str else None
-    except:
+    ID = find_id.get(name)
+    if not ID:
         return None
+    payload = json.dumps({
+        "listSortType": 1,
+        "listType": 10,
+        "pageIndex": 1,
+        "pageSize": 10,
+        "sortType": 1,
+        "templateId": ID
+    })
+    headers = {
+        'User-Agent': 'Mozilla/5.0',
+        'Content-Type': 'application/json'
+    }
+    time.sleep(1)
+    r = requests.post("https://api.youpin898.com/api/homepage/es/commodity/GetCsGoPagedList", headers=headers, data=payload, timeout=10)
+    return float(r.json()["Data"]["TemplateInfo"]["MinPrice"])
 
 @app.route("/api/price")
 def get_price_data():
@@ -50,44 +49,32 @@ def get_price_data():
 
     results = {}
 
-    def fetch_buff():
-        try:
-            r = requests.get("https://buff.163.com/api/market/goods/sell_order", params={
-                "game": "csgo", "goods_id": goods_id, "page_num": 1, "sort_by": "default"
-            }, headers={"User-Agent": "Mozilla/5.0"}, timeout=5)
-            data = r.json()
-            if data["code"] == "OK" and data["data"]["items"]:
-                item = data["data"]["items"][0]
-                return float(item["price"]), item["asset_info"]["info"]["icon_url"]
-            else:
-                return None, None
-        except:
-            return None, None
+    try:
+        r = requests.get("https://buff.163.com/api/market/goods/sell_order", params={
+            "game": "csgo", "goods_id": goods_id, "page_num": 1, "sort_by": "default"
+        }, headers={"User-Agent": "Mozilla/5.0"}, timeout=5)
+        data = r.json()
+        if data["code"] == "OK" and data["data"]["items"]:
+            item = data["data"]["items"][0]
+            results["buff"] = float(item["price"])
+            results["icon"] = item["asset_info"]["info"]["icon_url"]
+        else:
+            results["buff"] = None
+            results["icon"] = None
+    except:
+        results["buff"] = None
 
-    def fetch_leg1t():
-        try:
-            r = requests.get(f"https://market.csgo.com/api/v2/search-item-by-hash-name?key=xxx&hash_name={name}", timeout=10)
-            data = r.json()
-            return float(data["data"][0]["price"]) if "data" in data else None
-        except:
-            return None
+    try:
+        r = requests.get(f"https://market.csgo.com/api/v2/search-item-by-hash-name?key=v2866i5cp2ZmX6M12yJISnRdRuNbZ40&hash_name={name}", timeout=10)
+        data = r.json()
+        results["leg1t"] = float(data["data"][0]["price"]) if "data" in data else None
+    except:
+        results["leg1t"] = None
 
-    def fetch_youpin():
-        try:
-            youpinID = find_id.get(name)
-            price = get_youpin_price(name)
-            return youpinID, price
-        except:
-            return None, None
-
-    with ThreadPoolExecutor() as executor:
-        f_buff = executor.submit(fetch_buff)
-        f_leg1t = executor.submit(fetch_leg1t)
-        f_youpin = executor.submit(fetch_youpin)
-
-        results["buff"], results["icon"] = f_buff.result()
-        results["leg1t"] = f_leg1t.result()
-        results["youpinID"], results["youpin"] = f_youpin.result()
+    try:
+        results["youpin"] = get_youpin_price(name)
+    except:
+        results["youpin"] = None
 
     def profit(from_val, to_val, mult=12):
         if from_val is None or to_val is None:
@@ -103,11 +90,9 @@ def get_price_data():
 
     return jsonify(results)
 
-# Остальные маршруты оставляю без изменений
-
 @app.route("/api/skins")
 def get_skin_names():
-    return jsonify(list(skin_map.keys()))
+    return jsonify(sorted(list(skin_map.keys()), key=str.lower))
 
 @app.route("/api/youpin_names")
 def youpin_skin_names():
@@ -115,11 +100,21 @@ def youpin_skin_names():
 
 @app.route("/api/sales")
 def get_sales():
-    return jsonify(sales_map)
+    try:
+        with open("sales.json", "r", encoding="utf-8") as f:
+            return jsonify(json.load(f))
+    except Exception as e:
+        return jsonify({"error": f"Не удалось прочитать sales.json: {str(e)}"}), 500
 
-@app.route("/api/find_id")
-def get_find_id():
-    return jsonify(find_id)
+@app.route("/")
+def index():
+    return send_from_directory("static", "index.html")
+
+@app.route("/potok.html")
+def protected_potok():
+    if not session.get("access_granted"):
+        return "Access denied", 403
+    return send_from_directory("static", "potok.html")
 
 @app.route("/authorize", methods=["POST"])
 def authorize():
@@ -129,19 +124,9 @@ def authorize():
         return {"status": "ok"}
     return {"status": "forbidden"}, 403
 
-@app.route("/potok.html")
-def protected_potok():
-    if not session.get("access_granted"):
-        return "Access denied", 403
-    return send_from_directory("static", "potok.html")
-
-@app.route("/")
-def index():
-    return send_from_directory("static", "index.html")
-
 @app.route("/<path:filename>")
-def static_files(filename):
+def serve_static_file(filename):
     return send_from_directory("static", filename)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
