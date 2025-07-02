@@ -149,10 +149,17 @@ def protected_potok():
 @app.route("/authorize", methods=["POST"])
 def authorize():
     data = request.get_json()
-    if data.get("code") == "2007":
-        session["access_granted"] = True
+    code = data.get("code")
+    target = data.get("target")  # "potok" или "y"
+
+    if target == "potok" and code == "2007":
+        session["access_potok"] = True
         return {"status": "ok"}
-    return {"status": "forbidden"}, 403
+    elif target == "y" and code == "Y":
+        session["access_y"] = True
+        return {"status": "ok"}
+    else:
+        return {"status": "forbidden"}, 403
 
 @app.route("/<path:filename>")
 def serve_static_file(filename):

@@ -390,14 +390,27 @@ body.light-theme #codeModal button {
   color: #ccd3e0;
 }
 </style>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const toggle = document.getElementById("themeToggle");
-      toggle.addEventListener("change", () => {
-        document.body.classList.toggle("light-theme");
-      });
-    });
-  </script>
+<script>document.addEventListener("DOMContentLoaded", function() {
+  const toggle = document.getElementById("themeToggle");
+
+  // Устанавливаем тему из localStorage при загрузке
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light") {
+    document.body.classList.add("light-theme");
+    toggle.checked = true;
+  }
+
+  // При переключении — сохраняем в localStorage
+  toggle.addEventListener("change", () => {
+    if (toggle.checked) {
+      document.body.classList.add("light-theme");
+      localStorage.setItem("theme", "light");
+    } else {
+      document.body.classList.remove("light-theme");
+      localStorage.setItem("theme", "dark");
+    }
+  });
+});</script>
 </head>
 <body>
 <div style="position: absolute; top: 20px; right: 20px;">
@@ -406,13 +419,20 @@ body.light-theme #codeModal button {
 <span class="slider"></span>
 </label>
 </div>
-<div id="potok-button" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;"><button style="padding: 10px 20px; border-radius: 6px; font-size: 16px; background-color: var(--text-color); border: none; cursor: pointer; ">Potok</button></div>
+<div id="button-group" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; gap: 10px;">
+<div id="y-button">
+<button style="padding: 10px 20px; border-radius: 6px; font-size: 16px; background-color: var(--text-color); border: none; cursor: pointer;">¥</button>
+</div>
+<div id="potok-button">
+<button style="padding: 10px 20px; border-radius: 6px; font-size: 16px; background-color: var(--text-color); border: none; cursor: pointer;">Potok</button>
+</div>
+</div>
 <h1 style="color: var(--text-color);">Trad1ck checker</h1>
 <div id="autocomplete-container">
 <div style="display: flex; gap: 10px; align-items: center;">
-<input type="text" name="fake-username" style="display:none;">
-<input type="password" name="fake-password" style="display:none;">
-<input autocomplete="off" id="skinInput" placeholder="Введите название скина" style="flex: 1;" type="text"/ autocomplete="off">
+<input name="fake-username" style="display:none;" type="text"/>
+<input name="fake-password" style="display:none;" type="password"/>
+<input autocomplete="off" id="skinInput" placeholder="Введите название скина" style="flex: 1;" type="text"/>
 <button onclick="checkPrice()">Check</button>
 </div>
 <ul class="autocomplete-list" id="autocomplete"></ul>
@@ -534,43 +554,55 @@ document.addEventListener("click", (e) => {
 <div id="codeBox" style="position: relative; background-color: var(--bg-color); padding: 30px; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.4); text-align: center;">
 <img alt="Закрыть" onclick="closeModal()" src="close_icon.png" style="position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; cursor: pointer; ; filter: var(--close-filter); transition: filter 0.4s ease"/>
 <h3 style="color: var(--text-color);">Введите код доступа</h3>
-<input id="accessCode" placeholder="Код" style="padding:10px; border:none; border-radius:6px; font-size:16px; width:80%; margin-bottom:20px; background-color:#2c354a; color:var(--text-color);" type="password"/><br/>
+<input id="accessCode" placeholder="Код" style="padding:10px; border:none; border-radius:6px; font-size:16px; width:80%; margin-bottom:20px; background-color:#2c354a; color:var(--text-color);" type="password"><br/>
 <button onclick="checkCode()" style="padding:10px 20px; border:none; border-radius:6px; background-color:var(--text-color); cursor:pointer; ">Войти</button>
-</div>
+</input></div>
 </div>
 <script>
   function closeModal() { document.getElementById("codeModal").style.display = "none"; }
 
 document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("codeModal");
-    const potokButton = document.getElementById("potok-button");
+const potokButton = document.getElementById("potok-button");
+const yButton = document.getElementById("y-button");
 
-    if (potokButton) {
-      potokButton.onclick = function (e) {
-        e.preventDefault();
-        modal.style.display = "flex";
-      };
+if (yButton) {
+  yButton.onclick = function (e) {
+    e.preventDefault();
+    modal.style.display = "flex";
+    modal.setAttribute("data-target", "y");
+  };
+}
+
+if (potokButton) {
+  potokButton.onclick = function (e) {
+    e.preventDefault();
+    modal.style.display = "flex";
+    modal.setAttribute("data-target", "potok");
+  };
+}
+
+window.checkCode = function () {
+  const code = document.getElementById("accessCode").value;
+  const target = document.getElementById("codeModal").getAttribute("data-target") || "potok";
+  const redirectUrl = target === "y" ? "/Y.html" : "/potok.html";
+
+  fetch("/authorize", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, target })
+  }).then(res => {
+    if (res.status === 200) {
+      window.location.href = redirectUrl;
+    } else {
+      alert("Неверный код!");
     }
-
-    window.checkCode = function () {
-      const code = document.getElementById("accessCode").value;
-      fetch("/authorize", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code })
-      }).then(res => {
-        if (res.status === 200) {
-          window.location.href = "/potok.html";
-        } else {
-          alert("Неверный код!");
-        }
-      }).catch(() => {
-        alert("Ошибка сервера");
-      });
-    };
+  }).catch(() => {
+    alert("Ошибка сервера");
+  });
+};
   });
 </script>
-
 <script>
   window.onload = function () {
     const input = document.getElementById("skinInput");
@@ -584,6 +616,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   };
 </script>
-
 </body>
 </html>

@@ -1,0 +1,748 @@
+
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<title>Раздел Y</title>
+<style>
+    :root {
+      --bg-color: #354057;
+      --text-color: #ccd3e0;
+    }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: Helvetica, sans-serif;
+      padding-top: 10vh;
+      text-align: center;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+    body.light-theme {
+      --bg-color: #ccd3e0;
+      --text-color: #000000;
+    }
+
+    #theme-switcher {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .theme-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .theme-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(to right, #354057, #586480);
+      transition: 0.4s;
+      border-radius: 34px;
+      box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: #ccd3e0;
+      border-radius: 50%;
+      transition: 0.4s;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%23000" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M9.37 5.51A7 7 0 1 0 18.49 14.63 9 9 0 0 1 9.37 5.51z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    input:checked + .slider {
+      background: linear-gradient(to right, #ccd3e0, #ccd3e0);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+      background-color: #586480 !important;
+      background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2220%22%20height%3D%2220%22%3E%0A%20%20%3Cimage%20href%3D%22data%3Aimage/png%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFCElEQVR4nO2bS4wURRjHC%2BUh4k3h5CMEb06iCCgSifEF4nr04OOGIIoHD4jKxXhyFzQuilE0ngiCr004rWd87EECRo1BiR5XwB2NYKKrB3/ms/8tNT3dbM9MdfUs4z%2BZZLqm53vVV/V99VWVczUAmA/sBH4EJoERa3ODAhKFsxhxgwKSXjesAW7V90k3KEDwnj8BPnaDaoCBA%2B0e8Jl5gRtgA/wLNyhAKHruSwB3AU8CdwSMAhYB1oaKAiabZLyzV1otAA7SijHgEhc2Dxjugd4C4MMMvQPd0msBcK8I/gK8BjT1/FG3RlAmOCJP6CkTlPLjkmkKeFmyGtZ3Q7MFwHYR263nBnC6VyOEQEZ5k6mh9lfU9lQIJutFrOkxyBphQQB9Qinf8Lz07lDMxgoYpUYYDcKoM5l2zyDTWAxrL1fbryVoXAs8YZMTcAz4GfhLn6ba7LetwLIS9M6I9/Ic5ceDeyXtRrhRBvgbOFvwn7nAw8AEncOyw4eAi3PozgF%2BE%2B/rJUt1yhcYwcfenHfvAU5475xRD28CVgGLgXn6LFbbZoXcs97/vgXW5dB/M0eO6pTPGGGXQo4J%2BrofCYBLgbc9ob4DNlq7KwlgkYzxvUfnLWCh985C4A15wpQKLNEn4xYAS4CjEvh3YJsNA9cl5B3PAtOiecS8xfUjSJQ3d0Wu3whI2wonp7wh0V9GIHH7tOePVSEgcDXwtecJtSVgbfDG/Ikqe0dGOFU08dYCYJ0E%2BsNCUgR%2Ba7w5YUPV/M4Lxfk01G1zkQA8L57H8/KEaCBJctJQNzci38u8ofBALL5t8DK8jS4ylFYbPo3N28/t0wyvdJIT2AvSdHipq0GArUErL93J8J5k2FIH8wNivik683MybJEM%2B0NtVOYht2QFfKHfV4VQpkvZV0uGo13rRH6Bkpk2L72qyxXRNW9Nvw0/ZdrL64S3UVnAJHfzEvhT7bVta2tlapjOtJfXCa9GX/Dy2llsgJl1ory7DF%2BAQ2A4W6PvZBK0VZ/hpuiat0%2BCRzLtXenUEYB3RGyzqz8M7qszEToYnfk5Gd6vrROAZWlFuKZUeJGXCl8Tm392MfSIiwwVTQ2HY/P%2BD6rbo5rAPBcJmuR%2BEO/7Y/FtgxUjvELodhcJqhSjGuFFsfjmwjYgvZLYalcxgFu8ktjtrh9AsmmBFh9XVsjnKuCkeO1x/QKSXRorVRu%2BrMIIUv4r8ZiofRcoC%2B3vpfPByZDDQW6f9vw3wOWuH0FihM8lqI3T5yxe9zjb7/DG/ETtypOswIY13q0yO5qzabnXy7ut5x7vxBBKch71Qp0lO3t8txefUW2LmywvxNoZHs9ZXLxacKzO6vYpLGt7V/n7zVrJzddnidoeU53P3sULdbfl0DeDZBHtbMBp4AZgpZ7tVNacgjzhQStdqxfLwt49bElOXpzXAYn0JNhKHdSIejqkofYVapsqQWOpen%2B/NlKbKqpMa3/fosg%2Bpbgz5vZePWJFpUdkSKx9KEf56zyGO4Mw60yuXTky%2BUY4lOeV3TC6L%2B3lAuWrP5bS%2BTE5k9UwFILRDhF7sV%2BUL2GEl9T2TAgmQyLWVNiZ6lX5kJemco7Kjnrzw1CoOWAsM0uP9dLzoS9NyQhZGT8IMgcYLBTp0PTTeUfW%2BuXSlI71mowbal8mnw9pFxU9X/DgfwPQck1u4Dwgi4EzAJlrcoNogMkqLk3NGhD40tSsAwEvTfWKfwDdpjQPUke%2BfAAAAABJRU5ErkJggg%3D%3D%22%20height%3D%2220%22%20width%3D%2220%22/%3E%0A%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    #back-button {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+    }
+
+    #back-button button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      background-color: var(--text-color);
+      border: none;
+      cursor: pointer;
+      color: var(--bg-color);
+    }
+
+    #back-button img {
+      height: 28px;
+      transition: filter 0.3s ease;
+      filter: brightness(0) saturate(100%);
+    }
+
+    body.light-theme #back-button img {
+      filter: brightness(0) saturate(100%) invert(87%) sepia(5%) saturate(168%) hue-rotate(175deg) brightness(95%) contrast(94%);
+    }
+  
+
+    :root {
+      --bg-color: #354057;
+      --text-color: #ccd3e0;
+      --table-bg: #2e384d;
+      --border-color: #586480;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: Helvetica, sans-serif;
+      padding-top: 10vh;
+      text-align: center;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    body.light-theme {
+      --bg-color: #ccd3e0;
+      --text-color: #000000;
+      --table-bg: var(--bg-color);
+      --border-color: #000000;
+    }
+
+    table {
+      width: 72%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background-color: var(--table-bg);
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    th {
+      background-color: var(--border-color);
+      color: white;
+      font-weight: bold;
+    }
+
+    td img {
+      height: 50px;
+      border-radius: 4px;
+    }
+
+    #theme-switcher {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .theme-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .theme-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(to right, #354057, #586480);
+      transition: 0.4s;
+      border-radius: 34px;
+      box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: #ccd3e0;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+
+    input:checked + .slider {
+      background: linear-gradient(to right, #ccd3e0, #ccd3e0);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+      background-color: #586480 !important;
+    }
+
+    #back-button {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+    }
+
+    #back-button button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      background-color: var(--text-color);
+      border: none;
+      cursor: pointer;
+      color: var(--bg-color);
+    }
+
+    #back-button img {
+      height: 28px;
+    }
+
+  
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+body.light-theme::before {
+  --bg-image: url('static/light_theme_gradient.png');
+}
+body:not(.light-theme)::before {
+  --bg-image: url('static/center_gradient_586480_to_354057.png');
+}
+
+
+td img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+}
+
+td:first-child {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+
+td:nth-child(2) {
+  max-width: 180px;
+  white-space: normal; overflow: visible; text-overflow: unset;
+}
+
+td:nth-child(3), td:nth-child(4) {
+  width: 120px;
+}
+
+td:nth-child(5), th:nth-child(5) {
+  width: 140px;
+  font-weight: bold;
+  font-family: "Courier New", monospace;
+  font-size: 17px;
+  color: var(--text-color);
+  background: linear-gradient(to bottom, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border-left: 2px solid var(--border-color);
+  border-right: 2px solid var(--border-color);
+  box-shadow: inset 0 0 5px rgba(255,255,255,0.06);
+  backdrop-filter: blur(2px);
+}
+
+
+table {
+  width: 72%;
+}
+
+td:nth-child(2) {
+  max-width: 180px;
+  white-space: normal; overflow: visible; text-overflow: unset;
+}
+
+
+.case-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.case-icons {
+  display: flex;
+  gap: 8px;
+}
+
+.case-icons img {
+  width: 32px;
+  height: 32px;
+  opacity: 0.85;
+  transform: scale(1);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  display: inline-block;
+}
+
+.case-icons img:hover {
+  transform: scale(1.3);
+  opacity: 1;
+}
+
+
+.case-icon {
+  height: 32px;
+  width: 32px;
+  opacity: 0.85;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+  transition: filter 0.4s ease, opacity 0.3s ease;
+}
+
+body.light-theme .case-icon {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(0%) saturate(7474%) hue-rotate(182deg) brightness(95%) contrast(95%);
+}
+
+
+
+
+
+body.light-theme td:nth-child(5),
+body.light-theme th:nth-child(5) {
+  background: linear-gradient(to bottom right, #1f1f1f, #2c2c2c);
+  color: #ffffff;
+  font-weight: 700;
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  font-size: 18px;
+  border-left: 2px solid #3a3a3a;
+  border-right: 2px solid #3a3a3a;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.06),
+              inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 0 #00000099;
+  backdrop-filter: blur(2px);
+  letter-spacing: 0.04em;
+}
+
+
+table td img {
+  transition: transform 0.25s ease-in-out, filter 0.25s ease-in-out;
+}
+table td img:hover {
+  transform: scale(1.04);
+  filter: brightness(1.05);
+}
+
+table td img {
+  transition: transform 0.25s ease-in-out, filter 0.25s ease-in-out;
+}
+table td img:hover {
+  transform: scale(1.08);
+  filter: brightness(1.05);
+}
+
+    .copyable {
+      cursor: pointer;
+      font-size: 24px;
+      transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+    .copyable:hover {
+      transform: scale(1.05);
+    }
+
+    .copyable.copied {
+      animation: copiedFlash 0.5s ease;
+    }
+
+    @keyframes copiedFlash {
+      0%   { color: lime; transform: scale(1.2); }
+      100% { color: var(--text-color); transform: scale(1); }
+    }
+
+</style>
+</head>
+<body>
+<div id="back-button">
+<button onclick="location.href='index.html'">
+<img alt="Back Icon" src="back_icon.png"/>
+      Back
+    </button>
+</div>
+<div id="theme-switcher">
+<label class="theme-switch">
+<input id="themeToggle" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<h1>Раздел ¥</h1>
+<table>
+<thead>
+<tr>
+<th>Картинка</th>
+<th>Название</th>
+<th>Цена на ТМ</th>
+<th>Цена на Youpin</th>
+<th>Курс</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Chroma 2 Case" src="https://g.fp.ps.netease.com/market/file/5a9fd45302c9a18f3c9eca349z1RAAZ9?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Chroma 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Chroma%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=788" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Chroma 3 Case" src="https://g.fp.ps.netease.com/market/file/5a9fd45169b21ae4e2268192XHxJ5hrs?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Chroma 3 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Chroma%203%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=13" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Chroma Case" src="https://g.fp.ps.netease.com/market/file/5a9fd44f6f0494db8b736a20wr58RkEJ?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Chroma Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Chroma%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=45444" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Clutch Case" src="https://g.fp.ps.netease.com/market/file/5a9fe246fb758acf3db7dc6fzK9qCbh3?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Clutch Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Clutch%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=12" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="CS20 Case" src="https://g.fp.ps.netease.com/market/file/5daa16cf143cfa4bec985411BxRRRYe402?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">CS20 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS20%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=9" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="CS:GO Weapon Case" src="https://g.fp.ps.netease.com/market/file/5a9fe276a75014727f7d829a0mprmKKb?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">CS:GO Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS%3AGO%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=47128" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="CS:GO Weapon Case 2" src="https://g.fp.ps.netease.com/market/file/5a9fe29b20e3db896fccfd1cCmLsBWv4?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">CS:GO Weapon Case 2</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS%3AGO%20Weapon%20Case%202" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=48062" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="CS:GO Weapon Case 3" src="https://g.fp.ps.netease.com/market/file/5a9fe29aadce5f7c6be1a523kvRBHBj4?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">CS:GO Weapon Case 3</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS%3AGO%20Weapon%20Case%203" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=46084" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Danger Zone Case" src="https://g.fp.ps.netease.com/market/file/60d1593c143cfa4f5ceafc90I62GOuZD03?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Danger Zone Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Danger%20Zone%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=5" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Dreams &amp; Nightmares Case" src="https://g.fp.ps.netease.com/market/file/61ea007291df686b72795522ILtdbSRG04?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Dreams &amp; Nightmares Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Dreams%20%26%20Nightmares%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=101422" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="eSports 2013 Case" src="https://g.fp.ps.netease.com/market/file/5a9fc37e96dee43e1cc6ad9aUqKhWz56?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">eSports 2013 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/eSports%202013%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=57055" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="eSports 2013 Winter Case" src="https://g.fp.ps.netease.com/market/file/5a9fc37f5e602779217e53708Oecwcv7?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">eSports 2013 Winter Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/eSports%202013%20Winter%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1118" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="eSports 2014 Summer Case" src="https://g.fp.ps.netease.com/market/file/5a9fc37da75014218b2c8fe21Fur6XOQ?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">eSports 2014 Summer Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/eSports%202014%20Summer%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1117" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Falchion Case" src="https://g.fp.ps.netease.com/market/file/5a9fd42246072b96180140cbCwi7lZLd?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Falchion Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Falchion%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=125" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Fever Case" src="https://market.fp.ps.netease.com/file/67eb233cc57966917d25b5328i2tO23K06?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Fever Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Fever%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=110657" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Fracture Case" src="https://g.fp.ps.netease.com/market/file/5f2cadd07f9d2ad2f7231f44KiHkXa5a02?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Fracture Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Fracture%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=168" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Gallery Case" src="https://market.fp.ps.netease.com/file/66fde4d15e36956d6530882bVRKHVCzf05?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Gallery Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Gallery%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=109499" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Gamma 2 Case" src="https://g.fp.ps.netease.com/market/file/5aa02c96adce5f1d91fe27be00S1ADiu?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Gamma 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Gamma%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=369" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Gamma Case" src="https://g.fp.ps.netease.com/market/file/5aa02c8569b21a88c3aefa0brqoaujxU?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Gamma Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Gamma%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=358" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Glove Case" src="https://g.fp.ps.netease.com/market/file/5a9fd0d8aa49f1fe03de25dczLmPe5KQ?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Glove Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Glove%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=77" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Horizon Case" src="https://g.fp.ps.netease.com/market/file/5ba0c7bb8b7427acadc44b8bmHbkFe9b?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Horizon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Horizon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=153" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Huntsman Weapon Case" src="https://g.fp.ps.netease.com/market/file/5a9fc382a7501417d3ce21c3ASKiPiAg?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Huntsman Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Huntsman%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=46475" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Kilowatt Case" src="https://market.fp.ps.netease.com/file/65c2d1e641a6a6bbcafdd84cscGrKHvL05?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Kilowatt Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Kilowatt%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=108492" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Operation Bravo Case" src="https://g.fp.ps.netease.com/market/file/5aa091c8a75014c6bfd9cf89tSoTzLEN?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Operation Bravo Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Bravo%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=47514" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Operation Breakout Weapon Case" src="https://g.fp.ps.netease.com/market/file/5aa091c920e3db096ff6843cVzDYC6Hj?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Operation Breakout Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Breakout%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=156" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Operation Broken Fang Case" src="https://g.fp.ps.netease.com/market/file/5fc966f269b21a7918b0d6c43gKJgTbu02?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Operation Broken Fang Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Broken%20Fang%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=6860" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Operation Hydra Case" src="https://g.fp.ps.netease.com/market/file/5aa0920746072bfb7e8a50b7zBQ22Cbd?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Operation Hydra Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Hydra%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=50125" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Operation Phoenix Weapon Case" src="https://g.fp.ps.netease.com/market/file/5aa091d6fb758a3a65815c57o5LufSFm?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Operation Phoenix Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Phoenix%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1176" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Operation Riptide Case" src="https://g.fp.ps.netease.com/market/file/614a91013769865a87e7a1624uO88TLL03?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Operation Riptide Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Riptide%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=62265" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Operation Vanguard Weapon Case" src="https://g.fp.ps.netease.com/market/file/5aa091f4a750143a006e1db0fxKpbupo?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Operation Vanguard Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Vanguard%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1177" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Operation Wildfire Case" src="https://g.fp.ps.netease.com/market/file/5aa0312fadce5f1d91fe28677s3owPgu?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Operation Wildfire Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Wildfire%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=782" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Prisma 2 Case" src="https://g.fp.ps.netease.com/market/file/5e83d7916f04943b53820821TwZ0RJVV02?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Prisma 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Prisma%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=8" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Prisma Case" src="https://g.fp.ps.netease.com/market/file/5c899fe8a7f25296f3b01ab5PiKsXDdV02?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Prisma Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Prisma%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=3" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Recoil Case" src="https://g.fp.ps.netease.com/market/file/62bf6ac991df682427d38ac4MbtVXRUV04?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Recoil Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Recoil%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=102276" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Revolution Case" src="https://g.fp.ps.netease.com/market/file/63e5a2e6779f248773656374kAHJNEoE04?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Revolution Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Revolution%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=103158" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Revolver Case" src="https://g.fp.ps.netease.com/market/file/5a9fd4548b742772910c7584OGRgc5qB?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Revolver Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Revolver%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=38" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Shadow Case" src="https://g.fp.ps.netease.com/market/file/5a9fc99c46072b7813edaf54EmqUrt07?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Shadow Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Shadow%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=368" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Shattered Web Case" src="https://g.fp.ps.netease.com/market/file/5dd32b5f8b74275eb3ba076fWkz9S0Zz02?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Shattered Web Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Shattered%20Web%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1814" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Snakebite Case" src="https://g.fp.ps.netease.com/market/file/609079ca2786fd5a983c694dj6KXbAdk03?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Snakebite Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Snakebite%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=53453" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Spectrum 2 Case" src="https://g.fp.ps.netease.com/market/file/5aa02c57fb758a6794d5f8d0MtQFYjk0?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Spectrum 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Spectrum%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=2" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Spectrum Case" src="https://g.fp.ps.netease.com/market/file/5aa02c5502c9a1460d3cad93UyMigZ7S?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Spectrum Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Spectrum%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1055" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img alt="Winter Offensive Weapon Case" src="https://g.fp.ps.netease.com/market/file/5aa02b367f9d2a70995c3681e7iQVvRE?fop=imageView/6/f/webp/q/75"/></td>
+<td><div class="case-name"><span class="copyable">Winter Offensive Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Winter%20Offensive%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=45168" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const toggle = document.getElementById("themeToggle");
+      toggle.addEventListener("change", () => {
+        document.body.classList.toggle("light-theme");
+      });
+    });
+  
+    document.querySelectorAll(".copyable").forEach(el => {
+      el.addEventListener("click", () => {
+        navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+          el.classList.add("copied");
+          setTimeout(() => el.classList.remove("copied"), 500);
+        });
+      });
+    });
+
+</script>
+</body>
+</html>
