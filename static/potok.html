@@ -1443,9 +1443,43 @@ document.addEventListener("DOMContentLoaded", () => {
 <div class="progress-bar-fill" id="progressFill"></div>
 </div><div class="progress-bar-text" id="progressText"></div><div style="margin-top: 30px;">
 </div><div style="margin-top: 30px;">
-<button id="startPotok" style="background-color: var(--text-color); color: var(--bg-color); padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
+
+<style>
+  #startPotok {
+    background-color: var(--text-color, #ccd3e0);
+    color: var(--bg-color, #354057);
+    padding: 12px 26px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      transform 0.2s ease,
+      box-shadow 0.3s ease;
+  }
+
+  #startPotok:hover {
+    background-color: #ffffff;
+    color: #1e1e1e;
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+  }
+
+  #startPotok:active {
+    transform: scale(0.96);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  }
+</style>
+
+<div style="margin-top: 30px;">
+  <button id="startPotok">
     Start
   </button>
+</div>
+
 </div>
 <div id="profit-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
 </div>

@@ -394,6 +394,13 @@ table td img:hover {
       transform: scale(1.05);
     }
 
+    
+body.light-theme .copyable.clicked {
+  color: #00cc44 !important;
+  font-weight: 700;
+}
+
+
     .copyable.copied {
       animation: copiedFlash 0.5s ease;
     }
@@ -403,7 +410,222 @@ table td img:hover {
       100% { color: var(--text-color); transform: scale(1); }
     }
 
+
+body.light-theme .copyable {
+  color: #000000 !important;
+}
+
+body.light-theme .copyable {
+  color: #000000 !important;
+}
+
+body.light-theme h1 {
+  color: #000000 !important;
+}
+
+
+.case-icon {
+  height: 32px;
+  width: 32px;
+  opacity: 0.85;
+  filter: brightness(0) saturate(100%) invert(100%);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+body.light-theme .case-icon {
+  filter: brightness(0) saturate(100%) invert(0%);
+}
+
+.case-icon:hover {
+  transform: scale(1.2);
+  filter: brightness(0) saturate(100%) invert(100%) brightness(1.3);
+}
+
+body.light-theme .case-icon:hover {
+  filter: brightness(0) saturate(100%) invert(0%) brightness(0.7);
+}
+
+
+.loading::after {
+  content: "⏳";
+  display: inline-block;
+  animation: loading-blink 1s infinite;
+}
+
+@keyframes loading-blink {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top: 3px solid var(--text-color);
+  border-right: 3px solid var(--text-color);
+  border-radius: 50%;
+  animation: spin 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+  margin: 0 auto;
+  box-shadow: 0 0 8px var(--text-color);
+  transition: all 0.3s ease;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.2); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+
+body.light-theme td:nth-child(3),
+body.light-theme td:nth-child(4) {
+  color: #000000;
+}
+
+
+.rate-anim {
+  font-weight: bold;
+  display: inline-block;
+  opacity: 0.7;
+  transform: scale(0.95);
+  transition: all 0.3s ease-in-out;
+}
+.rate-fade-in {
+  opacity: 1;
+  transform: scale(1.05);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
+}
+
+
+.missing-data {
+  color: #999;
+  font-style: italic;
+  font-size: 0.95em;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+
+.missing-data {
+  font-size: 1.1em;
+  opacity: 0.35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+
+.missing-data {
+  font-size: 1.1em;
+  opacity: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  filter: grayscale(1) brightness(0.6) contrast(1.2);
+}
+body.dark-theme .missing-data {
+  filter: grayscale(1) brightness(2);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Анимация дыхания и легкого мигания */
+@keyframes pulse-glow {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+
+.missing-icon {
+  height: 24px !important;
+  opacity: 0.6;
+  display: block;
+  margin: 0 auto;
+  filter: none !important;
+  animation: pulse-glow 2.8s ease-in-out infinite;
+}
+
+/* Анимация дыхания и легкого мигания */
+@keyframes pulse-glow {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
 </style>
+<style>
+    body {
+      background-color: #1e1e1e;
+      color: #ccd3e0;
+      font-family: Helvetica, sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    #startPotok {
+      background-color: var(--text-color, #ccd3e0);
+      color: var(--bg-color, #354057);
+      padding: 12px 26px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+    }
+
+    #startPotok:hover {
+      background-color: #ffffff;
+      color: #1e1e1e;
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+    }
+
+    #startPotok:active {
+      transform: scale(0.96);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    }
+  </style>
 </head>
 <body>
 <div id="back-button">
@@ -419,6 +641,7 @@ table td img:hover {
 </label>
 </div>
 <h1>Раздел ¥</h1>
+<button id="startPotok">Start</button>
 <table>
 <thead>
 <tr>
@@ -432,294 +655,294 @@ table td img:hover {
 <tbody>
 <tr>
 <td><img alt="Chroma 2 Case" src="https://g.fp.ps.netease.com/market/file/5a9fd45302c9a18f3c9eca349z1RAAZ9?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Chroma 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Chroma%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=788" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Chroma 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Chroma%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=788" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Chroma 3 Case" src="https://g.fp.ps.netease.com/market/file/5a9fd45169b21ae4e2268192XHxJ5hrs?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Chroma 3 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Chroma%203%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=13" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Chroma 3 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Chroma%203%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=13" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Chroma Case" src="https://g.fp.ps.netease.com/market/file/5a9fd44f6f0494db8b736a20wr58RkEJ?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Chroma Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Chroma%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=45444" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Chroma Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Chroma%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=45444" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Clutch Case" src="https://g.fp.ps.netease.com/market/file/5a9fe246fb758acf3db7dc6fzK9qCbh3?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Clutch Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Clutch%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=12" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Clutch Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Clutch%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=12" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="CS20 Case" src="https://g.fp.ps.netease.com/market/file/5daa16cf143cfa4bec985411BxRRRYe402?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">CS20 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS20%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=9" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">CS20 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS20%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=9" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="CS:GO Weapon Case" src="https://g.fp.ps.netease.com/market/file/5a9fe276a75014727f7d829a0mprmKKb?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">CS:GO Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS%3AGO%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=47128" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">CS:GO Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS%3AGO%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=47128" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="CS:GO Weapon Case 2" src="https://g.fp.ps.netease.com/market/file/5a9fe29b20e3db896fccfd1cCmLsBWv4?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">CS:GO Weapon Case 2</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS%3AGO%20Weapon%20Case%202" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=48062" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">CS:GO Weapon Case 2</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS%3AGO%20Weapon%20Case%202" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=48062" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="CS:GO Weapon Case 3" src="https://g.fp.ps.netease.com/market/file/5a9fe29aadce5f7c6be1a523kvRBHBj4?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">CS:GO Weapon Case 3</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS%3AGO%20Weapon%20Case%203" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=46084" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">CS:GO Weapon Case 3</span><div class="case-icons"><a href="https://market.csgo.com/ru/CS%3AGO%20Weapon%20Case%203" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=46084" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Danger Zone Case" src="https://g.fp.ps.netease.com/market/file/60d1593c143cfa4f5ceafc90I62GOuZD03?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Danger Zone Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Danger%20Zone%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=5" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Danger Zone Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Danger%20Zone%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=5" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Dreams &amp; Nightmares Case" src="https://g.fp.ps.netease.com/market/file/61ea007291df686b72795522ILtdbSRG04?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Dreams &amp; Nightmares Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Dreams%20%26%20Nightmares%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=101422" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Dreams &amp; Nightmares Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Dreams%20%2526%20Nightmares%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=101422" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="eSports 2013 Case" src="https://g.fp.ps.netease.com/market/file/5a9fc37e96dee43e1cc6ad9aUqKhWz56?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">eSports 2013 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/eSports%202013%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=57055" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">eSports 2013 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/eSports%202013%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=57055" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="eSports 2013 Winter Case" src="https://g.fp.ps.netease.com/market/file/5a9fc37f5e602779217e53708Oecwcv7?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">eSports 2013 Winter Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/eSports%202013%20Winter%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1118" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">eSports 2013 Winter Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/eSports%202013%20Winter%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=1118" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="eSports 2014 Summer Case" src="https://g.fp.ps.netease.com/market/file/5a9fc37da75014218b2c8fe21Fur6XOQ?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">eSports 2014 Summer Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/eSports%202014%20Summer%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1117" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">eSports 2014 Summer Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/eSports%202014%20Summer%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=1117" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Falchion Case" src="https://g.fp.ps.netease.com/market/file/5a9fd42246072b96180140cbCwi7lZLd?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Falchion Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Falchion%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=125" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Falchion Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Falchion%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=125" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Fever Case" src="https://market.fp.ps.netease.com/file/67eb233cc57966917d25b5328i2tO23K06?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Fever Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Fever%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=110657" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Fever Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Fever%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=110657" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Fracture Case" src="https://g.fp.ps.netease.com/market/file/5f2cadd07f9d2ad2f7231f44KiHkXa5a02?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Fracture Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Fracture%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=168" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Fracture Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Fracture%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=168" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Gallery Case" src="https://market.fp.ps.netease.com/file/66fde4d15e36956d6530882bVRKHVCzf05?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Gallery Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Gallery%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=109499" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Gallery Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Gallery%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=109499" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Gamma 2 Case" src="https://g.fp.ps.netease.com/market/file/5aa02c96adce5f1d91fe27be00S1ADiu?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Gamma 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Gamma%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=369" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Gamma 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Gamma%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=369" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Gamma Case" src="https://g.fp.ps.netease.com/market/file/5aa02c8569b21a88c3aefa0brqoaujxU?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Gamma Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Gamma%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=358" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Gamma Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Gamma%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=358" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Glove Case" src="https://g.fp.ps.netease.com/market/file/5a9fd0d8aa49f1fe03de25dczLmPe5KQ?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Glove Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Glove%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=77" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Glove Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Glove%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=77" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Horizon Case" src="https://g.fp.ps.netease.com/market/file/5ba0c7bb8b7427acadc44b8bmHbkFe9b?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Horizon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Horizon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=153" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Horizon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Horizon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=153" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Huntsman Weapon Case" src="https://g.fp.ps.netease.com/market/file/5a9fc382a7501417d3ce21c3ASKiPiAg?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Huntsman Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Huntsman%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=46475" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Huntsman Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Huntsman%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=46475" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Kilowatt Case" src="https://market.fp.ps.netease.com/file/65c2d1e641a6a6bbcafdd84cscGrKHvL05?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Kilowatt Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Kilowatt%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=108492" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Kilowatt Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Kilowatt%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=108492" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Operation Bravo Case" src="https://g.fp.ps.netease.com/market/file/5aa091c8a75014c6bfd9cf89tSoTzLEN?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Operation Bravo Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Bravo%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=47514" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Operation Bravo Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Bravo%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=47514" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Operation Breakout Weapon Case" src="https://g.fp.ps.netease.com/market/file/5aa091c920e3db096ff6843cVzDYC6Hj?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Operation Breakout Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Breakout%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=156" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Operation Breakout Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Breakout%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=156" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Operation Broken Fang Case" src="https://g.fp.ps.netease.com/market/file/5fc966f269b21a7918b0d6c43gKJgTbu02?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Operation Broken Fang Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Broken%20Fang%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=6860" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Operation Broken Fang Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Broken%20Fang%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=6860" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Operation Hydra Case" src="https://g.fp.ps.netease.com/market/file/5aa0920746072bfb7e8a50b7zBQ22Cbd?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Operation Hydra Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Hydra%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=50125" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Operation Hydra Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Hydra%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=50125" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Operation Phoenix Weapon Case" src="https://g.fp.ps.netease.com/market/file/5aa091d6fb758a3a65815c57o5LufSFm?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Operation Phoenix Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Phoenix%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1176" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Operation Phoenix Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Phoenix%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=1176" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Operation Riptide Case" src="https://g.fp.ps.netease.com/market/file/614a91013769865a87e7a1624uO88TLL03?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Operation Riptide Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Riptide%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=62265" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Operation Riptide Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Riptide%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=62265" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Operation Vanguard Weapon Case" src="https://g.fp.ps.netease.com/market/file/5aa091f4a750143a006e1db0fxKpbupo?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Operation Vanguard Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Vanguard%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1177" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Operation Vanguard Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Vanguard%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=1177" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Operation Wildfire Case" src="https://g.fp.ps.netease.com/market/file/5aa0312fadce5f1d91fe28677s3owPgu?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Operation Wildfire Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Wildfire%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=782" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Operation Wildfire Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Operation%20Wildfire%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=782" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Prisma 2 Case" src="https://g.fp.ps.netease.com/market/file/5e83d7916f04943b53820821TwZ0RJVV02?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Prisma 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Prisma%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=8" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Prisma 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Prisma%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=8" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Prisma Case" src="https://g.fp.ps.netease.com/market/file/5c899fe8a7f25296f3b01ab5PiKsXDdV02?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Prisma Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Prisma%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=3" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Prisma Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Prisma%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=3" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Recoil Case" src="https://g.fp.ps.netease.com/market/file/62bf6ac991df682427d38ac4MbtVXRUV04?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Recoil Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Recoil%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=102276" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Recoil Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Recoil%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=102276" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Revolution Case" src="https://g.fp.ps.netease.com/market/file/63e5a2e6779f248773656374kAHJNEoE04?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Revolution Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Revolution%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=103158" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Revolution Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Revolution%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=103158" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Revolver Case" src="https://g.fp.ps.netease.com/market/file/5a9fd4548b742772910c7584OGRgc5qB?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Revolver Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Revolver%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=38" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Revolver Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Revolver%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=38" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Shadow Case" src="https://g.fp.ps.netease.com/market/file/5a9fc99c46072b7813edaf54EmqUrt07?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Shadow Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Shadow%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=368" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Shadow Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Shadow%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=368" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Shattered Web Case" src="https://g.fp.ps.netease.com/market/file/5dd32b5f8b74275eb3ba076fWkz9S0Zz02?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Shattered Web Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Shattered%20Web%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1814" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Shattered Web Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Shattered%20Web%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=1814" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Snakebite Case" src="https://g.fp.ps.netease.com/market/file/609079ca2786fd5a983c694dj6KXbAdk03?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Snakebite Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Snakebite%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=53453" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Snakebite Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Snakebite%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=53453" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Spectrum 2 Case" src="https://g.fp.ps.netease.com/market/file/5aa02c57fb758a6794d5f8d0MtQFYjk0?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Spectrum 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Spectrum%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=2" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Spectrum 2 Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Spectrum%202%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=2" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Spectrum Case" src="https://g.fp.ps.netease.com/market/file/5aa02c5502c9a1460d3cad93UyMigZ7S?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Spectrum Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Spectrum%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=1055" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Spectrum Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Spectrum%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=1055" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td><img alt="Winter Offensive Weapon Case" src="https://g.fp.ps.netease.com/market/file/5aa02b367f9d2a70995c3681e7iQVvRE?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Winter Offensive Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Winter%20Offensive%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10&amp;templateId=45168" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Winter Offensive Weapon Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Winter%20Offensive%20Weapon%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=45168" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
@@ -738,11 +961,117 @@ table td img:hover {
       el.addEventListener("click", () => {
         navigator.clipboard.writeText(el.textContent.trim()).then(() => {
           el.classList.add("copied");
-          setTimeout(() => el.classList.remove("copied"), 500);
+          el.classList.add("clicked");
+          setTimeout(() => {
+            el.classList.remove("copied");
+            el.classList.remove("clicked");
+          }, 1500);
         });
       });
     });
 
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const startButton = document.getElementById("startPotok");
+  const rows = document.querySelectorAll("tbody tr");
+  let isRunning = false;
+  let currentIndex = 0;
+  let timeoutId = null;
+
+  async function fetchPrices(name) {
+    try {
+      const url = `/api/price?name=${encodeURIComponent(name)}&buff=0`;
+    console.log("🔍 Запрос цены:", url);
+    const res = await fetch(url);
+      if (!res.ok) return {};
+      const data = await res.json();
+      return {
+        tm: typeof data.leg1t === "number" ? data.leg1t : null,
+        youpin: typeof data.youpin === "number" ? data.youpin : null
+      };
+    } catch {
+      return {};
+    }
+  }
+
+  async function updateRow(row) {
+    const name = row.querySelector(".copyable")?.textContent.trim();
+    if (!name) return;
+
+    const cells = row.querySelectorAll("td");
+    [2, 3, 4].forEach(i => {
+      cells[i].innerHTML = '<div class="spinner"></div>';
+    });
+
+    const { tm, youpin } = await fetchPrices(name);
+
+    const missingHTML = `<img class="missing-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAF4UlEQVR4nO2be2wURRzHBwloovHxB8bExGhiov+pITEmmlS6c+115rDQ2WmFYivQljYQXg2I1LTysEh4WEpNCygqjwIttSYQYgUpICJioRCCaKCtIC8ppmDp4wrtmN/pXOfKXXvt7d5juU8yyeVub3e+39vdmfl99xCKEiVKlChRogQbSic+gR38DVfD/DF0vxATk/4QpvoaTFkHprpwNcLaNaqv4JyPRBZnGCZ6tVt430ZYJWyDrIqNsEmq4KzpuSJ75jwPE2AbZEVstkkPY8IuSaElZZ8LyafrNqpnwSXYFlkNjbKlUiRPnSra2trdBrR3dIiUdzKVM4EtQVYCO/gzGtHbpMCafbWiLzV7a1UDOuLjU55FVgFTfacUlzNrvujp6bnHAHhvxpwFbhM0qlcgK4BhnKd6j+sG5+Di9Jmzwhe/nv3dtU2vCexNFMkUFBQ8oFFWJwUtW1ksBmLZijW9BhD9JOd8OIpUsINlSzE0KVX8db15QAOab/wtHCxVOQt4FopE7PbURzFh16SQLdt2Cn/ZvK1SvQyuxyQmPo4iDUz11VLEhPRporOz028DnM4ukTolR50brEKRRNxY/rxGmFMKOPjDETFY4DvKsNg1Jp6/gCIFTPU9svOz5n3gddjzh7nv5asm7EaRQGwCS5CdjhubLM6db/QpsOmPC6LpwkWfn59vaHLtw71OSEh6HYUzo0dnjdCIflZ2eHVxmU9xx+rqXWM+tLoTJ31uV1SyTjkLkuJROIOpPlt2NjE5TbS03PQpbNPWCrcweO0LuHmWV3wtNpdXnA7rpbLdzkdhordIUZXVu0R/fLV1h9sAeO0nCShcwZStk4LSMmaIrq4uMwyAefQIFG7E0fEvaYTdlYJ+/uX4gEqGaAAwG4UbmOi1Usz8vMV+qQjAgBYhxCgULtiozqWQ+LdS+h3WDDIAKEXhUuHVCGuUQqC05S8BGnDX6XS+EvLSGSY8T4pgEyaL1tbbQTGg0+kUaRnTb8MUOZbwqSERH0v505iwVili156aQYkIxACYXfYulPR/Ygh/KugGaJRtUsvb3d3dQTMAjpWRM0cpnLCNQRWP7eNfk2UuaHUnTg1KQKAGAPUnT6sGdMdS/mqw9A/TqH5UHnxR4cpBd94IA4D8JcvVmsGRoEyVNcrS5UETxk0Ql69cDZkBV65ec/VBqSSnmio+hvNHNMIuywNu3FQ+pI4bZQCw4YstwUuVMGGF8mDJkzI80p1QGdDW3i6S1VSJ6ItNEW8by59TI+293x8ccqeNNAD4du9+9SxoNyVV0qheNVC6EyoDvKRKOwwVH0uSxrjLUgOkO6EwADjTJ1XCDh5jiHjO+XBM9FNyx8tXrRVGAJeQ3Oe+/YFdTpLCFUVqnlBvSKqEKc9R053rzTcM6SyctiAcWqCXk2mpEoUHmQhrljvcur1KhDubyw1MlTTCiuTOJr6bPah0J1TAStGQVCnOkfQiLDfljg4d/klECgcO/Rh4qoSVdCd3QYEpHR0oGAmEPqnSd4MSryUwh5ruNDQ2Gd5Bf4ORodI3VcI0ifglnnM+ElP2m/xiUcl6YQb+BiOB8MnaMnXJfM5utz/oz6mfK780Ljld3Lx5y5TOGT0R8gb0HTQoJszpV7zNNv5JNd2p+ma3MItgGABAQqUMi7f6LZ9pRF8vN548bZa4c+euaR0zYyboDdAwedpM9YZY5v3XJ/xlz3TnhDATM2aCvjh67LhH+SyO8tFefn12QG6U92GhsBoLCz5SV4uHPcpnmLBk+aE9MUVc/POysBpQurMnvu02ARIt9P+wN1xNd0o3fCmsCmjrvRfoDa7VIjx1Id9kE6eI1tv+pzuRBmgDjb21DRaHNAef6+0RdqtSXPqZ57wAU5apRttm35FDCWibt3CR24BYyBWh2AlDg3zz/fylrnX/9spqSzXQBNrU4TBeFk81wtYqN4f7pLFijwUQmKCeCVZt/2lkxfBIH7pnNgiXA+VZ8PcWjeofW6vBX3ZYJmhURf8LTVqa6uW8HzAAAAAASUVORK5CYII=" alt="!" />`;
+    cells[2].innerHTML = tm ? `${(tm / 100).toFixed(2)} ₽` : missingHTML;
+    cells[3].innerHTML = youpin ? `${youpin.toFixed(2)} ¥` : missingHTML;
+
+    if (tm && youpin) {
+      const cleanYoupin = youpin - Math.floor(youpin) * 0.01;
+      const tmRub = tm / 100;
+      const finalRate = (tmRub / cleanYoupin).toFixed(2);
+
+      const rateCell = cells[4];
+      rateCell.innerHTML = '<span class="rate-anim">0.00</span>';
+      const rateSpan = rateCell.querySelector(".rate-anim");
+
+      let steps = 20;
+      let delay = 25;
+      let target = parseFloat(finalRate);
+      let stepSize = target / steps;
+      let i = 0;
+
+      const interval = setInterval(() => {
+        i++;
+        const value = (stepSize * i).toFixed(2);
+        rateSpan.textContent = value;
+        if (i >= steps) {
+          clearInterval(interval);
+          rateSpan.textContent = finalRate;
+          rateSpan.classList.add("rate-fade-in");
+        }
+      }, delay);
+    } else {
+      cells[4].innerHTML = missingHTML;
+    }
+  }
+
+  async function processNext() {
+    if (!isRunning || currentIndex >= rows.length) return;
+
+    const row = rows[currentIndex];
+    let attempts = 0;
+    while (attempts < 3) {
+      await updateRow(row);
+      const cells = row.querySelectorAll('td');
+      if (cells[2].textContent !== '-' && cells[3].textContent !== '-') break;
+      await new Promise(r => setTimeout(r, 5000));
+      attempts++;
+    }
+    currentIndex++;
+
+    if (isRunning) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(processNext, 1000);
+    }
+  }
+
+  startButton.addEventListener("click", () => {
+    const label = startButton.textContent.trim();
+
+    if (label === "Start" || label === "Continue") {
+      isRunning = true;
+      startButton.textContent = "Stop";
+      processNext();
+    } else if (label === "Stop") {
+      isRunning = false;
+      startButton.textContent = "Continue";
+    }
+  });
+});</script>
 </body>
 </html>

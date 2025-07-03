@@ -142,7 +142,7 @@ def index():
 
 @app.route("/potok.html")
 def protected_potok():
-    if not session.get("access_granted"):
+    if not session.get("access_potok"):
         return "Access denied", 403
     return send_from_directory("static", "potok.html")
 
@@ -161,8 +161,17 @@ def authorize():
     else:
         return {"status": "forbidden"}, 403
 
+
+@app.route("/Y.html")
+def protected_y():
+    if not session.get("access_y"):
+        return "Access denied", 403
+    return send_from_directory("static", "Y.html")
+
 @app.route("/<path:filename>")
 def serve_static_file(filename):
+    if filename == "Y.html" and not session.get("access_y"):
+        return "Access denied", 403
     return send_from_directory("static", filename)
 
 @app.route("/api/find_id")
