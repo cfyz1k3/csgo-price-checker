@@ -626,6 +626,99 @@ body.dark-theme .missing-data {
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     }
   </style>
+<style>
+.char-animate {
+  display: inline-block;
+  animation: springExpand 0.8s ease forwards;
+}
+@keyframes springExpand {
+  0%   { transform: translateX(0) scaleX(1); }
+  20%  { transform: translateX(-5px) scaleX(1.4); }
+  40%  { transform: translateX(5px) scaleX(0.8); }
+  60%  { transform: translateX(-3px) scaleX(1.2); }
+  80%  { transform: translateX(2px) scaleX(0.95); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+</style><style>
+.char-animate {
+  display: inline-block;
+  animation: springExpand 0.8s ease forwards;
+}
+@keyframes springExpand {
+  0%   { transform: translateX(0) scaleX(1); }
+  20%  { transform: translateX(-5px) scaleX(1.4); }
+  40%  { transform: translateX(5px) scaleX(0.8); }
+  60%  { transform: translateX(-3px) scaleX(1.2); }
+  80%  { transform: translateX(2px) scaleX(0.95); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+</style><style>
+.char-animate {
+  display: inline-block;
+  animation: springSymmetric 0.6s ease forwards;
+}
+@keyframes springSymmetric {
+  0%   { transform: translateX(0) scaleX(1); }
+  30%  { transform: var(--spread); }
+  60%  { transform: translateX(0px) scaleX(0.95); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+</style><style>
+.char-animate {
+  display: inline-block;
+  animation: springWave 0.9s ease forwards;
+}
+@keyframes springWave {
+  0%   { transform: translateX(0) scaleX(1); }
+  25%  { transform: var(--spread); }
+  40%  { transform: translateX(0px) scaleX(0.9); }
+  55%  { transform: var(--spread2); }
+  70%  { transform: translateX(0px) scaleX(1.05); }
+  85%  { transform: var(--spread3); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+</style><style>
+#sortArrow {
+  display: inline-block;
+  transition: transform 0.4s ease;
+}
+#sortArrow.rotated {
+  transform: rotate(180deg);
+}
+
+#sortRate:hover {
+  filter: brightness(1.5);
+  transition: filter 0.3s ease;
+  cursor: pointer;
+}
+</style>
+<style>
+  #sortArrow {
+    display: inline-block;
+    transition: transform 0.4s ease;
+  }
+  #sortArrow.rotated-up {
+    transform: rotate(0deg);
+  }
+  #sortArrow.rotated-down {
+    transform: rotate(180deg);
+  }
+
+  tr.row-animate {
+    animation: fadeSlide 0.5s ease;
+  }
+
+  @keyframes fadeSlide {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
 </head>
 <body>
 <div id="back-button">
@@ -649,7 +742,7 @@ body.dark-theme .missing-data {
 <th>Название</th>
 <th>Цена на ТМ</th>
 <th>Цена на Youpin</th>
-<th>Курс</th>
+<th id="sortRate"><span class="char" data-index="0">К</span><span class="char" data-index="1">у</span><span class="char" data-index="2">р</span><span class="char" data-index="3">с</span></th>
 </tr>
 </thead>
 <tbody>
@@ -718,7 +811,7 @@ body.dark-theme .missing-data {
 </tr>
 <tr>
 <td><img alt="Dreams &amp; Nightmares Case" src="https://g.fp.ps.netease.com/market/file/61ea007291df686b72795522ILtdbSRG04?fop=imageView/6/f/webp/q/75"/></td>
-<td><div class="case-name"><span class="copyable">Dreams &amp; Nightmares Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Dreams%20%2526%20Nightmares%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=101422" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
+<td><div class="case-name"><span class="copyable">Dreams &amp; Nightmares Case</span><div class="case-icons"><a href="https://market.csgo.com/ru/Dreams%20%26%20Nightmares%20Case" target="_blank"><img alt="TM Icon" class="case-icon" src="/static/marketcsgo_icon.webp"/></a><a href="https://www.youpin898.com/market/goods-list?listType=10%26templateId=101422" target="_blank"><img alt="Youpin Icon" class="case-icon" src="/static/youpin_icon.webp"/></a></div></div></td>
 <td></td>
 <td></td>
 <td></td>
@@ -980,20 +1073,35 @@ document.addEventListener("DOMContentLoaded", () => {
   let timeoutId = null;
 
   async function fetchPrices(name) {
+  const url = `/api/price?name=${encodeURIComponent(name)}&buff=0`;
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      const url = `/api/price?name=${encodeURIComponent(name)}&buff=0`;
-    console.log("🔍 Запрос цены:", url);
-    const res = await fetch(url);
-      if (!res.ok) return {};
+      console.log(`🔍 Попытка ${attempt}: ${url}`);
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Bad response");
+
       const data = await res.json();
-      return {
-        tm: typeof data.leg1t === "number" ? data.leg1t : null,
-        youpin: typeof data.youpin === "number" ? data.youpin : null
-      };
-    } catch {
-      return {};
+      const tm = typeof data.leg1t === "number" ? data.leg1t : null;
+      const youpin = typeof data.youpin === "number" ? data.youpin : null;
+
+      if (tm !== null && youpin !== null) {
+        console.log("✅ Успешно получено:", data);
+        return { tm, youpin };
+      } else {
+        throw new Error("Один из результатов null: tm = " + tm + ", youpin = " + youpin);
+      }
+    } catch (e) {
+      console.warn(`❌ Ошибка попытки ${attempt}:`, e);
+      if (attempt < 3) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
     }
   }
+
+  console.log("🚫 Все попытки неудачны");
+  return {};
+}
 
   async function updateRow(row) {
     const name = row.querySelector(".copyable")?.textContent.trim();
@@ -1041,7 +1149,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function processNext() {
-    if (!isRunning || currentIndex >= rows.length) return;
+    if (!isRunning) return;
+    if (currentIndex >= rows.length) currentIndex = 0;
 
     const row = rows[currentIndex];
     let attempts = 0;
@@ -1073,5 +1182,270 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });</script>
-</body>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const table = document.querySelector("table");
+    const header = table.querySelector("th:nth-child(5)");
+
+    let asc = true;
+
+    header.style.cursor = "pointer";
+    header.title = "Нажмите для сортировки по курсу";
+
+    header.addEventListener("click", () => {
+      const rows = Array.from(table.querySelectorAll("tbody tr"));
+
+      rows.sort((a, b) => {
+        const getRate = tr => {
+          const text = tr.querySelector("td:nth-child(5)").innerText.trim();
+          const num = parseFloat(text.replace(",", "."));
+          return isNaN(num) ? -Infinity : num;
+        };
+
+        return asc ? getRate(a) - getRate(b) : getRate(b) - getRate(a);
+      });
+
+      const tbody = table.querySelector("tbody");
+      rows.forEach(row => tbody.appendChild(row));
+      asc = !asc;
+    });
+  });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sortRate = document.getElementById("sortRate");
+  const sortArrow = document.getElementById("sortArrow");
+  let asc = true;
+
+  sortRate.addEventListener("click", () => {
+    const chars = sortRate.querySelectorAll(".char");
+    chars.forEach((char, index) => {
+      char.classList.remove("char-animate");
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          char.classList.add("char-animate");
+        }, index * 40);
+      });
+    });
+
+    sortArrow.textContent = asc ? " ⮝" : " ⮟";
+
+    const tbody = document.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    rows.sort((a, b) => {
+      const aText = parseFloat(a.children[2].textContent.trim().replace(',', '.')) || 0;
+      const bText = parseFloat(b.children[2].textContent.trim().replace(',', '.')) || 0;
+      return asc ? aText - bText : bText - aText;
+    });
+    rows.forEach(row => tbody.appendChild(row));
+    asc = !asc;
+  });
+});
+</script><script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sortRate = document.getElementById("sortRate");
+  const sortArrow = document.getElementById("sortArrow");
+  let asc = true;
+
+  sortRate.addEventListener("click", () => {
+    const chars = sortRate.querySelectorAll(".char");
+    chars.forEach((char, index) => {
+      char.classList.remove("char-animate");
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          char.classList.add("char-animate");
+        }, index * 40);
+      });
+    });
+
+    sortArrow.textContent = asc ? " ⮝" : " ⮟";
+
+    const tbody = document.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    rows.sort((a, b) => {
+      const aText = parseFloat(a.children[2].textContent.trim().replace(',', '.')) || 0;
+      const bText = parseFloat(b.children[2].textContent.trim().replace(',', '.')) || 0;
+      return asc ? aText - bText : bText - aText;
+    });
+    rows.forEach(row => tbody.appendChild(row));
+    asc = !asc;
+  });
+});
+</script><script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sortRate = document.getElementById("sortRate");
+  const sortArrow = document.getElementById("sortArrow");
+  let asc = true;
+
+  sortRate.addEventListener("click", () => {
+    const chars = sortRate.querySelectorAll(".char");
+    const middle = (chars.length - 1) / 2;
+
+    chars.forEach((char, index) => {
+      char.classList.remove("char-animate");
+      const offset = (index - middle) * 12;
+      char.style.setProperty('--spread', `translateX(${offset}px) scaleX(1.4)`);
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          char.classList.add("char-animate");
+        }, index * 40);
+      });
+    });
+
+    sortArrow.textContent = asc ? " ⮝" : " ⮟";
+
+    const tbody = document.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    rows.sort((a, b) => {
+      const aText = parseFloat(a.children[2].textContent.trim().replace(',', '.')) || 0;
+      const bText = parseFloat(b.children[2].textContent.trim().replace(',', '.')) || 0;
+      return asc ? aText - bText : bText - aText;
+    });
+    rows.forEach(row => tbody.appendChild(row));
+    asc = !asc;
+  });
+});
+</script><script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sortRate = document.getElementById("sortRate");
+  const sortArrow = document.getElementById("sortArrow");
+  let asc = true;
+
+  sortRate.addEventListener("click", () => {
+    const chars = sortRate.querySelectorAll(".char");
+    const middle = (chars.length - 1) / 2;
+
+    chars.forEach((char, index) => {
+      char.classList.remove("char-animate");
+      const direction = (index - middle);
+      char.style.setProperty('--spread', `translateX(${direction * 14}px) scaleX(1.4)`);
+      char.style.setProperty('--spread2', `translateX(${direction * 6}px) scaleX(1.1)`);
+      char.style.setProperty('--spread3', `translateX(${direction * 3}px) scaleX(1.05)`);
+      requestAnimationFrame(() => {
+        char.classList.add("char-animate");
+      });
+    });
+
+    sortArrow.textContent = asc ? " ⮝" : " ⮟";
+
+    const tbody = document.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    rows.sort((a, b) => {
+      const aText = parseFloat(a.children[2].textContent.trim().replace(',', '.')) || 0;
+      const bText = parseFloat(b.children[2].textContent.trim().replace(',', '.')) || 0;
+      return asc ? aText - bText : bText - aText;
+    });
+    rows.forEach(row => tbody.appendChild(row));
+    asc = !asc;
+  });
+});
+</script><script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sortRate = document.getElementById("sortRate");
+  const sortArrow = document.getElementById("sortArrow");
+  let asc = true;
+
+  sortRate.addEventListener("click", () => {
+    const chars = sortRate.querySelectorAll(".char");
+    const middle = (chars.length - 1) / 2;
+
+    chars.forEach((char, index) => {
+      char.classList.remove("char-animate");
+      void char.offsetWidth; // Force reflow to restart animation
+      const direction = (index - middle);
+      char.style.setProperty('--spread', `translateX(${direction * 14}px) scaleX(1.4)`);
+      char.style.setProperty('--spread2', `translateX(${direction * 6}px) scaleX(1.1)`);
+      char.style.setProperty('--spread3', `translateX(${direction * 3}px) scaleX(1.05)`);
+      char.classList.add("char-animate");
+    });
+
+    sortArrow.classList.toggle("rotated");
+    sortArrow.textContent = asc ? " ⮝" : " ⮟";
+
+    const tbody = document.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    rows.sort((a, b) => {
+      const aText = parseFloat(a.children[2].textContent.trim().replace(',', '.')) || 0;
+      const bText = parseFloat(b.children[2].textContent.trim().replace(',', '.')) || 0;
+      return asc ? aText - bText : bText - aText;
+    });
+    rows.forEach(row => tbody.appendChild(row));
+    asc = !asc;
+  });
+});
+</script>
+<script>
+let sortAscending = true;
+
+document.getElementById("sortRate").addEventListener("click", () => {
+  const chars = document.querySelectorAll("#sortRate .char");
+  chars.forEach(char => {
+    char.classList.remove("char-animate");
+    void char.offsetWidth;
+    char.classList.add("char-animate");
+  });
+
+  const arrow = document.getElementById("sortArrow");
+  arrow.classList.remove("rotated-up", "rotated-down");
+  arrow.classList.add(sortAscending ? "rotated-down" : "rotated-up");
+
+  const table = document.querySelector("table");
+  const rows = Array.from(table.querySelectorAll("tbody tr"));
+  const getRate = tr => parseFloat(tr.querySelector("td:nth-child(3)").textContent) || 0;
+
+  rows.sort((a, b) => {
+    return sortAscending ? getRate(a) - getRate(b) : getRate(b) - getRate(a);
+  });
+
+  const tbody = table.querySelector("tbody");
+  rows.forEach(row => {
+    row.classList.remove("row-animate");
+    void row.offsetWidth;
+    row.classList.add("row-animate");
+    tbody.appendChild(row);
+  });
+
+  sortAscending = !sortAscending;
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sortHeader = document.getElementById("sortRate");
+  let sortAsc = true;
+
+  sortHeader.addEventListener("click", () => {
+    const tbody = document.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    const getRate = row => {
+      const cell = row.children[4];
+      const text = cell?.textContent?.replace(/[^0-9.,]/g, "").replace(",", ".");
+      const num = parseFloat(text);
+      return isNaN(num) ? null : num;
+    };
+
+    const sorted = rows
+      .map(row => ({ row, rate: getRate(row) }))
+      .filter(item => item.rate !== null)
+      .sort((a, b) => sortAsc ? a.rate - b.rate : b.rate - a.rate)
+      .map(item => item.row);
+
+    const unsorted = rows.filter(row => getRate(row) === null);
+
+    tbody.innerHTML = "";
+    [...sorted, ...unsorted].forEach(row => {
+      row.classList.add("row-animate");
+      tbody.appendChild(row);
+    });
+
+    const arrow = document.getElementById("sortArrow");
+    if (arrow) {
+      arrow.classList.toggle("rotated-down", !sortAsc);
+      arrow.classList.toggle("rotated-up", sortAsc);
+    }
+
+    sortAsc = !sortAsc;
+  });
+});
+</script></body>
 </html>

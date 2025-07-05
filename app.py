@@ -70,7 +70,7 @@ def get_price_data():
 
     def fetch_leg1t():
         try:
-            r = requests.get(f"https://market.csgo.com/api/v2/search-item-by-hash-name?key=v2866i5cp2ZmX6M12yJISnRdRuNbZ40&hash_name={name}", timeout=10)
+            r = requests.get(f"https://market.csgo.com/api/v2/search-item-by-hash-name?key=v2866i5cp2ZmX6M12yJISnRdRuNbZ40&hash_name={name}".replace("Dreams & Nightmares Case", "Dreams %26 Nightmares Case"), timeout=10)
             data = r.json()
             return float(data["data"][0]["price"]) if "data" in data else None
         except:
